@@ -1,1 +1,71 @@
+Ek browser history ka kaam hai aapke Raste (Path) ko yaad rakhna. Isme teen main actions hote hain jo aapko handle karne hain:
 
+1. Naya Page Visit Karna (visit)
+Maan lijiye aap abhi google.com par hain. Aapne search kiya aur wikipedia.org par chale gaye. Browser ko ye "Link" yaad rakhna hai.
+
+2. Peeche Jana (back)
+Aap Wikipedia par bore ho gaye aur aapne "Back" button dabaya. Browser aapko wapas google.com par le jayega.
+
+3. Aage Jana (forward)
+Back jane ke baad aapko laga, "Nahi, Wikipedia hi sahi tha." Aapne "Forward" button dabaya. Browser aapko wapas Wikipedia par le gaya.
+
+
+Asli Problem: "The Branching Logic"
+Yahi wo point hai jahan 4 saal ka experience kaam aata hai. Sabse bada twist tab aata hai jab aap history ke beech mein se naya rasta shuru karte hain.
+
+Example dekhiye:
+
+Aapne visit kiya: A -> B -> C -> D (Abhi aap D par hain).
+
+Aapne Back dabaya 2 baar: Aap ab B par hain.
+
+Ab yahan twist hai: B par khade hokar aapne ek naya page E khol liya.
+
+Ab kya hona chahiye? Rule ye hai ki jaise hi aapne B se E khola, purani forward history (C aur D) delete ho jani chahiye. Aapki nayi history ban jayegi: A -> B -> E.
+
+Interviewer dekhna chahta hai ki kya aapka code/logic is C aur D ko "saaf" (clear) kar pata hai ya nahi.
+
+
+#include <vector>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+
+class BrowserHistory {
+    vector<string> history;
+    int currIndex; // Ye batayega hum abhi kaunse page par hain
+    int maxIndex;  // Ye batayega ki "Forward" kahan tak ja sakte hain
+
+public:
+    BrowserHistory(string homepage) {
+        history.push_back(homepage);
+        currIndex = 0;
+        maxIndex = 0;
+    }
+    
+    void visit(string url) {
+        currIndex++;
+        // Agar humne back karke naya visit kiya hai, toh purani forward history 
+        // ko overwrite karna hoga.
+        if (currIndex < history.size()) {
+            history[currIndex] = url;
+        } else {
+            history.push_back(url);
+        }
+        // Naya page visit karte hi forward history khatam
+        maxIndex = currIndex; 
+    }
+    
+    string back(int steps) {
+        // Steps utne hi peeche ja sakte hain jitne available hain (0 index tak)
+        currIndex = max(0, currIndex - steps);
+        return history[currIndex];
+    }
+    
+    string forward(int steps) {
+        // Steps utne hi aage ja sakte hain jitne maxIndex tak available hain
+        currIndex = min(maxIndex, currIndex + steps);
+        return history[currIndex];
+    }
+};
