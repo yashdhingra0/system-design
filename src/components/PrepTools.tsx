@@ -461,7 +461,7 @@ export const PrepTools: React.FC = () => {
                 {opB.name} is <span style={{ color: 'var(--color-gold)', fontSize: '22px', fontWeight: 800 }}>{multiplier.toLocaleString(undefined, { maximumFractionDigits: 1 })}x</span> slower than {opA.name}!
               </div>
               <p style={{ color: 'var(--text-secondary)', fontSize: '14px', margin: 0, lineHeight: '1.6' }}>
-                <strong>Analogy:</strong> If {opA.name} took <strong style={{ color: '#fff' }}>1 second</strong>, then performing {opB.name} would take <strong style={{ color: 'var(--color-gold)' }}>{getAnalogyTime(multiplier)}</strong> in human time!
+                <strong>Analogy:</strong> If {opA.name} took <strong style={{ color: 'var(--text-primary)' }}>1 second</strong>, then performing {opB.name} would take <strong style={{ color: 'var(--color-gold)' }}>{getAnalogyTime(multiplier)}</strong> in human time!
               </p>
             </div>
           </Card3D>

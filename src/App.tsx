@@ -31,7 +31,9 @@ import {
   X,
   ChevronLeft,
   BookOpenCheck,
-  FolderGit2
+  FolderGit2,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox';
@@ -49,6 +51,30 @@ function App() {
   // Collapsible sidebar states
   const [sidebarCollapsed, setSidebarCollapsed] = useState<boolean>(false);
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
+
+  // Theme state
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    try {
+      const saved = localStorage.getItem('sys_design_theme');
+      return (saved === 'light') ? 'light' : 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+
+  // Apply theme class to body
+  useEffect(() => {
+    try {
+      if (theme === 'light') {
+        document.body.classList.add('light-mode');
+      } else {
+        document.body.classList.remove('light-mode');
+      }
+      localStorage.setItem('sys_design_theme', theme);
+    } catch (e) {
+      console.error('Failed to set theme:', e);
+    }
+  }, [theme]);
 
   // Sidebar accordion expansion states
   const [conceptsExpanded, setConceptsExpanded] = useState<boolean>(true);
@@ -187,26 +213,51 @@ function App() {
             )}
           </div>
 
-          {/* Desktop Collapse Toggle */}
-          <button
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-            className="desktop-toggle-btn"
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-muted)',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              padding: '6px',
-              borderRadius: '6px',
-              transition: 'var(--transition-smooth)'
-            }}
-            title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
-          >
-            {sidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            {!sidebarCollapsed && (
+              <button
+                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px',
+                  borderRadius: '6px',
+                  transition: 'var(--transition-smooth)'
+                }}
+                title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+                onMouseEnter={(e) => e.currentTarget.style.color = 'var(--text-primary)'}
+                onMouseLeave={(e) => e.currentTarget.style.color = 'var(--text-muted)'}
+              >
+                {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+              </button>
+            )}
+
+            {/* Desktop Collapse Toggle */}
+            <button
+              onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+              className="desktop-toggle-btn"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-muted)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '6px',
+                borderRadius: '6px',
+                transition: 'var(--transition-smooth)'
+              }}
+              title={sidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            >
+              {sidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
+            </button>
+          </div>
 
           {/* Mobile Close Button */}
           <button
@@ -474,6 +525,14 @@ function App() {
               <button onClick={() => handleSelectTab('prep-sandbox')} className={`collapsed-icon-link ${currentTab === 'prep-sandbox' ? 'active' : ''}`} title="Sandbox">
                 <FolderGit2 size={20} />
               </button>
+              <div style={{ width: '24px', height: '1px', background: 'var(--border-glass)', margin: '8px 0' }} />
+              <button 
+                onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} 
+                className="collapsed-icon-link" 
+                title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+              >
+                {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              </button>
             </div>
           )}
         </div>
@@ -542,7 +601,22 @@ function App() {
             <Zap size={16} style={{ color: 'var(--color-secondary)' }} />
             <span style={{ fontWeight: 800, fontSize: '16px' }} className="glow-text">Systemic</span>
           </div>
-          <div style={{ width: '20px' }}></div> {/* Spacer to align title */}
+          <button
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: 'var(--text-primary)',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '6px'
+            }}
+            title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+          >
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
         </header>
 
         <main className="main-content">
