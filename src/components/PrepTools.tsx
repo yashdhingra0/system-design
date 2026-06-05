@@ -496,9 +496,25 @@ export const PrepTools: React.FC = () => {
                     transition: 'var(--transition-smooth)'
                   }}
                 >
-                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
                     <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{lat.name}</span>
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{lat.description}</span>
+                    {/* Visual Latency Logarithmic Timeline Bar */}
+                    <div style={{ height: '6px', background: 'rgba(255,255,255,0.03)', borderRadius: '3px', marginTop: '6px', overflow: 'hidden', width: '90%' }}>
+                      <div 
+                        style={{ 
+                          height: '100%', 
+                          background: idx === opAIndex 
+                            ? 'linear-gradient(90deg, var(--color-primary) 0%, var(--color-secondary) 100%)' 
+                            : idx === opBIndex 
+                            ? 'linear-gradient(90deg, var(--color-gold) 0%, #ef4444 100%)' 
+                            : 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, var(--color-secondary) 100%)',
+                          width: `${Math.max(3, Math.round(((Math.log10(lat.ns) - Math.log10(0.5)) / (Math.log10(150000000) - Math.log10(0.5))) * 100))}%`,
+                          borderRadius: '3px',
+                          transition: 'width 0.5s ease-out'
+                        }} 
+                      />
+                    </div>
                   </div>
                   <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--color-secondary)' }}>{formatNs(lat.ns)}</span>
                   <span style={{ color: 'var(--text-secondary)' }}>{getAnalogyTime(lat.ns)}</span>

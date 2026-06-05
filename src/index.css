@@ -268,23 +268,130 @@ code {
   margin-top: 32px;
 }
 
+/* Collapsed Icons Only styles */
+.collapsed-icon-link {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.collapsed-icon-link:hover, .collapsed-icon-link.active {
+  color: var(--text-primary);
+  background: rgba(99, 102, 241, 0.08);
+  border-color: rgba(99, 102, 241, 0.2);
+}
+
+.collapsed-icon-link.active {
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.15);
+}
+
+/* Sidebar structure transitions */
+.sidebar {
+  width: 280px;
+  transition: var(--transition-smooth);
+}
+
+.sidebar.collapsed {
+  width: 76px;
+  padding: 24px 14px;
+}
+
+/* Mobile Top Header Bar */
+.mobile-header {
+  display: none;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
+  /* Force all inline grids to collapse to single column */
+  div[style*="grid-template-columns"], 
+  div[style*="gridTemplateColumns"] {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  
   .dashboard-grid {
     grid-template-columns: 1fr;
   }
+  
   .app-container {
     flex-direction: column;
   }
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    border-right: none;
+  
+  /* Mobile Header Bar */
+  .mobile-header {
+    display: flex;
+    height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
     border-bottom: 1px solid var(--border-glass);
+    background: rgba(8, 12, 24, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 98;
+    flex-shrink: 0;
   }
-  .main-content {
+  
+  .mobile-menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+  }
+
+  /* Sidebar drawer behavior */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -280px;
+    width: 280px !important;
+    height: 100vh;
+    z-index: 1000;
+    box-shadow: 5px 0 25px rgba(0,0,0,0.8);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(0);
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(280px);
+  }
+  
+  .sidebar.collapsed {
+    width: 280px !important;
     padding: 24px;
+  }
+  
+  .desktop-toggle-btn {
+    display: none !important;
+  }
+  
+  .mobile-close-btn {
+    display: flex !important;
+  }
+  
+  .main-content {
+    padding: 24px 16px;
+  }
+  
+  /* Diagrams and boxes responsive downscale */
+  svg {
+    max-width: 100%;
+    height: auto;
   }
 }
 

@@ -14,27 +14,34 @@ Below is a live walkthrough demonstrating the interactive sidebar, problem-solvi
 
 ## ✨ Key Features
 
-### 1. Progressive Learning Path (collapsible Sidebar Tree)
-- **Design Fundamentals (Basics)**: High-detail foundation building blocks (Scaling, Load Balancers, Caching, Databases, Message Queues, CDN, Consistent Hashing).
-- **SOLID Principles**: OOP design foundations with side-by-side Violation vs. Refactored code panels in TypeScript.
-- **50 Interview Problems**: Tracker board containing the top 50 trending questions, detailing Write/Read paths, API schemas, and code in 5 languages.
-- **200+ Trending Q&A Deck**: Paginated, searchable question bank grouped by category (System Design Basics, Databases, Caching & Networking, Rate Limiters, SOLID).
-- **Self-Assessment Quiz**: An interactive MCQ testing engine with visual score meters and in-depth explanation logs.
+### 1. Collapsible Sidebar & Mobile Friendly Layout
+- **Desktop Sidebar**: Toggle between a fully expanded details view (280px) and a collapsed icon-only navigation bar (76px) to maximize your diagramming and code workspace.
+- **Mobile Responsive overlays**: The application scales down to mobile widths, providing a sliding drawer navigation menu powered by a top hamburger icon button. Grids automatically scale to single column layouts.
+- **Visual Progress Ring & Reset**: Live LocalStorage progress tracking showing total completed status indicators.
 
-### 2. "Why vs. Why NOT" Design Trade-offs
-In every design problem (e.g., URL Shortener, Rate Limiter, Chat Service), Systemic provides side-by-side comparison tables explaining why a particular design decision was chosen and why standard alternatives fail (the typical "hard-positive" questions asked in Google/Meta loops):
-- *e.g., why Token Bucket vs. why NOT Sliding Window Log?*
-- *e.g., why Base62 counter vs. why NOT MD5 hashing?*
+### 2. Last-Minute Revision Notes
+High-impact cheatsheets summarizing core content:
+- **2-Hour Checklist**: Key mental models and checklists before walking into the interview loop (Scope, checklist, talk aloud).
+- **Scale Rules of Thumb**: App server throughput thresholds, database limits, and QPS estimations quick charts.
+- **Key Trade-offs Cheat Sheet**: Relational vs. NoSQL, WebSockets vs. SSE, and Pull vs. Push.
 
-### 3. Back-of-the-Envelope Capacity Estimator
+### 3. Interactive Prep Sandbox
+- **FAANG Scorecard**: A self-assessment tool based on actual FAANG grading rubrics. Adjust sliders to evaluate your design and communication performance to check your hiring verdict.
+- **Interactive Practice Checklist**: A structured 45-minute whiteboard simulator. Start/pause the built-in countdown timer and check off required design phases (Requirements, Estimations, API, ERD, HLD, LLD, Tradeoffs).
+- **Systems Glossary**: A searchable distributed systems dictionary with definitions for Gossip Protocol, Split-Brain, and Quorums.
+- **Company Study Paths**: Specific problem paths tracked for Google, Meta, Uber, Netflix, and Amazon.
+
+### 4. Back-of-the-Envelope Capacity Estimator
 An interactive calculator where candidates can input system parameters (e.g. DAU, request frequency, write ratio, payload size, retention period) and instantly calculate:
 - **Read & Write QPS** (Average & Peak).
 - **Storage Sizing** (Daily, Yearly, and total retention).
 - **Network Bandwidth** (Upload/Download in Mbps/Gbps).
 - **Cache Memory Sizing** (using Pareto 80/20 rule).
 
-### 4. Latency Numbers Comparator
-An interactive grid of Jeff Dean's famous numbers every programmer should know, complete with a comparison sandbox. Scaled up by 1 billion, it provides intuitive human analogies (e.g., a disk seek of 10ms becomes 116 days if a memory lookup is 1 second).
+### 5. Latency Numbers Comparator & Logarithmic Timeline
+An interactive grid of Jeff Dean's famous numbers every programmer should know, complete with:
+- **Logarithmic Timeline Bar**: Visually see operation speeds (L1 cache vs. Disk seek) on a colored logarithmic bar chart.
+- **Comparison Sandbox**: Select two operations to compute relative scaling and human-time analogies (e.g. disk seek is 20M times slower than L1 cache, equivalent to 231 days if L1 lookup was 1 second).
 
 ---
 
@@ -44,29 +51,21 @@ An interactive grid of Jeff Dean's famous numbers every programmer should know, 
 A clean glassmorphic UI tracking progress across all 50 system design problems:
 ![Dashboard](docs/images/dashboard.png)
 
-### Why vs. Why NOT Alternatives Analysis
-Deep dive analysis highlighting why alternative systems fail under write scale and high concurrency:
-![Why vs Why NOT tradeoffs](docs/images/tradeoffs.png)
+### Collapsible Sidebar (Collapsed State)
+Maximize your workspace with a neat icon-only toolbar:
+![Collapsed Sidebar](docs/images/sidebar_collapsed.png)
 
-### Interactive Back-of-the-Envelope Calculator
-Dynamically compute scale metrics for system design interviews:
-![Calculator](docs/images/calculator.png)
+### Last-Minute Revision Notes
+Quickly review and check off core conceptual summaries:
+![Revision Notes](docs/images/revision_notes.png)
 
-### Latency Comparator Sandbox
-Interactive latency comparison with relative scaling and human-time analogies:
-![Latency Comparator](docs/images/latency.png)
+### Whiteboard Timer & Practice Checklist
+Time-slice your mock practice sessions:
+![ Whiteboard Timer](docs/images/timer.png)
 
-### Collapsible 200+ Q&A Bank
-Search, filter, and expand categories directly from the nested sidebar tree:
-![Q&A Deck](docs/images/qa.png)
-
-### SOLID Code Comparisons
-Before/after refactoring toggles illustrating design violations:
-![SOLID Code](docs/images/solid.png)
-
-### Self-Assessment Quiz
-Validate distributed systems knowledge:
-![Quiz](docs/images/quiz.png)
+### FAANG Grading Scorecard
+Self-evaluate your design and communication loop:
+![FAANG Scorecard](docs/images/scorecard.png)
 
 ---
 
