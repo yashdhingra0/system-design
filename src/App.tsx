@@ -439,6 +439,26 @@ function App() {
                 )}
               </div>
 
+              {/* Design Patterns */}
+              <button
+                onClick={() => handleSelectTab('design-patterns')}
+                className={`nav-link ${currentTab === 'design-patterns' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <GitBranch size={16} />
+                <span>Design Patterns</span>
+              </button>
+
+              {/* Tech Comparisons */}
+              <button
+                onClick={() => handleSelectTab('tech-comparisons')}
+                className={`nav-link ${currentTab === 'tech-comparisons' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <ArrowLeftRight size={16} />
+                <span>Tech Comparisons</span>
+              </button>
+
               {/* ===== 💻 PRACTICE ===== */}
               <div className="sidebar-section-label">
                 <LayoutDashboard size={12} />
@@ -640,6 +660,26 @@ function App() {
                 )}
               </div>
 
+              {/* System Diagrams */}
+              <button
+                onClick={() => handleSelectTab('system-diagrams')}
+                className={`nav-link ${currentTab === 'system-diagrams' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <Network size={16} />
+                <span>System Diagrams</span>
+              </button>
+
+              {/* System Evolution */}
+              <button
+                onClick={() => handleSelectTab('system-evolution')}
+                className={`nav-link ${currentTab === 'system-evolution' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <TrendingUp size={16} />
+                <span>System Evolution ✦</span>
+              </button>
+
               {/* Self-Assessment Quiz */}
               <button
                 onClick={() => handleSelectTab('quiz')}
@@ -686,51 +726,6 @@ function App() {
                 <span>Prep Sandbox</span>
               </button>
 
-              {/* ===== 🔭 REFERENCE ===== */}
-              <div className="sidebar-section-label">
-                <Network size={12} />
-                <span>Reference</span>
-              </div>
-
-              {/* Design Patterns */}
-              <button
-                onClick={() => handleSelectTab('design-patterns')}
-                className={`nav-link ${currentTab === 'design-patterns' ? 'active' : ''}`}
-                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
-              >
-                <GitBranch size={16} />
-                <span>Design Patterns</span>
-              </button>
-
-              {/* Tech Comparisons */}
-              <button
-                onClick={() => handleSelectTab('tech-comparisons')}
-                className={`nav-link ${currentTab === 'tech-comparisons' ? 'active' : ''}`}
-                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
-              >
-                <ArrowLeftRight size={16} />
-                <span>Tech Comparisons</span>
-              </button>
-
-              {/* System Diagrams */}
-              <button
-                onClick={() => handleSelectTab('system-diagrams')}
-                className={`nav-link ${currentTab === 'system-diagrams' ? 'active' : ''}`}
-                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
-              >
-                <Network size={16} />
-                <span>System Diagrams</span>
-              </button>
-
-              {/* System Evolution */}
-              <button
-                onClick={() => handleSelectTab('system-evolution')}
-                className={`nav-link ${currentTab === 'system-evolution' ? 'active' : ''}`}
-                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
-              >
-                <TrendingUp size={16} />
-                <span>System Evolution ✦</span>
-              </button>
             </>
           ) : (
             /* Collapsed Icons Only Menu */

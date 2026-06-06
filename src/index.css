@@ -1281,14 +1281,32 @@ body.light-mode .glow-text {
 
 @media (max-width: 768px) {
   .mobile-header { display: flex; }
+
   .sidebar {
     position: fixed;
-    left: -100%;
-    transition: left 0.3s ease, width 0.25s ease;
-    z-index: 1000;
+    top: 0;
+    left: 0;
+    height: 100vh;
     width: 280px !important;
+    /* Use transform instead of left — GPU-accelerated, no blur/repaint glitch */
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    z-index: 1000;
+    /* Solid background — no backdrop-filter on mobile to avoid Safari blur bug */
+    background: #0c0c0e !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
-  .sidebar.mobile-open { left: 0; }
+
+  body.light-mode .sidebar {
+    background: #f4f4f5 !important;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
   .desktop-toggle-btn { display: none !important; }
   .mobile-close-btn { display: flex !important; }
 }
@@ -1314,6 +1332,19 @@ body.light-mode .glow-text {
 
 @media (max-width: 640px) {
   .problem-row-meta { display: none; }
+}
+
+/* ─── SOLID Learn Grid ────────────────────────────────────────────────────── */
+.solid-learn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 16px;
+}
+
+@media (max-width: 700px) {
+  .solid-learn-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ─── Responsive Two-Column Layouts (sidebar + detail) ───────────────────── */

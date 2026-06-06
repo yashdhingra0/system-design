@@ -2,8 +2,15 @@ export interface SolidPrinciple {
   id: string;
   shortName: string;
   fullName: string;
+  letter: string;
+  color: string;
+  mnemonic: string;           // Short catchy phrase to remember it
+  analogy: string;            // Real-world non-software analogy
+  analogyEmoji: string;
   definition: string;
   explanation: string[];
+  interviewAnswer: string;    // One-sentence answer for "what is X?"
+  commonMistakes: string[];
   violationCode: string;
   solutionCode: string;
   umlExplanation: string;
@@ -14,6 +21,16 @@ export const solidPrinciples: SolidPrinciple[] = [
     id: "srp",
     shortName: "SRP",
     fullName: "Single Responsibility Principle",
+    letter: "S",
+    color: "#2dd4bf",
+    mnemonic: "One class. One job. One reason to change.",
+    analogy: "A surgeon operates — they don't also schedule appointments, handle billing, and clean the OR. Each person on the team has exactly one role.",
+    analogyEmoji: "🏥",
+    interviewAnswer: "A class should have only one reason to change — it should be responsible for a single part of the functionality, so changes in one concern don't ripple into unrelated code.",
+    commonMistakes: [
+      "Confusing SRP with \"a class can only have one method\" — it's about one *reason to change*, not one method.",
+      "Creating God classes (UserManager that handles DB, email, and PDF) that violate SRP at every layer."
+    ],
     definition: "A class should have one, and only one, reason to change.",
     explanation: [
       "Every module, class, or function should be responsible for a single part of the functionality.",
@@ -89,6 +106,16 @@ class SignUpController {
     id: "ocp",
     shortName: "OCP",
     fullName: "Open-Closed Principle",
+    letter: "O",
+    color: "#8b7cf6",
+    mnemonic: "Add new code. Don't edit old code.",
+    analogy: "A power strip has fixed slots (closed to modification) but you can plug in any new device (open to extension). You don't rewire the strip every time you buy a new appliance.",
+    analogyEmoji: "🔌",
+    interviewAnswer: "Software entities should be open for extension but closed for modification — you add new behavior by writing new code (subclasses, plugins), not by changing existing tested code.",
+    commonMistakes: [
+      "Adding a new feature by adding another if/else branch in an existing method — classic OCP violation.",
+      "Over-engineering: abstracting everything 'just in case'. OCP applies when you know a dimension of variation, not upfront for everything."
+    ],
     definition: "Software entities (classes, modules, functions) should be open for extension, but closed for modification.",
     explanation: [
       "You should be able to extend a class's behavior without modifying its existing source code.",
@@ -144,6 +171,16 @@ class OCPPaymentProcessor {
     id: "lsp",
     shortName: "LSP",
     fullName: "Liskov Substitution Principle",
+    letter: "L",
+    color: "#38bdf8",
+    mnemonic: "Children must keep their parent's promises.",
+    analogy: "If a recipe calls for 'flour', substituting almond flour should work — your cake still bakes. But substituting sand breaks the recipe entirely. Substitutes must honour the original contract.",
+    analogyEmoji: "🎂",
+    interviewAnswer: "If S is a subtype of T, anywhere you use T you should be able to swap in S without breaking anything — the subclass must honour every contract its parent established.",
+    commonMistakes: [
+      "Overriding a parent method to throw NotImplementedException — the child can't be substituted, breaking LSP.",
+      "Square extends Rectangle: setting width also changes height, breaking the width/height independence contract Rectangle promises."
+    ],
     definition: "Subtypes must be substitutable for their base types without altering the correctness of the program.",
     explanation: [
       "Derived classes must inherit the base class behavior in a way that doesn't break the base class expectations.",
@@ -205,6 +242,16 @@ function migrateFlyingBirds(birds: FlyingBird[]) {
     id: "isp",
     shortName: "ISP",
     fullName: "Interface Segregation Principle",
+    letter: "I",
+    color: "#fbbf24",
+    mnemonic: "Small focused interfaces over one fat interface.",
+    analogy: "A restaurant menu for a vegan shouldn't be a 50-page book including steak cuts and sushi. Give people a focused menu for what they actually need — don't force them to scroll past irrelevant options.",
+    analogyEmoji: "🥗",
+    interviewAnswer: "Clients shouldn't be forced to depend on methods they don't use — split fat interfaces into smaller, role-specific ones so each class only implements what it actually needs.",
+    commonMistakes: [
+      "One giant IRepository interface with Save, Delete, Get, GetAll, Search, Paginate — most implementers only need 2 of those methods.",
+      "Confusing ISP with SRP: SRP is about classes having one reason to change; ISP is about interfaces being lean and client-specific."
+    ],
     definition: "Clients should not be forced to depend on methods they do not use.",
     explanation: [
       "It is better to have many small, specific interfaces rather than a single bloated, general-purpose interface.",
@@ -269,6 +316,16 @@ class SmartOfficePrinter implements Printer, Scanner, FaxMachine {
     id: "dip",
     shortName: "DIP",
     fullName: "Dependency Inversion Principle",
+    letter: "D",
+    color: "#f87171",
+    mnemonic: "Depend on menus (interfaces), not specific restaurants (classes).",
+    analogy: "Your TV remote works with any TV brand because both depend on the IR signal standard — not on each other. Swap the TV, the remote still works. That's dependency inversion.",
+    analogyEmoji: "📺",
+    interviewAnswer: "High-level modules and low-level modules should both depend on abstractions (interfaces), not on each other — this lets you swap implementations (MySQL → MongoDB) without touching business logic.",
+    commonMistakes: [
+      "Using 'new ConcreteClass()' inside a high-level class instead of injecting via constructor — hardcodes the dependency and prevents testing.",
+      "Confusing DIP with Dependency Injection: DI is a *technique* to achieve DIP, not the principle itself."
+    ],
     definition: "High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details. Details should depend on abstractions.",
     explanation: [
       "Depend on interfaces or abstract classes rather than concrete implementations.",
