@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import type { Problem } from '../data/problems';
 import { InteractiveSVG } from './ui/InteractiveSVG';
-import { ArrowLeft, CheckCircle, Play, Circle, Code, Server, Database, Shuffle, AlertTriangle, Copy, Check } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Play, Circle, Code, Server, Database, Shuffle, AlertTriangle, Copy, Check, Info } from 'lucide-react';
 
 interface ProblemDetailProps {
   problem: Problem;
@@ -104,6 +105,13 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px', flexWrap: 'wrap' }}>
           <span className={`tag tag-${problem.difficulty.toLowerCase()}`}>{problem.difficulty}</span>
           <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{problem.category}</span>
+          {problem.isDetailed ? (
+            <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 10px', borderRadius: '6px', background: 'rgba(16,185,129,0.1)', color: 'var(--color-teal)', border: '1px solid rgba(16,185,129,0.2)' }}>✦ Deep Dive</span>
+          ) : (
+            <span style={{ fontSize: '11px', fontWeight: 700, padding: '3px 10px', borderRadius: '6px', background: 'rgba(234,179,8,0.1)', color: 'var(--color-gold)', border: '1px solid rgba(234,179,8,0.2)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Info size={12} /> Summary Only
+            </span>
+          )}
         </div>
         <h1 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '16px' }}>{problem.title}</h1>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '24px' }}>
@@ -112,6 +120,27 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
           ))}
         </div>
       </div>
+
+      {!problem.isDetailed && (
+        <div style={{
+          background: 'rgba(234, 179, 8, 0.05)',
+          border: '1px solid rgba(234, 179, 8, 0.2)',
+          padding: '16px 20px',
+          borderRadius: '12px',
+          color: 'var(--text-secondary)',
+          fontSize: '14px',
+          marginBottom: '28px',
+          lineHeight: '1.6',
+          display: 'flex',
+          gap: '12px',
+          alignItems: 'start'
+        }}>
+          <Info size={20} style={{ color: 'var(--color-gold)', flexShrink: 0, marginTop: '2px' }} />
+          <div>
+            <strong style={{ color: 'var(--text-primary)' }}>Summary Outline:</strong> This design pattern currently features a quick summary outline. A comprehensive multi-service deep dive, database schemas, and live architectural tradeoffs are being drafted by our content team. You can view the 8 complete deep dives marked with the <span style={{ color: 'var(--color-primary)', fontWeight: 600 }}>✦ Deep Dive</span> badge.
+          </div>
+        </div>
+      )}
 
       {/* Grid Layout (Left: Design details, Right: Diagrams & LLD/Code) */}
       <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '40px', alignItems: 'start' }}>
@@ -123,7 +152,9 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
               <AlertTriangle size={18} style={{ color: 'var(--color-primary)' }} />
               <span>Problem Statement & Scope</span>
             </h3>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '15px', whiteSpace: 'pre-line' }}>{problemStatement}</p>
+            <div className="markdown-rendered" style={{ color: 'var(--text-secondary)', fontSize: '15px' }}>
+              <ReactMarkdown>{problemStatement}</ReactMarkdown>
+            </div>
           </section>
 
           {/* Use Cases */}
@@ -145,8 +176,8 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
               <Server size={18} style={{ color: 'var(--color-secondary)' }} />
               <span>High-Level Architecture</span>
             </h3>
-            <div style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.7' }}>
-              <p style={{ whiteSpace: 'pre-line' }}>{highLevelDesign}</p>
+            <div className="markdown-rendered" style={{ color: 'var(--text-secondary)', fontSize: '15px', lineHeight: '1.7' }}>
+              <ReactMarkdown>{highLevelDesign}</ReactMarkdown>
             </div>
           </section>
 

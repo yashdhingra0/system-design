@@ -6,11 +6,15 @@ import { Award, ShieldAlert, ShieldCheck, Code } from 'lucide-react';
 interface SolidPrinciplesProps {
   activeId?: string;
   onSelectPrinciple?: (id: string) => void;
+  isCompleted?: boolean;
+  onToggleComplete?: (id: string) => void;
 }
 
 export const SolidPrinciples: React.FC<SolidPrinciplesProps> = ({
   activeId: propActiveId,
-  onSelectPrinciple
+  onSelectPrinciple,
+  isCompleted = false,
+  onToggleComplete
 }) => {
   const [internalActiveId, setInternalActiveId] = useState(solidPrinciples[0].id);
   const [codeMode, setCodeMode] = useState<'violation' | 'solution'>('violation');
@@ -67,9 +71,33 @@ export const SolidPrinciples: React.FC<SolidPrinciplesProps> = ({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
           {/* Definition Panel */}
           <Card3D style={{ padding: '32px' }} glowColor="rgba(16, 185, 129, 0.15)">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--color-teal)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700, marginBottom: '12px' }}>
-              <Award size={16} />
-              <span>{activePrinciple.fullName}</span>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'var(--color-teal)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>
+                <Award size={16} />
+                <span>{activePrinciple.fullName}</span>
+              </div>
+              {onToggleComplete && (
+                <button
+                  onClick={() => onToggleComplete(activePrinciple.id)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: isCompleted ? 'rgba(16, 185, 129, 0.1)' : 'rgba(255, 255, 255, 0.02)',
+                    border: '1px solid',
+                    borderColor: isCompleted ? 'var(--color-teal)' : 'var(--border-glass)',
+                    color: isCompleted ? 'var(--color-teal)' : 'var(--text-secondary)',
+                    padding: '6px 12px',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    transition: 'var(--transition-smooth)'
+                  }}
+                >
+                  <span>{isCompleted ? '✓ Completed' : 'Mark as Read'}</span>
+                </button>
+              )}
             </div>
             <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '16px' }}>{activePrinciple.fullName}</h2>
             <blockquote style={{ fontSize: '15px', color: 'var(--text-primary)', fontStyle: 'italic', fontWeight: 500, borderLeft: '4px solid var(--color-teal)', paddingLeft: '16px', marginBottom: '24px' }}>

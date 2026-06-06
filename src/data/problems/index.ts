@@ -6,6 +6,9 @@ import { videoStreamingDetail } from './videoStreaming';
 import { messageQueueDetail } from './messageQueue';
 import { ticketBookingDetail } from './ticketBooking';
 import { webCrawlerDetail } from './webCrawler';
+import { parkingLotDetail } from './parkingLot';
+import { vendingMachineDetail } from './vendingMachine';
+import { elevatorSystemDetail } from './elevatorSystem';
 
 export interface ProblemDetail {
   problemStatement: string;
@@ -51,7 +54,10 @@ const detailedProblemsMap: Record<string, ProblemDetail> = {
   "video-streaming": videoStreamingDetail,
   "message-queue": messageQueueDetail,
   "ticket-booking": ticketBookingDetail,
-  "web-crawler": webCrawlerDetail
+  "web-crawler": webCrawlerDetail,
+  "parking-lot": parkingLotDetail,
+  "vending-machine": vendingMachineDetail,
+  "elevator-system": elevatorSystemDetail
 };
 
 const rawProblemsMetadata: Omit<Problem, 'isDetailed' | 'details'>[] = [

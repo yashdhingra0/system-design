@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card3D } from './ui/Card3D';
-import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight } from 'lucide-react';
+import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, BookOpen } from 'lucide-react';
 
 interface QuizQuestion {
   id: number;
@@ -8,6 +8,11 @@ interface QuizQuestion {
   options: string[];
   correctIndex: number;
   explanation: string;
+  link?: {
+    tab: 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox';
+    id: string;
+    label: string;
+  };
 }
 
 const quizQuestions: QuizQuestion[] = [
@@ -21,7 +26,12 @@ const quizQuestions: QuizQuestion[] = [
       "Security vs. Performance"
     ],
     correctIndex: 1,
-    explanation: "Under the CAP Theorem, network partitions (P) are inevitable in real networks. Thus, when a partition occurs, a system must choose between guaranteeing all nodes return the same data (Consistency - CP) or ensuring all nodes respond to queries immediately (Availability - AP)."
+    explanation: "Under the CAP Theorem, network partitions (P) are inevitable in real networks. Thus, when a partition occurs, a system must choose between guaranteeing all nodes return the same data (Consistency - CP) or ensuring all nodes respond to queries immediately (Availability - AP).",
+    link: {
+      tab: 'concepts',
+      id: 'databases',
+      label: 'Learn about CAP Theorem & Databases'
+    }
   },
   {
     id: 2,
@@ -33,7 +43,12 @@ const quizQuestions: QuizQuestion[] = [
       "Refresh-Ahead"
     ],
     correctIndex: 2,
-    explanation: "Write-Through caching writes data to the cache and the database in a synchronous block. This guarantees the cache is never stale, but incurs higher write latency since it performs two database updates consecutively."
+    explanation: "Write-Through caching writes data to the cache and the database in a synchronous block. This guarantees the cache is never stale, but incurs higher write latency since it performs two database updates consecutively.",
+    link: {
+      tab: 'concepts',
+      id: 'caching',
+      label: 'Learn about Caching Strategies'
+    }
   },
   {
     id: 3,
@@ -45,7 +60,12 @@ const quizQuestions: QuizQuestion[] = [
       "By converting all data keys to UUIDs."
     ],
     correctIndex: 1,
-    explanation: "Consistent Hashing maps servers and keys clockwise onto a 360-degree circle (Ring). When a node is added or removed, only keys residing on the immediately adjacent segment of the ring are shifted clockwise, meaning only 1/N keys are moved instead of re-indexing the entire database."
+    explanation: "Consistent Hashing maps servers and keys clockwise onto a 360-degree circle (Ring). When a node is added or removed, only keys residing on the immediately adjacent segment of the ring are shifted clockwise, meaning only 1/N keys are moved instead of re-indexing the entire database.",
+    link: {
+      tab: 'concepts',
+      id: 'consistent-hashing',
+      label: 'Learn about Consistent Hashing'
+    }
   },
   {
     id: 4,
@@ -57,7 +77,12 @@ const quizQuestions: QuizQuestion[] = [
       "Dependency Inversion Principle (DIP)"
     ],
     correctIndex: 1,
-    explanation: "The Liskov Substitution Principle (LSP) states that subclasses must be substitutable for their parent classes. Throwing exceptions or breaking expected behaviors of parent class contracts violates LSP because it breaks client code expectations."
+    explanation: "The Liskov Substitution Principle (LSP) states that subclasses must be substitutable for their parent classes. Throwing exceptions or breaking expected behaviors of parent class contracts violates LSP because it breaks client code expectations.",
+    link: {
+      tab: 'solid',
+      id: 'lsp',
+      label: 'Learn about Liskov Substitution Principle (LSP)'
+    }
   },
   {
     id: 5,
@@ -69,7 +94,12 @@ const quizQuestions: QuizQuestion[] = [
       "Cassandra locks rows to ensure transactional double-booking prevention."
     ],
     correctIndex: 2,
-    explanation: "Cassandra uses Log-Structured Merge (LSM) Trees rather than in-place B-Trees. LSM Trees buffer writes in memory and append them sequentially to disk in sorted SSTables. This O(1) append bypasses random disk seek bottlenecks, making Cassandra exceptionally performant for write-heavy chat logs."
+    explanation: "Cassandra uses Log-Structured Merge (LSM) Trees rather than in-place B-Trees. LSM Trees buffer writes in memory and append them sequentially to disk in sorted SSTables. This O(1) append bypasses random disk seek bottlenecks, making Cassandra exceptionally performant for write-heavy chat logs.",
+    link: {
+      tab: 'concepts',
+      id: 'databases',
+      label: 'Learn about Database Storage & Engines'
+    }
   },
   {
     id: 6,
@@ -81,7 +111,12 @@ const quizQuestions: QuizQuestion[] = [
       "Sliding Window Log"
     ],
     correctIndex: 3,
-    explanation: "Sliding Window Log logs the timestamps of every client request (typically in a Redis sorted set). Old log timestamps are evicted periodically. While extremely accurate, it consumes massive memory because it must record every request timestamp."
+    explanation: "Sliding Window Log logs the timestamps of every client request (typically in a Redis sorted set). Old log timestamps are evicted periodically. While extremely accurate, it consumes massive memory because it must record every request timestamp.",
+    link: {
+      tab: 'dashboard',
+      id: 'rate-limiter',
+      label: 'Explore the Distributed Rate Limiter Problem'
+    }
   },
   {
     id: 7,
@@ -93,7 +128,12 @@ const quizQuestions: QuizQuestion[] = [
       "Database connection drivers directly."
     ],
     correctIndex: 2,
-    explanation: "The Dependency Inversion Principle (DIP) states that high-level modules should depend on abstractions (interfaces) rather than concrete implementations. This isolates business logic from underlying details like databases or payment gateways."
+    explanation: "The Dependency Inversion Principle (DIP) states that high-level modules should depend on abstractions (interfaces) rather than concrete implementations. This isolates business logic from underlying details like databases or payment gateways.",
+    link: {
+      tab: 'solid',
+      id: 'dip',
+      label: 'Learn about Dependency Inversion Principle (DIP)'
+    }
   },
   {
     id: 8,
@@ -105,11 +145,20 @@ const quizQuestions: QuizQuestion[] = [
       "Edge (referring to edge CDN computations)"
     ],
     correctIndex: 0,
-    explanation: "PACELC stands for: If there is a Partition (P), trade off Availability (A) vs Consistency (C); Else (E), trade off Latency (L) vs Consistency (C). The 'E' dictates that even in healthy network conditions, latency must be traded for strong consistency."
+    explanation: "PACELC stands for: If there is a Partition (P), trade off Availability (A) vs Consistency (C); Else (E), trade off Latency (L) vs Consistency (C). The 'E' dictates that even in healthy network conditions, latency must be traded for strong consistency.",
+    link: {
+      tab: 'concepts',
+      id: 'databases',
+      label: 'Learn about PACELC Theorem'
+    }
   }
 ];
 
-export const Quiz: React.FC = () => {
+interface QuizProps {
+  onNavigateToContent?: (tab: 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox', id: string) => void;
+}
+
+export const Quiz: React.FC<QuizProps> = ({ onNavigateToContent }) => {
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOpt, setSelectedOpt] = useState<number | null>(null);
   const [isAnswered, setIsAnswered] = useState(false);
@@ -355,9 +404,31 @@ export const Quiz: React.FC = () => {
               </>
             )}
           </div>
-          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6', margin: 0 }}>
+          <p style={{ fontSize: '13px', color: 'var(--text-secondary)', lineHeight: '1.6', margin: currentQuestion.link ? '0 0 16px 0' : 0 }}>
             {currentQuestion.explanation}
           </p>
+          {currentQuestion.link && onNavigateToContent && (
+            <button
+              onClick={() => onNavigateToContent(currentQuestion.link!.tab, currentQuestion.link!.id)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(99, 102, 241, 0.1)',
+                border: '1px solid rgba(99, 102, 241, 0.2)',
+                borderRadius: '6px',
+                padding: '8px 14px',
+                color: 'var(--color-primary)',
+                fontSize: '12px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'var(--transition-smooth)'
+              }}
+            >
+              <BookOpen size={14} />
+              <span>{currentQuestion.link.label}</span>
+            </button>
+          )}
         </div>
       )}
     </div>

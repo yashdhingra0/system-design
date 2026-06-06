@@ -102,6 +102,45 @@ function App() {
     localStorage.setItem('sys_design_progress', JSON.stringify(completedMap));
   }, [completedMap]);
 
+  const [completedConcepts, setCompletedConcepts] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('sys_design_completed_concepts');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [completedPrinciples, setCompletedPrinciples] = useState<string[]>(() => {
+    try {
+      const saved = localStorage.getItem('sys_design_completed_principles');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [completedQuestions, setCompletedQuestions] = useState<number[]>(() => {
+    try {
+      const saved = localStorage.getItem('sys_design_completed_questions');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem('sys_design_completed_concepts', JSON.stringify(completedConcepts));
+  }, [completedConcepts]);
+
+  useEffect(() => {
+    localStorage.setItem('sys_design_completed_principles', JSON.stringify(completedPrinciples));
+  }, [completedPrinciples]);
+
+  useEffect(() => {
+    localStorage.setItem('sys_design_completed_questions', JSON.stringify(completedQuestions));
+  }, [completedQuestions]);
+
   const toggleStatus = (id: string) => {
     setCompletedMap(prev => {
       const current = prev[id] || 'not-started';
@@ -120,7 +159,28 @@ function App() {
   const resetAllProgress = () => {
     if (window.confirm("Are you sure you want to reset all of your progress?")) {
       setCompletedMap({});
+      setCompletedConcepts([]);
+      setCompletedPrinciples([]);
+      setCompletedQuestions([]);
     }
+  };
+
+  const toggleConceptComplete = (id: string) => {
+    setCompletedConcepts(prev => 
+      prev.includes(id) ? prev.filter(cId => cId !== id) : [...prev, id]
+    );
+  };
+
+  const togglePrincipleComplete = (id: string) => {
+    setCompletedPrinciples(prev => 
+      prev.includes(id) ? prev.filter(pId => pId !== id) : [...prev, id]
+    );
+  };
+
+  const toggleQuestionComplete = (id: number) => {
+    setCompletedQuestions(prev => 
+      prev.includes(id) ? prev.filter(qId => qId !== id) : [...prev, id]
+    );
   };
 
   const handleSelectProblem = (id: string) => {
@@ -133,6 +193,20 @@ function App() {
     setCurrentTab(tab);
     setSelectedProblemId(null);
     setMobileOpen(false); // Close mobile drawer
+  };
+
+  const handleNavigateToContent = (tab: Tab, id: string) => {
+    setCurrentTab(tab);
+    setMobileOpen(false);
+    if (tab === 'concepts') {
+      setSelectedConceptId(id);
+      setSelectedProblemId(null);
+    } else if (tab === 'solid') {
+      setSelectedPrincipleId(id);
+      setSelectedProblemId(null);
+    } else if (tab === 'dashboard') {
+      setSelectedProblemId(id);
+    }
   };
 
   const handleToggleCategory = (catName: string) => {
@@ -166,7 +240,10 @@ function App() {
   const selectedProblem = problems.find(p => p.id === selectedProblemId);
   const totalCount = problems.length;
   const completedCount = Object.values(completedMap).filter(s => s === 'completed').length;
-  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+  const overallCompleted = completedConcepts.length + completedPrinciples.length + completedCount + completedQuestions.length;
+  const overallTotal = 7 + 5 + totalCount + 200;
+  const overallPercent = Math.round((overallCompleted / overallTotal) * 100);
 
   const getStatusIcon = (probId: string) => {
     const s = completedMap[probId] || 'not-started';
@@ -282,11 +359,13 @@ function App() {
         <div style={{ flexGrow: 1, overflowY: 'auto', paddingRight: '4px', marginBottom: '20px' }} className="sidebar-scroll-container">
           {!sidebarCollapsed ? (
             <>
-              <div style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700, padding: '0 8px', marginBottom: '12px' }}>
-                Preparation Roadmap
+              {/* ===== 📚 LEARN ===== */}
+              <div className="sidebar-section-label">
+                <BookOpen size={12} />
+                <span>Learn</span>
               </div>
               
-              {/* 1. Design Fundamentals Section */}
+              {/* Design Fundamentals Section */}
               <div className="sidebar-group">
                 <button
                   onClick={() => { setConceptsExpanded(!conceptsExpanded); handleSelectTab('concepts'); }}
@@ -294,7 +373,7 @@ function App() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <BookOpen size={16} />
-                    <span>1. Design Fundamentals</span>
+                    <span>Design Fundamentals</span>
                   </div>
                   {conceptsExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </button>
@@ -314,7 +393,7 @@ function App() {
                 )}
               </div>
 
-              {/* 2. SOLID Principles Section */}
+              {/* SOLID Principles Section */}
               <div className="sidebar-group">
                 <button
                   onClick={() => { setSolidExpanded(!solidExpanded); handleSelectTab('solid'); }}
@@ -322,7 +401,7 @@ function App() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <Award size={16} />
-                    <span>2. SOLID Principles</span>
+                    <span>SOLID Principles</span>
                   </div>
                   {solidExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </button>
@@ -342,7 +421,13 @@ function App() {
                 )}
               </div>
 
-              {/* 3. 50 Interview Problems Section */}
+              {/* ===== 💻 PRACTICE ===== */}
+              <div className="sidebar-section-label">
+                <LayoutDashboard size={12} />
+                <span>Practice</span>
+              </div>
+
+              {/* 50 Interview Problems Section */}
               <div className="sidebar-group">
                 <button
                   onClick={() => { setProblemsExpanded(!problemsExpanded); handleSelectTab('dashboard'); }}
@@ -350,7 +435,7 @@ function App() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <LayoutDashboard size={16} />
-                    <span>3. 50 Interview Problems</span>
+                    <span>50 Design Problems</span>
                   </div>
                   {problemsExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </button>
@@ -390,7 +475,7 @@ function App() {
                 )}
               </div>
 
-              {/* 4. 200+ Interview Q&As Section */}
+              {/* 200+ Interview Q&As Section */}
               <div className="sidebar-group">
                 <button
                   onClick={() => { setQuestionsExpanded(!questionsExpanded); handleSelectTab('questions'); }}
@@ -398,7 +483,7 @@ function App() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <ClipboardList size={16} />
-                    <span>4. 200+ Interview Q&As</span>
+                    <span>200+ Interview Q&As</span>
                   </div>
                   {questionsExpanded ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
                 </button>
@@ -458,44 +543,50 @@ function App() {
                 )}
               </div>
 
-              {/* 5. Self-Assessment Quiz */}
+              {/* Self-Assessment Quiz */}
               <button
                 onClick={() => handleSelectTab('quiz')}
                 className={`nav-link ${currentTab === 'quiz' ? 'active' : ''}`}
                 style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
               >
                 <HelpCircle size={16} />
-                <span>5. Self-Assessment Quiz</span>
+                <span>Self-Assessment Quiz</span>
               </button>
 
-              {/* 6. Product Prep Tools */}
+              {/* ===== 🛠 TOOLS ===== */}
+              <div className="sidebar-section-label">
+                <Wrench size={12} />
+                <span>Tools</span>
+              </div>
+
+              {/* Product Prep Tools */}
               <button
                 onClick={() => handleSelectTab('prep-tools')}
                 className={`nav-link ${currentTab === 'prep-tools' ? 'active' : ''}`}
                 style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
               >
                 <Wrench size={16} />
-                <span>6. Interactive Prep Tools</span>
+                <span>Prep Calculators</span>
               </button>
 
-              {/* 7. Last-Minute Revision Notes [NEW] */}
+              {/* Last-Minute Revision Notes */}
               <button
                 onClick={() => handleSelectTab('revision-notes')}
                 className={`nav-link ${currentTab === 'revision-notes' ? 'active' : ''}`}
                 style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
               >
                 <BookOpenCheck size={16} />
-                <span>7. Revision Notes</span>
+                <span>Revision Notes</span>
               </button>
 
-              {/* 8. Interactive Prep Sandbox [NEW] */}
+              {/* Interactive Prep Sandbox */}
               <button
                 onClick={() => handleSelectTab('prep-sandbox')}
                 className={`nav-link ${currentTab === 'prep-sandbox' ? 'active' : ''}`}
                 style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
               >
                 <FolderGit2 size={16} />
-                <span>8. Interactive Sandbox</span>
+                <span>Prep Sandbox</span>
               </button>
             </>
           ) : (
@@ -542,14 +633,14 @@ function App() {
           <div className="glass-panel" style={{ padding: '16px', background: 'rgba(255,255,255,0.01)', flexShrink: 0 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
               <span>Overall Progress</span>
-              <span style={{ fontWeight: 700 }}>{completedCount}/{totalCount} Done</span>
+              <span style={{ fontWeight: 700 }}>{overallPercent}% ({overallCompleted}/{overallTotal})</span>
             </div>
             <div style={{ height: '6px', background: 'rgba(255,255,255,0.05)', borderRadius: '3px', marginBottom: '12px', overflow: 'hidden' }}>
               <div 
                 style={{ 
                   height: '100%', 
                   background: 'linear-gradient(90deg, var(--color-secondary) 0%, var(--color-primary) 100%)', 
-                  width: `${progressPercent}%`, 
+                  width: `${overallPercent}%`, 
                   borderRadius: '3px',
                   transition: 'width 0.5s ease-out'
                 }} 
@@ -631,22 +722,31 @@ function App() {
             <ConceptDetail 
               activeConceptId={selectedConceptId}
               onSelectConcept={setSelectedConceptId}
+              isCompleted={completedConcepts.includes(selectedConceptId)}
+              onToggleComplete={toggleConceptComplete}
             />
           ) : currentTab === 'solid' ? (
             <SolidPrinciples 
               activeId={selectedPrincipleId}
               onSelectPrinciple={setSelectedPrincipleId}
+              isCompleted={completedPrinciples.includes(selectedPrincipleId)}
+              onToggleComplete={togglePrincipleComplete}
             />
           ) : currentTab === 'dashboard' ? (
             <Dashboard
               onSelectProblem={handleSelectProblem}
               completedMap={completedMap}
               toggleStatus={toggleStatus}
+              completedConcepts={completedConcepts}
+              completedPrinciples={completedPrinciples}
+              completedQuestions={completedQuestions}
             />
           ) : currentTab === 'questions' ? (
             <QuestionsDeck 
               selectedQuestionId={selectedQuestionId}
               onClearSelectedQuestion={() => setSelectedQuestionId(null)}
+              completedQuestions={completedQuestions}
+              onToggleCompleteQuestion={toggleQuestionComplete}
             />
           ) : currentTab === 'prep-tools' ? (
             <PrepTools />
@@ -658,7 +758,7 @@ function App() {
               onSelectProblem={handleSelectProblem}
             />
           ) : (
-            <Quiz />
+            <Quiz onNavigateToContent={handleNavigateToContent} />
           )}
         </main>
       </div>

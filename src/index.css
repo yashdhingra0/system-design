@@ -564,3 +564,174 @@ code {
   animation: highlight-flash-anim 2s ease-out;
 }
 
+/* ===== Markdown Rendered Content Styles ===== */
+.markdown-rendered h1,
+.markdown-rendered h2,
+.markdown-rendered h3 {
+  color: var(--text-primary);
+  margin-top: 24px;
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.markdown-rendered h3 { font-size: 18px; }
+.markdown-rendered h2 { font-size: 22px; }
+.markdown-rendered h1 { font-size: 26px; }
+
+.markdown-rendered p {
+  margin-bottom: 14px;
+  line-height: 1.8;
+}
+
+.markdown-rendered ul,
+.markdown-rendered ol {
+  padding-left: 24px;
+  margin-bottom: 16px;
+}
+
+.markdown-rendered li {
+  margin-bottom: 8px;
+  line-height: 1.7;
+}
+
+.markdown-rendered strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.markdown-rendered code {
+  font-family: var(--font-mono);
+  background: rgba(99, 102, 241, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: var(--color-primary);
+}
+
+.markdown-rendered pre {
+  background: rgba(5, 8, 16, 0.5);
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.markdown-rendered pre code {
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.markdown-rendered blockquote {
+  border-left: 4px solid var(--color-secondary);
+  padding-left: 16px;
+  margin: 16px 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ===== Frequency Badges ===== */
+.freq-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.freq-badge.high {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+.freq-badge.medium {
+  background: rgba(234, 179, 8, 0.1);
+  color: var(--color-gold);
+  border: 1px solid rgba(234, 179, 8, 0.15);
+}
+
+.freq-badge.low {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--color-teal);
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+/* ===== Sidebar Section Divider Labels ===== */
+.sidebar-section-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  padding: 16px 8px 6px 8px;
+  opacity: 0.7;
+}
+
+.sidebar-section-label:first-of-type {
+  padding-top: 0;
+}
+
+/* ===== Bookmark Button ===== */
+.bookmark-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-smooth);
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.bookmark-btn:hover {
+  color: var(--color-gold);
+  transform: scale(1.15);
+}
+
+.bookmark-btn.active {
+  color: var(--color-gold);
+}
+
+/* ===== Mobile Typography Refinement ===== */
+@media (max-width: 768px) {
+  .main-content {
+    font-size: 14px;
+  }
+
+  .main-content h1 {
+    font-size: 26px !important;
+  }
+
+  .main-content h2 {
+    font-size: 20px !important;
+  }
+
+  .markdown-rendered {
+    font-size: 14px;
+  }
+
+  .markdown-rendered h3 {
+    font-size: 16px;
+  }
+
+  .sidebar-subitem {
+    min-height: 44px;
+    padding: 10px 12px !important;
+  }
+
+  .sidebar-group-header {
+    min-height: 48px;
+  }
+}
+

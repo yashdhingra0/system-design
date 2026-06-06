@@ -7,12 +7,18 @@ interface DashboardProps {
   onSelectProblem: (id: string) => void;
   completedMap: Record<string, 'not-started' | 'in-progress' | 'completed'>;
   toggleStatus: (id: string) => void;
+  completedConcepts: string[];
+  completedPrinciples: string[];
+  completedQuestions: number[];
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
   onSelectProblem,
   completedMap,
-  toggleStatus
+  toggleStatus,
+  completedConcepts,
+  completedPrinciples,
+  completedQuestions
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -44,10 +50,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
   });
 
   // Calculate Progress Stats
-  const totalCount = problems.length;
   const completedCount = Object.values(completedMap).filter(s => s === 'completed').length;
-  const inProgressCount = Object.values(completedMap).filter(s => s === 'in-progress').length;
-  const progressPercent = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+  // Overall Unified Progress
+  const overallCompleted = completedConcepts.length + completedPrinciples.length + completedCount + completedQuestions.length;
+  const overallTotal = 7 + 5 + 50 + 200;
+  const overallPercent = Math.round((overallCompleted / overallTotal) * 100);
 
   // Difficulty counts
   const easyTotal = problems.filter(p => p.difficulty === 'Easy').length;
@@ -82,7 +90,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 strokeWidth="8"
                 fill="transparent"
                 strokeDasharray="251.2"
-                strokeDashoffset={251.2 - (251.2 * progressPercent) / 100}
+                strokeDashoffset={251.2 - (251.2 * overallPercent) / 100}
                 style={{
                   transition: 'stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
                   filter: 'drop-shadow(0 0 4px var(--color-primary))'
@@ -90,24 +98,52 @@ export const Dashboard: React.FC<DashboardProps> = ({
               />
             </svg>
             <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-              <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)' }}>{progressPercent}%</span>
-              <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Done</span>
+              <span style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)' }}>{overallPercent}%</span>
+              <span style={{ fontSize: '10px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Overall</span>
             </div>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: 700 }}> Coded prep tracking</h2>
-            <div style={{ display: 'flex', gap: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flexGrow: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '2px' }}>Unified Prep Progress</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 20px' }}>
+              {/* Concepts */}
               <div>
-                <span style={{ display: 'block', fontSize: '22px', fontWeight: 800, color: 'var(--text-primary)' }}>{completedCount}</span>
-                <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Completed</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                  <span>Fundamentals</span>
+                  <span style={{ fontWeight: 600 }}>{completedConcepts.length}/7</span>
+                </div>
+                <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: 'var(--color-primary)', width: `${(completedConcepts.length / 7) * 100}%` }} />
+                </div>
               </div>
+              {/* SOLID */}
               <div>
-                <span style={{ display: 'block', fontSize: '22px', fontWeight: 800, color: 'var(--color-secondary)' }}>{inProgressCount}</span>
-                <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>In Progress</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                  <span>SOLID Principles</span>
+                  <span style={{ fontWeight: 600 }}>{completedPrinciples.length}/5</span>
+                </div>
+                <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: 'var(--color-teal)', width: `${(completedPrinciples.length / 5) * 100}%` }} />
+                </div>
               </div>
+              {/* Problems */}
               <div>
-                <span style={{ display: 'block', fontSize: '22px', fontWeight: 800, color: 'var(--text-muted)' }}>{totalCount - completedCount - inProgressCount}</span>
-                <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Remaining</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                  <span>Design Problems</span>
+                  <span style={{ fontWeight: 600 }}>{completedCount}/50</span>
+                </div>
+                <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: 'var(--color-gold)', width: `${(completedCount / 50) * 100}%` }} />
+                </div>
+              </div>
+              {/* Questions */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '3px' }}>
+                  <span>Q&A Studied</span>
+                  <span style={{ fontWeight: 600 }}>{completedQuestions.length}/200</span>
+                </div>
+                <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', background: 'var(--color-secondary)', width: `${(completedQuestions.length / 200) * 100}%` }} />
+                </div>
               </div>
             </div>
           </div>
@@ -313,8 +349,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
                     <h4 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)' }}>{prob.title}</h4>
                     <span className={`tag tag-${prob.difficulty.toLowerCase()}`}>{prob.difficulty}</span>
                     <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{prob.category}</span>
-                    {prob.isDetailed && (
-                      <span style={{ fontSize: '10px', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(99, 102, 241, 0.2)', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>Deep Dive</span>
+                    {prob.isDetailed ? (
+                      <span style={{ fontSize: '10px', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(99, 102, 241, 0.2)', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>✦ Deep Dive</span>
+                    ) : (
+                      <span style={{ fontSize: '10px', background: 'rgba(255, 255, 255, 0.04)', color: 'var(--text-muted)', border: '1px solid var(--border-glass)', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>📝 Summary</span>
                     )}
                   </div>
                   <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '10px' }}>{prob.summary}</p>
