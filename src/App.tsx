@@ -82,6 +82,7 @@ function App() {
   const [problemsExpanded, setProblemsExpanded] = useState<boolean>(false);
   const [questionsExpanded, setQuestionsExpanded] = useState<boolean>(false);
   const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+  const [expandedProblemCategories, setExpandedProblemCategories] = useState<Record<string, boolean>>({});
 
   // Sidebar search filter states
   const [problemSearch, setProblemSearch] = useState<string>('');
@@ -222,6 +223,22 @@ function App() {
     p.category.toLowerCase().includes(problemSearch.toLowerCase())
   );
 
+  // Group filtered problems by category for sidebar list
+  const sidebarProblemsByCategory: Record<string, typeof problems> = {};
+  filteredProblems.forEach(p => {
+    if (!sidebarProblemsByCategory[p.category]) {
+      sidebarProblemsByCategory[p.category] = [];
+    }
+    sidebarProblemsByCategory[p.category].push(p);
+  });
+
+  const toggleProblemCategory = (catName: string) => {
+    setExpandedProblemCategories(prev => ({
+      ...prev,
+      [catName]: prev[catName] === false ? true : false
+    }));
+  };
+
   // Filter questions for sidebar list
   const filteredQuestions = interviewQuestions.filter(q => 
     q.question.toLowerCase().includes(questionSearch.toLowerCase()) ||
@@ -245,14 +262,7 @@ function App() {
   const overallTotal = 7 + 5 + totalCount + 200;
   const overallPercent = Math.round((overallCompleted / overallTotal) * 100);
 
-  const getStatusIcon = (probId: string) => {
-    const s = completedMap[probId] || 'not-started';
-    switch (s) {
-      case 'completed': return <CheckCircle size={13} style={{ color: 'var(--color-teal)' }} />;
-      case 'in-progress': return <Play size={13} style={{ color: 'var(--color-gold)', transform: 'rotate(90deg)' }} />;
-      default: return <Circle size={13} style={{ color: 'var(--text-muted)' }} />;
-    }
-  };
+
 
   return (
     <div className={`app-container ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
@@ -453,20 +463,99 @@ function App() {
                       />
                     </div>
 
-                    <div className="sidebar-scrollable-sublist">
-                      {filteredProblems.map(p => (
-                        <button
-                          key={p.id}
-                          onClick={() => handleSelectProblem(p.id)}
-                          className={`sidebar-subitem ${selectedProblemId === p.id ? 'active' : ''}`}
-                          style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                        >
-                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {p.title}
-                          </span>
-                          {getStatusIcon(p.id)}
-                        </button>
-                      ))}
+                    <div className="sidebar-scrollable-sublist" style={{ padding: '4px 0' }}>
+                      {Object.entries(sidebarProblemsByCategory).map(([catName, probs]) => {
+                        const isExpanded = expandedProblemCategories[catName] !== false;
+                        return (
+                          <div key={catName} style={{ marginBottom: '6px' }}>
+                            {/* Group Header */}
+                            <button
+                              onClick={() => toggleProblemCategory(catName)}
+                              className="sidebar-category-header"
+                              style={{ padding: '6px 8px 6px 12px' }}
+                            >
+                              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                {catName}
+                              </span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                <span style={{ fontSize: '10px', background: 'rgba(255,255,255,0.05)', padding: '1px 5px', borderRadius: '10px', fontWeight: 600 }}>
+                                  {probs.length}
+                                </span>
+                                {isExpanded ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
+                              </div>
+                            </button>
+
+                            {/* Group Items */}
+                            {isExpanded && (
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px', paddingLeft: '8px', borderLeft: '1px solid var(--border-glass)', marginLeft: '12px' }}>
+                                {probs.map((p) => {
+                                  const status = completedMap[p.id] || 'not-started';
+                                  const diffLower = p.difficulty.toLowerCase();
+                                  return (
+                                    <button
+                                      key={p.id}
+                                      onClick={() => handleSelectProblem(p.id)}
+                                      className={`sidebar-subitem ${selectedProblemId === p.id ? 'active' : ''}`}
+                                      style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
+                                        gap: '8px',
+                                        padding: '6px 10px',
+                                        minHeight: '36px'
+                                      }}
+                                    >
+                                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0, flexGrow: 1 }}>
+                                        {/* Status Checkbox */}
+                                        <div
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            toggleStatus(p.id);
+                                          }}
+                                          style={{
+                                            cursor: 'pointer',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            color: status === 'completed' ? 'var(--color-teal)' : status === 'in-progress' ? 'var(--color-gold)' : 'var(--text-muted)'
+                                          }}
+                                        >
+                                          {status === 'completed' ? (
+                                            <CheckCircle size={13} style={{ fill: 'rgba(16, 185, 129, 0.1)' }} />
+                                          ) : status === 'in-progress' ? (
+                                            <Play size={13} style={{ transform: 'rotate(90deg)', fill: 'rgba(245, 158, 11, 0.1)' }} />
+                                          ) : (
+                                            <Circle size={13} />
+                                          )}
+                                        </div>
+
+                                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} title={p.title}>
+                                          {p.title}
+                                        </span>
+                                      </div>
+
+                                      <span
+                                        style={{
+                                          fontSize: '8.5px',
+                                          fontWeight: 700,
+                                          padding: '1px 4px',
+                                          borderRadius: '3px',
+                                          textTransform: 'uppercase',
+                                          letterSpacing: '0.02em',
+                                          flexShrink: 0,
+                                          background: diffLower === 'easy' ? 'rgba(16, 185, 129, 0.1)' : diffLower === 'medium' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                          color: diffLower === 'easy' ? 'var(--color-teal)' : diffLower === 'medium' ? 'var(--color-gold)' : '#ef4444'
+                                        }}
+                                      >
+                                        {p.difficulty[0]}
+                                      </span>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
                       {filteredProblems.length === 0 && (
                         <div style={{ padding: '8px 12px', fontSize: '11px', color: 'var(--text-muted)' }}>No problems found</div>
                       )}
