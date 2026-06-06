@@ -1,7 +1,153 @@
 import React, { useState } from 'react';
 import { problems } from '../data/problems';
 import { Card3D } from './ui/Card3D';
-import { Search, CheckCircle, Circle, Play } from 'lucide-react';
+import { Search, CheckCircle, Circle, Play, Map, LayoutGrid } from 'lucide-react';
+
+// ─── Learning Roadmap ───────────────────────────────────────────────────────
+
+const ROADMAP_PHASES = [
+  {
+    phase: 1,
+    title: 'Foundations',
+    subtitle: 'Understand the building blocks before designing anything',
+    color: 'var(--color-teal)',
+    colorRaw: '#10b981',
+    steps: [
+      { label: 'Read all 15 Design Fundamentals concepts', tab: 'concepts', tip: 'Start with Scaling → Load Balancers → Caching → Databases' },
+      { label: 'Complete SOLID Principles', tab: 'solid', tip: 'LLD foundations — frequently tested at Google, Meta' },
+      { label: 'Memorize Latency Numbers (PrepTools)', tab: 'prep-tools', tip: 'Know L1 cache (0.5ns) vs disk (10ms) — expected in senior interviews' },
+      { label: 'Review Tech Comparisons: SQL vs NoSQL, Kafka vs RabbitMQ', tab: 'tech-comparisons', tip: 'These tradeoff questions appear in 80% of system design rounds' },
+    ],
+  },
+  {
+    phase: 2,
+    title: 'Core Patterns',
+    subtitle: 'Learn the patterns you\'ll use in every design',
+    color: 'var(--color-secondary)',
+    colorRaw: '#0ea5e9',
+    steps: [
+      { label: 'Study all 15 Design Patterns (Architectural first)', tab: 'design-patterns', tip: 'Circuit Breaker, CQRS, Saga — must-know for distributed system rounds' },
+      { label: 'Complete 10 Easy problems on the Dashboard', tab: 'dashboard', tip: 'URL Shortener, Pastebin, Rate Limiter — warm up your design muscle' },
+      { label: 'Explore System Diagrams for 5 companies', tab: 'system-diagrams', tip: 'Click every node to understand each component\'s role' },
+      { label: 'Study System Evolution for Twitter and Instagram', tab: 'system-diagrams', tip: 'Understand why architectures change — interviewers love this context' },
+    ],
+  },
+  {
+    phase: 3,
+    title: 'Interview Practice',
+    subtitle: 'Simulate real interview conditions',
+    color: 'var(--color-primary)',
+    colorRaw: '#6366f1',
+    steps: [
+      { label: 'Solve 15 Medium problems (timed, 45 min each)', tab: 'dashboard', tip: 'Use the timer in Prep Sandbox. Design out loud as you would in an interview.' },
+      { label: 'Answer 100 Q&As in study mode', tab: 'questions', tip: 'Use flashcard mode — cover the answer, try yourself first' },
+      { label: 'Take the Self-Assessment Quiz (target 80%+)', tab: 'quiz', tip: 'Below 80%? Review the linked concepts before continuing' },
+      { label: 'Score yourself with the Interview Scorecard', tab: 'prep-sandbox', tip: 'Honest self-assessment — score each dimension of your design answers' },
+    ],
+  },
+  {
+    phase: 4,
+    title: 'Mastery',
+    subtitle: 'FAANG-level depth and breadth',
+    color: 'var(--color-gold)',
+    colorRaw: '#f59e0b',
+    steps: [
+      { label: 'Complete all 50 problems (including Hard)', tab: 'dashboard', tip: 'Hard problems test capacity estimation, bottleneck analysis, and edge cases' },
+      { label: 'Review all Revision Notes + complete the checklist', tab: 'revision-notes', tip: 'Aim for 100% reviewed the night before your interview' },
+      { label: 'Run a full 45-min mock with Interview Sandbox', tab: 'prep-sandbox', tip: 'Pick a Hard problem, use the timer, self-score at the end — repeat 3x' },
+      { label: 'Study all 5 System Evolution timelines', tab: 'system-diagrams', tip: 'Can you explain why Twitter moved from fan-out-on-write to hybrid? This is FAANG-level depth.' },
+    ],
+  },
+];
+
+const LearningRoadmap: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavigate }) => (
+  <div style={{ animation: 'fadeIn 0.3s ease-out' }}>
+    <div style={{ marginBottom: '28px' }}>
+      <p style={{ color: 'var(--text-secondary)', fontSize: '14px', maxWidth: '580px', lineHeight: 1.7 }}>
+        A structured path from zero to interview-ready. Follow the phases in order — each builds on the last.
+      </p>
+    </div>
+
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+      {ROADMAP_PHASES.map((phase, pi) => (
+        <div key={phase.phase} style={{ display: 'flex', gap: '0', alignItems: 'stretch' }}>
+          {/* Left: phase number + connector */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '56px', flexShrink: 0 }}>
+            <div style={{
+              width: '40px', height: '40px', borderRadius: '50%',
+              border: `2px solid ${phase.colorRaw}`,
+              background: `${phase.colorRaw}15`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontSize: '14px', fontWeight: 800, color: phase.colorRaw,
+              flexShrink: 0, zIndex: 1,
+            }}>
+              {phase.phase}
+            </div>
+            {pi < ROADMAP_PHASES.length - 1 && (
+              <div style={{ width: '2px', flex: 1, background: 'var(--border-glass)', marginTop: '4px', marginBottom: '4px' }} />
+            )}
+          </div>
+
+          {/* Right: phase content */}
+          <div style={{ flex: 1, paddingLeft: '20px', paddingBottom: pi < ROADMAP_PHASES.length - 1 ? '28px' : '0' }}>
+            <div style={{ marginBottom: '14px', paddingTop: '8px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 2px 0', color: 'var(--text-primary)' }}>
+                <span style={{ color: phase.colorRaw }}>Phase {phase.phase}:</span> {phase.title}
+              </h3>
+              <p style={{ fontSize: '12px', color: 'var(--text-muted)', margin: 0 }}>{phase.subtitle}</p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {phase.steps.map((step, si) => (
+                <button
+                  key={si}
+                  onClick={() => onNavigate(step.tab)}
+                  style={{
+                    display: 'flex', alignItems: 'flex-start', gap: '12px',
+                    padding: '12px 16px', borderRadius: '10px',
+                    border: '1px solid var(--border-glass)',
+                    background: 'var(--surface-obsidian)',
+                    cursor: 'pointer', textAlign: 'left',
+                    transition: 'border-color 0.2s, background 0.2s',
+                    width: '100%',
+                  }}
+                  onMouseEnter={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = `${phase.colorRaw}44`;
+                    (e.currentTarget as HTMLElement).style.background = `${phase.colorRaw}06`;
+                  }}
+                  onMouseLeave={e => {
+                    (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-glass)';
+                    (e.currentTarget as HTMLElement).style.background = 'var(--surface-obsidian)';
+                  }}
+                >
+                  <span style={{
+                    width: '20px', height: '20px', borderRadius: '50%',
+                    border: `1.5px solid ${phase.colorRaw}55`,
+                    flexShrink: 0, marginTop: '1px',
+                    background: `${phase.colorRaw}10`,
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '9px', fontWeight: 800, color: phase.colorRaw,
+                  }}>
+                    {si + 1}
+                  </span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '3px' }}>
+                      {step.label}
+                    </div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', lineHeight: 1.5 }}>
+                      💡 {step.tip}
+                    </div>
+                  </div>
+                  <span style={{ fontSize: '11px', color: phase.colorRaw, fontWeight: 700, flexShrink: 0, paddingTop: '1px' }}>→</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
 
 interface DashboardProps {
   onSelectProblem: (id: string) => void;
@@ -10,6 +156,7 @@ interface DashboardProps {
   completedConcepts: string[];
   completedPrinciples: string[];
   completedQuestions: number[];
+  onNavigateToTab?: (tab: string) => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
@@ -18,8 +165,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
   toggleStatus,
   completedConcepts,
   completedPrinciples,
-  completedQuestions
+  completedQuestions,
+  onNavigateToTab,
 }) => {
+  const [dashView, setDashView] = useState<'problems' | 'roadmap'>('problems');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
@@ -67,12 +216,45 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '28px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h1 className="glow-text" style={{ fontSize: '36px', fontWeight: 800, marginBottom: '8px' }}>System Design Path</h1>
           <p style={{ color: 'var(--text-secondary)' }}>Master the top 50 trending system design questions asked in premium tech interviews.</p>
         </div>
+        {/* View toggle */}
+        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255,255,255,0.02)', padding: '4px', borderRadius: '10px', border: '1px solid var(--border-glass)' }}>
+          {([['problems', 'Problems', LayoutGrid], ['roadmap', 'Roadmap', Map]] as const).map(([v, label, Icon]) => (
+            <button
+              key={v}
+              onClick={() => setDashView(v)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '8px 16px', borderRadius: '7px', border: '1px solid',
+                borderColor: dashView === v ? 'rgba(99,102,241,0.3)' : 'transparent',
+                background: dashView === v ? 'rgba(99,102,241,0.08)' : 'transparent',
+                color: dashView === v ? 'var(--color-primary)' : 'var(--text-muted)',
+                fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
+              }}
+            >
+              <Icon size={14} /> {label}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {dashView === 'roadmap' && (
+        <LearningRoadmap onNavigate={(tab) => { onNavigateToTab?.(tab); }} />
+      )}
+      {dashView === 'roadmap' && <div style={{ height: '24px' }} />}
+      {dashView === 'roadmap' && (
+        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <button onClick={() => setDashView('problems')} style={{ background: 'transparent', border: '1px solid var(--border-glass)', color: 'var(--text-secondary)', padding: '10px 24px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}>
+            View 50 Problems →
+          </button>
+        </div>
+      )}
+      {dashView === 'problems' && <div>
+
 
       {/* Analytics Dashboard Grid */}
       <div className="dashboard-grid" style={{ marginBottom: '40px' }}>
@@ -404,6 +586,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
         ));
       })()}
+      </div>}
     </div>
   );
 };

@@ -12,20 +12,24 @@ import { Quiz } from './components/Quiz';
 import { PrepTools } from './components/PrepTools';
 import { RevisionNotesView } from './components/RevisionNotesView';
 import { PrepSandbox } from './components/PrepSandbox';
-import { 
-  LayoutDashboard, 
-  BookOpen, 
-  Award, 
-  RefreshCw, 
-  Zap, 
-  ClipboardList, 
-  HelpCircle, 
+import { DesignPatterns } from './components/DesignPatterns';
+import { TechComparisons } from './components/TechComparisons';
+import { SystemDiagrams } from './components/SystemDiagrams';
+import { SystemEvolution } from './components/SystemEvolution';
+import {
+  LayoutDashboard,
+  BookOpen,
+  Award,
+  RefreshCw,
+  Zap,
+  ClipboardList,
+  HelpCircle,
   Wrench,
-  ChevronDown, 
-  ChevronRight, 
-  Search, 
-  CheckCircle, 
-  Play, 
+  ChevronDown,
+  ChevronRight,
+  Search,
+  CheckCircle,
+  Play,
   Circle,
   Menu,
   X,
@@ -33,10 +37,14 @@ import {
   BookOpenCheck,
   FolderGit2,
   Sun,
-  Moon
+  Moon,
+  GitBranch,
+  ArrowLeftRight,
+  Network,
+  TrendingUp
 } from 'lucide-react';
 
-type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox';
+type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox' | 'design-patterns' | 'tech-comparisons' | 'system-diagrams' | 'system-evolution';
 type Status = 'not-started' | 'in-progress' | 'completed';
 
 function App() {
@@ -290,7 +298,7 @@ function App() {
         {/* Sidebar Header (Brand & Collapse button) */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', padding: '0 8px', flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ background: 'linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%)', width: '32px', height: '32px', borderRadius: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 0 15px rgba(99, 102, 241, 0.4)' }}>
+            <div style={{ background: 'linear-gradient(135deg, #6d5df6 0%, #a78bfa 100%)', width: '32px', height: '32px', borderRadius: '8px', display: 'flex', justifyContent: 'center', alignItems: 'center', boxShadow: '0 0 12px rgba(139, 124, 246, 0.25)' }}>
               <Zap size={18} style={{ color: '#fff' }} />
             </div>
             {!sidebarCollapsed && (
@@ -677,6 +685,52 @@ function App() {
                 <FolderGit2 size={16} />
                 <span>Prep Sandbox</span>
               </button>
+
+              {/* ===== 🔭 REFERENCE ===== */}
+              <div className="sidebar-section-label">
+                <Network size={12} />
+                <span>Reference</span>
+              </div>
+
+              {/* Design Patterns */}
+              <button
+                onClick={() => handleSelectTab('design-patterns')}
+                className={`nav-link ${currentTab === 'design-patterns' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <GitBranch size={16} />
+                <span>Design Patterns</span>
+              </button>
+
+              {/* Tech Comparisons */}
+              <button
+                onClick={() => handleSelectTab('tech-comparisons')}
+                className={`nav-link ${currentTab === 'tech-comparisons' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <ArrowLeftRight size={16} />
+                <span>Tech Comparisons</span>
+              </button>
+
+              {/* System Diagrams */}
+              <button
+                onClick={() => handleSelectTab('system-diagrams')}
+                className={`nav-link ${currentTab === 'system-diagrams' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <Network size={16} />
+                <span>System Diagrams</span>
+              </button>
+
+              {/* System Evolution */}
+              <button
+                onClick={() => handleSelectTab('system-evolution')}
+                className={`nav-link ${currentTab === 'system-evolution' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '4px 0 0 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <TrendingUp size={16} />
+                <span>System Evolution ✦</span>
+              </button>
             </>
           ) : (
             /* Collapsed Icons Only Menu */
@@ -706,6 +760,19 @@ function App() {
                 <FolderGit2 size={20} />
               </button>
               <div style={{ width: '24px', height: '1px', background: 'var(--border-glass)', margin: '8px 0' }} />
+              <button onClick={() => handleSelectTab('design-patterns')} className={`collapsed-icon-link ${currentTab === 'design-patterns' ? 'active' : ''}`} title="Design Patterns">
+                <GitBranch size={20} />
+              </button>
+              <button onClick={() => handleSelectTab('tech-comparisons')} className={`collapsed-icon-link ${currentTab === 'tech-comparisons' ? 'active' : ''}`} title="Tech Comparisons">
+                <ArrowLeftRight size={20} />
+              </button>
+              <button onClick={() => handleSelectTab('system-diagrams')} className={`collapsed-icon-link ${currentTab === 'system-diagrams' ? 'active' : ''}`} title="System Diagrams">
+                <Network size={20} />
+              </button>
+              <button onClick={() => handleSelectTab('system-evolution')} className={`collapsed-icon-link ${currentTab === 'system-evolution' ? 'active' : ''}`} title="System Evolution">
+                <TrendingUp size={20} />
+              </button>
+              <div style={{ width: '24px', height: '1px', background: 'var(--border-glass)', margin: '8px 0' }} />
               <button 
                 onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')} 
                 className="collapsed-icon-link" 
@@ -728,7 +795,7 @@ function App() {
               <div 
                 style={{ 
                   height: '100%', 
-                  background: 'linear-gradient(90deg, var(--color-secondary) 0%, var(--color-primary) 100%)', 
+                  background: 'linear-gradient(90deg, #6d5df6 0%, #a78bfa 100%)',
                   width: `${overallPercent}%`, 
                   borderRadius: '3px',
                   transition: 'width 0.5s ease-out'
@@ -829,6 +896,7 @@ function App() {
               completedConcepts={completedConcepts}
               completedPrinciples={completedPrinciples}
               completedQuestions={completedQuestions}
+              onNavigateToTab={(tab) => handleSelectTab(tab as Tab)}
             />
           ) : currentTab === 'questions' ? (
             <QuestionsDeck 
@@ -842,10 +910,18 @@ function App() {
           ) : currentTab === 'revision-notes' ? (
             <RevisionNotesView />
           ) : currentTab === 'prep-sandbox' ? (
-            <PrepSandbox 
+            <PrepSandbox
               completedMap={completedMap}
               onSelectProblem={handleSelectProblem}
             />
+          ) : currentTab === 'design-patterns' ? (
+            <DesignPatterns />
+          ) : currentTab === 'tech-comparisons' ? (
+            <TechComparisons />
+          ) : currentTab === 'system-diagrams' ? (
+            <SystemDiagrams />
+          ) : currentTab === 'system-evolution' ? (
+            <SystemEvolution />
           ) : (
             <Quiz onNavigateToContent={handleNavigateToContent} />
           )}

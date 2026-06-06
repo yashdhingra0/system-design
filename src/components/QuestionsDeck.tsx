@@ -1,6 +1,162 @@
 import React, { useState, useEffect } from 'react';
 import { interviewQuestions } from '../data/interviewQuestions';
-import { Search, ChevronDown, ChevronUp, Flame, Star } from 'lucide-react';
+import { Search, ChevronDown, ChevronUp, Flame, Star, Layers, LayoutList, RotateCcw, ChevronRight, ChevronLeft } from 'lucide-react';
+
+/* ─── Flashcard Mode ─────────────────────────────────────────────────────── */
+const FlashcardMode: React.FC<{
+  questions: typeof interviewQuestions;
+  completedQuestions: number[];
+  onToggleComplete: (id: number) => void;
+}> = ({ questions, completedQuestions, onToggleComplete }) => {
+  const [index, setIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [sessionAnswered, setSessionAnswered] = useState<Record<number, 'know' | 'review'>>({});
+
+  if (questions.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', padding: '60px 20px', color: 'var(--text-muted)' }}>
+        No questions match your filters. Reset to start flashcard mode.
+      </div>
+    );
+  }
+
+  const current = questions[index];
+  const knownCount = Object.values(sessionAnswered).filter(v => v === 'know').length;
+  const reviewCount = Object.values(sessionAnswered).filter(v => v === 'review').length;
+
+  const handleKnow = () => {
+    setSessionAnswered(prev => ({ ...prev, [current.id]: 'know' }));
+    if (!completedQuestions.includes(current.id)) onToggleComplete(current.id);
+    setFlipped(false);
+    setTimeout(() => setIndex(i => Math.min(questions.length - 1, i + 1)), 200);
+  };
+
+  const handleReview = () => {
+    setSessionAnswered(prev => ({ ...prev, [current.id]: 'review' }));
+    setFlipped(false);
+    setTimeout(() => setIndex(i => Math.min(questions.length - 1, i + 1)), 200);
+  };
+
+  const diffColor = current.difficulty === 'Hard' ? '#ef4444' : current.difficulty === 'Medium' ? '#f59e0b' : '#10b981';
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px', paddingTop: '16px', animation: 'fadeIn 0.3s ease-out' }}>
+      {/* Progress bar */}
+      <div style={{ width: '100%', maxWidth: '640px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: 'var(--text-muted)', marginBottom: '6px', fontWeight: 600 }}>
+          <span>{index + 1} / {questions.length}</span>
+          <span style={{ display: 'flex', gap: '16px' }}>
+            <span style={{ color: '#10b981' }}>✓ {knownCount} known</span>
+            <span style={{ color: '#f59e0b' }}>↺ {reviewCount} to review</span>
+          </span>
+        </div>
+        <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
+          <div style={{ height: '100%', width: `${((index) / questions.length) * 100}%`, background: 'linear-gradient(90deg, var(--color-secondary), var(--color-primary))', borderRadius: '2px', transition: 'width 0.3s' }} />
+        </div>
+      </div>
+
+      {/* Card */}
+      <div
+        onClick={() => setFlipped(f => !f)}
+        style={{
+          width: '100%', maxWidth: '640px',
+          minHeight: '280px',
+          borderRadius: '16px',
+          border: `1px solid ${flipped ? 'rgba(99,102,241,0.35)' : 'var(--border-glass)'}`,
+          background: flipped ? 'rgba(99,102,241,0.05)' : 'var(--surface-obsidian)',
+          padding: '36px',
+          cursor: 'pointer',
+          display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
+          textAlign: 'center', gap: '16px',
+          transition: 'all 0.3s',
+          userSelect: 'none',
+        }}
+      >
+        <div style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.06em', color: diffColor }}>
+          {flipped ? 'Answer' : 'Question'} · {current.category} · {current.difficulty}
+        </div>
+
+        {!flipped ? (
+          <>
+            <p style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.5, margin: 0 }}>
+              {current.question}
+            </p>
+            <span style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '8px' }}>
+              Tap to reveal answer
+            </span>
+          </>
+        ) : (
+          <p style={{ fontSize: '14px', color: 'var(--text-secondary)', lineHeight: 1.75, margin: 0, textAlign: 'left' }}>
+            {current.answer}
+          </p>
+        )}
+      </div>
+
+      {/* Action buttons */}
+      {flipped ? (
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button
+            onClick={handleReview}
+            style={{
+              padding: '12px 28px', borderRadius: '10px',
+              border: '1px solid rgba(245,158,11,0.3)',
+              background: 'rgba(245,158,11,0.06)',
+              color: '#f59e0b', fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+          >
+            ↺ Need Review
+          </button>
+          <button
+            onClick={handleKnow}
+            style={{
+              padding: '12px 28px', borderRadius: '10px',
+              border: '1px solid rgba(16,185,129,0.3)',
+              background: 'rgba(16,185,129,0.06)',
+              color: '#10b981', fontSize: '14px', fontWeight: 700, cursor: 'pointer',
+              transition: 'all 0.2s',
+            }}
+          >
+            ✓ Got It
+          </button>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <button
+            onClick={() => { setFlipped(false); setIndex(i => Math.max(0, i - 1)); }}
+            disabled={index === 0}
+            style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'transparent', color: index === 0 ? 'var(--text-muted)' : 'var(--text-secondary)', cursor: index === 0 ? 'not-allowed' : 'pointer', fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
+          >
+            <ChevronLeft size={14} /> Prev
+          </button>
+          <button
+            onClick={() => setFlipped(true)}
+            style={{ padding: '10px 24px', borderRadius: '8px', border: '1px solid rgba(99,102,241,0.3)', background: 'rgba(99,102,241,0.06)', color: 'var(--color-primary)', cursor: 'pointer', fontSize: '13px', fontWeight: 700 }}
+          >
+            Reveal Answer
+          </button>
+          <button
+            onClick={() => { setFlipped(false); setIndex(i => Math.min(questions.length - 1, i + 1)); }}
+            disabled={index === questions.length - 1}
+            style={{ padding: '10px 20px', borderRadius: '8px', border: '1px solid var(--border-glass)', background: 'transparent', color: index === questions.length - 1 ? 'var(--text-muted)' : 'var(--text-secondary)', cursor: index === questions.length - 1 ? 'not-allowed' : 'pointer', fontSize: '13px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}
+          >
+            Skip <ChevronRight size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* Reset */}
+      {index === questions.length - 1 && (
+        <button
+          onClick={() => { setIndex(0); setFlipped(false); setSessionAnswered({}); }}
+          style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'transparent', border: '1px solid var(--border-glass)', color: 'var(--text-muted)', padding: '8px 20px', borderRadius: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 600 }}
+        >
+          <RotateCcw size={13} /> Restart Session
+        </button>
+      )}
+    </div>
+  );
+};
 
 interface QuestionsDeckProps {
   selectedQuestionId: number | null;
@@ -15,6 +171,7 @@ export const QuestionsDeck: React.FC<QuestionsDeckProps> = ({
   completedQuestions = [],
   onToggleCompleteQuestion
 }) => {
+  const [deckMode, setDeckMode] = useState<'list' | 'flashcard'>('list');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState<string>('All');
@@ -156,10 +313,41 @@ export const QuestionsDeck: React.FC<QuestionsDeckProps> = ({
 
   return (
     <div style={{ animation: 'fadeIn 0.4s ease-out' }}>
-      <div style={{ marginBottom: '32px' }}>
-        <h1 className="glow-text" style={{ fontSize: '36px', fontWeight: 800, marginBottom: '8px' }}>200+ Interview Q&A Deck</h1>
-        <p style={{ color: 'var(--text-secondary)' }}>Quick-fire preparation deck covering hot questions frequently asked in system design loops.</p>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '28px', flexWrap: 'wrap', gap: '12px' }}>
+        <div>
+          <h1 className="glow-text" style={{ fontSize: '36px', fontWeight: 800, marginBottom: '8px' }}>200+ Interview Q&A Deck</h1>
+          <p style={{ color: 'var(--text-secondary)' }}>Quick-fire preparation deck covering hot questions frequently asked in system design loops.</p>
+        </div>
+        {/* Mode toggle */}
+        <div style={{ display: 'flex', gap: '6px', background: 'rgba(255,255,255,0.02)', padding: '4px', borderRadius: '10px', border: '1px solid var(--border-glass)', flexShrink: 0 }}>
+          {([['list', 'List', LayoutList], ['flashcard', 'Flashcards', Layers]] as const).map(([m, label, Icon]) => (
+            <button
+              key={m}
+              onClick={() => setDeckMode(m)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                padding: '8px 14px', borderRadius: '7px', border: '1px solid',
+                borderColor: deckMode === m ? 'rgba(99,102,241,0.3)' : 'transparent',
+                background: deckMode === m ? 'rgba(99,102,241,0.08)' : 'transparent',
+                color: deckMode === m ? 'var(--color-primary)' : 'var(--text-muted)',
+                fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
+              }}
+            >
+              <Icon size={14} /> {label}
+            </button>
+          ))}
+        </div>
       </div>
+
+      {deckMode === 'flashcard' && (
+        <FlashcardMode
+          questions={filteredQuestions}
+          completedQuestions={completedQuestions}
+          onToggleComplete={onToggleCompleteQuestion || (() => {})}
+        />
+      )}
+      {deckMode === 'flashcard' && <div style={{ height: '1px' }} />}
+      {deckMode === 'list' && <div>
 
       {/* Quick Filter Pills */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
@@ -418,6 +606,7 @@ export const QuestionsDeck: React.FC<QuestionsDeckProps> = ({
           </button>
         </div>
       )}
+      </div>}
     </div>
   );
 };
