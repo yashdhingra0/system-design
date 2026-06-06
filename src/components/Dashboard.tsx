@@ -296,87 +296,114 @@ export const Dashboard: React.FC<DashboardProps> = ({
       </div>
 
       {/* Problems List */}
-      <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+      {/* Problems List */}
+      <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
         <span>Problems List</span>
         <span style={{ fontSize: '12px', color: 'var(--text-muted)', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: '4px' }}>{filteredProblems.length} found</span>
       </h3>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {filteredProblems.length > 0 ? (
-          filteredProblems.map((prob) => {
-            const status = completedMap[prob.id] || 'not-started';
-            
-            return (
-              <div
-                key={prob.id}
-                className="glass-panel glass-panel-interactive"
-                style={{
-                  padding: '20px 24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '20px',
-                  cursor: 'pointer',
-                  borderLeft: prob.isDetailed ? '4px solid var(--color-primary)' : '1px solid var(--border-glass)'
-                }}
-                onClick={() => onSelectProblem(prob.id)}
-              >
-                {/* Checkbox toggle status */}
-                <div
-                  onClick={(e) => {
-                    e.stopPropagation(); // prevent opening details page
-                    toggleStatus(prob.id);
-                  }}
-                  style={{
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    color: status === 'completed' ? 'var(--color-teal)' : status === 'in-progress' ? 'var(--color-gold)' : 'var(--text-muted)',
-                    transition: 'var(--transition-smooth)'
-                  }}
-                  title={`Status: ${status === 'completed' ? 'Completed' : status === 'in-progress' ? 'In Progress' : 'Not Started'}. Click to toggle.`}
-                >
-                  {status === 'completed' ? (
-                    <CheckCircle size={22} style={{ fill: 'rgba(16, 185, 129, 0.1)' }} />
-                  ) : status === 'in-progress' ? (
-                    <Play size={22} style={{ transform: 'rotate(90deg)', fill: 'rgba(245, 158, 11, 0.1)' }} />
-                  ) : (
-                    <Circle size={22} />
-                  )}
-                </div>
+      {(() => {
+        const problemsByCategory: Record<string, typeof problems> = {};
+        filteredProblems.forEach(p => {
+          if (!problemsByCategory[p.category]) {
+            problemsByCategory[p.category] = [];
+          }
+          problemsByCategory[p.category].push(p);
+        });
 
-                <div style={{ flexGrow: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '6px', flexWrap: 'wrap' }}>
-                    <h4 style={{ fontSize: '17px', fontWeight: 600, color: 'var(--text-primary)' }}>{prob.title}</h4>
-                    <span className={`tag tag-${prob.difficulty.toLowerCase()}`}>{prob.difficulty}</span>
-                    <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{prob.category}</span>
-                    {prob.isDetailed ? (
-                      <span style={{ fontSize: '10px', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(99, 102, 241, 0.2)', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>✦ Deep Dive</span>
-                    ) : (
-                      <span style={{ fontSize: '10px', background: 'rgba(255, 255, 255, 0.04)', color: 'var(--text-muted)', border: '1px solid var(--border-glass)', padding: '2px 8px', borderRadius: '4px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em' }}>📝 Summary</span>
-                    )}
-                  </div>
-                  <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '10px' }}>{prob.summary}</p>
-                  
-                  {/* Company tags list */}
-                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                    {prob.companyTags.map(tag => (
-                      <span key={tag} className="company-tag">{tag}</span>
-                    ))}
-                  </div>
-                </div>
+        const categoriesToRender = Object.entries(problemsByCategory);
 
-                <div style={{ fontSize: '14px', color: 'var(--text-muted)', fontWeight: 500 }}>
-                  ➔
-                </div>
-              </div>
-            );
-          })
-        ) : (
-          <div className="glass-panel" style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>
-            No problems match your current filter selections. Try resetting filters.
+        if (categoriesToRender.length === 0) {
+          return (
+            <div className="glass-panel" style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>
+              No problems match your current filter selections. Try resetting filters.
+            </div>
+          );
+        }
+
+        return categoriesToRender.map(([categoryName, probs]) => (
+          <div key={categoryName} style={{ marginBottom: '32px' }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-muted)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>{categoryName}</span>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: 'var(--color-primary)', background: 'var(--color-primary-glow)', padding: '1px 8px', borderRadius: '20px' }}>
+                {probs.length}
+              </span>
+            </h4>
+
+            <div className="glass-panel" style={{ overflow: 'hidden' }}>
+              {probs.map((prob) => {
+                const status = completedMap[prob.id] || 'not-started';
+                return (
+                  <div
+                    key={prob.id}
+                    className="problem-row"
+                    onClick={() => onSelectProblem(prob.id)}
+                    style={{
+                      borderLeft: prob.isDetailed ? '3px solid var(--color-primary)' : 'none'
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexGrow: 1, minWidth: 0 }}>
+                      {/* Checkbox toggle status */}
+                      <div
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleStatus(prob.id);
+                        }}
+                        style={{
+                          cursor: 'pointer',
+                          display: 'flex',
+                          alignItems: 'center',
+                          color: status === 'completed' ? 'var(--color-teal)' : status === 'in-progress' ? 'var(--color-gold)' : 'var(--text-muted)',
+                          transition: 'var(--transition-smooth)'
+                        }}
+                        title={`Status: ${status === 'completed' ? 'Completed' : status === 'in-progress' ? 'In Progress' : 'Not Started'}. Click to toggle.`}
+                      >
+                        {status === 'completed' ? (
+                          <CheckCircle size={18} style={{ fill: 'rgba(16, 185, 129, 0.1)' }} />
+                        ) : status === 'in-progress' ? (
+                          <Play size={18} style={{ transform: 'rotate(90deg)', fill: 'rgba(245, 158, 11, 0.1)' }} />
+                        ) : (
+                          <Circle size={18} />
+                        )}
+                      </div>
+
+                      <span className="problem-row-title" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {prob.title}
+                      </span>
+
+                      {prob.isDetailed ? (
+                        <span style={{ fontSize: '9px', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(99, 102, 241, 0.2)', padding: '1px 6px', borderRadius: '3px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>✦ Deep Dive</span>
+                      ) : (
+                        <span style={{ fontSize: '9px', background: 'rgba(255, 255, 255, 0.02)', color: 'var(--text-muted)', border: '1px solid var(--border-glass)', padding: '1px 6px', borderRadius: '3px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>📝 Summary</span>
+                      )}
+                    </div>
+
+                    <div className="problem-row-meta" style={{ display: 'flex', alignItems: 'center', gap: '16px', flexShrink: 0 }}>
+                      {/* Company tags list */}
+                      <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+                        {prob.companyTags.slice(0, 2).map(tag => (
+                          <span key={tag} className="company-tag" style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '4px' }}>{tag}</span>
+                        ))}
+                        {prob.companyTags.length > 2 && (
+                          <span className="company-tag" style={{ fontSize: '10px', padding: '2px 6px', borderRadius: '4px', opacity: 0.6 }}>+{prob.companyTags.length - 2}</span>
+                        )}
+                      </div>
+
+                      <span className={`tag tag-${prob.difficulty.toLowerCase()}`} style={{ fontSize: '11px', padding: '2px 8px', minWidth: '60px', textAlign: 'center' }}>
+                        {prob.difficulty}
+                      </span>
+
+                      <div style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 500, paddingLeft: '4px' }}>
+                        ➔
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        )}
-      </div>
+        ));
+      })()}
     </div>
   );
 };

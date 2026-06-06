@@ -735,3 +735,54 @@ code {
   }
 }
 
+/* Professional LLD/HLD Problems List Row Layout */
+.problem-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border-glass);
+  cursor: pointer;
+  background: transparent;
+  transition: var(--transition-smooth);
+}
+
+.problem-row:last-child {
+  border-bottom: none;
+}
+
+.problem-row:hover {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+body.light-mode .problem-row:hover {
+  background: rgba(99, 102, 241, 0.03);
+}
+
+.problem-row-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: var(--transition-smooth);
+}
+
+.problem-row:hover .problem-row-title {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .problem-row {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 14px 16px;
+  }
+  .problem-row-meta {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-left: 28px;
+    align-items: center;
+  }
+}
+
