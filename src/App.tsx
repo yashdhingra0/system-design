@@ -13,6 +13,7 @@ import { PrepTools } from './components/PrepTools';
 import { RevisionNotesView } from './components/RevisionNotesView';
 import { PrepSandbox } from './components/PrepSandbox';
 import { DesignPatterns } from './components/DesignPatterns';
+import { DesignDoctor } from './components/DesignDoctor';
 import { TechComparisons } from './components/TechComparisons';
 import { SystemDiagrams } from './components/SystemDiagrams';
 import { SystemEvolution } from './components/SystemEvolution';
@@ -41,15 +42,17 @@ import {
   GitBranch,
   ArrowLeftRight,
   Network,
-  TrendingUp
+  TrendingUp,
+  Stethoscope
 } from 'lucide-react';
 
-type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox' | 'design-patterns' | 'tech-comparisons' | 'system-diagrams' | 'system-evolution';
+type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox' | 'design-patterns' | 'tech-comparisons' | 'system-diagrams' | 'system-evolution' | 'design-doctor';
 type Status = 'not-started' | 'in-progress' | 'completed';
 
 function App() {
   const [currentTab, setCurrentTab] = useState<Tab>('concepts');
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
+  const [selectedPatternId, setSelectedPatternId] = useState<string | undefined>(undefined);
   
   // Controlled states for sidebar selection
   const [selectedConceptId, setSelectedConceptId] = useState<string>(concepts[0].id);
@@ -465,6 +468,19 @@ function App() {
                 <span>Practice</span>
               </div>
 
+              {/* Design Doctor ✦ */}
+              <button
+                onClick={() => handleSelectTab('design-doctor')}
+                className={`nav-link ${currentTab === 'design-doctor' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '0 0 4px 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <Stethoscope size={16} />
+                <span>Design Doctor</span>
+                <span style={{ marginLeft: 'auto', fontSize: '9px', fontWeight: 800, letterSpacing: '0.04em', color: '#8b7cf6', background: 'rgba(139,124,246,0.12)', border: '1px solid rgba(139,124,246,0.25)', padding: '1px 6px', borderRadius: '4px' }}>
+                  NEW
+                </span>
+              </button>
+
               {/* 50 Interview Problems Section */}
               <div className="sidebar-group">
                 <button
@@ -745,6 +761,9 @@ function App() {
               <button onClick={() => handleSelectTab('quiz')} className={`collapsed-icon-link ${currentTab === 'quiz' ? 'active' : ''}`} title="Quiz">
                 <HelpCircle size={20} />
               </button>
+              <button onClick={() => handleSelectTab('design-doctor')} className={`collapsed-icon-link ${currentTab === 'design-doctor' ? 'active' : ''}`} title="Design Doctor">
+                <Stethoscope size={20} />
+              </button>
               <button onClick={() => handleSelectTab('prep-tools')} className={`collapsed-icon-link ${currentTab === 'prep-tools' ? 'active' : ''}`} title="Prep Tools">
                 <Wrench size={20} />
               </button>
@@ -910,7 +929,14 @@ function App() {
               onSelectProblem={handleSelectProblem}
             />
           ) : currentTab === 'design-patterns' ? (
-            <DesignPatterns />
+            <DesignPatterns initialPatternId={selectedPatternId} />
+          ) : currentTab === 'design-doctor' ? (
+            <DesignDoctor
+              onViewPattern={(patternId) => {
+                setSelectedPatternId(patternId);
+                handleSelectTab('design-patterns');
+              }}
+            />
           ) : currentTab === 'tech-comparisons' ? (
             <TechComparisons />
           ) : currentTab === 'system-diagrams' ? (
