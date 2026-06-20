@@ -1,7 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { aiTopics, AI_PHASES } from '../data/aiCurriculum';
 import type { AISection } from '../data/aiCurriculum';
-import { Clock, CheckCircle2, Lightbulb, AlertTriangle, ChevronRight, Search } from 'lucide-react';
+import { Clock, CheckCircle2, Lightbulb, AlertTriangle, ChevronRight, Search, Heart, Eye } from 'lucide-react';
+
+// ── Persistence helpers ───────────────────────────────────────────────────────
+function loadCounts(key: string): Record<string, number> {
+  try { return JSON.parse(localStorage.getItem(key) || '{}'); } catch { return {}; }
+}
+function saveCounts(key: string, data: Record<string, number>) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch { /* noop */ }
+}
 
 interface AILearningHubProps {
   initialTopicId?: string;
@@ -185,18 +193,47 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
     try { return new Set(JSON.parse(localStorage.getItem('ai-completed') || '[]')); }
     catch { return new Set(); }
   });
+  const [likes, setLikes] = useState<Record<string, number>>(() => loadCounts('ai-likes'));
+  const [likedByMe, setLikedByMe] = useState<Set<string>>(() => {
+    try { return new Set(JSON.parse(localStorage.getItem('ai-liked-by-me') || '[]')); } catch { return new Set(); }
+  });
+  const [views, setViews] = useState<Record<string, number>>(() => loadCounts('ai-views'));
 
   const selected = aiTopics.find(t => t.id === selectedId) || aiTopics[0];
 
+  // Increment view count when topic changes
   useEffect(() => {
     if (initialTopicId) setSelectedId(initialTopicId);
   }, [initialTopicId]);
+
+  useEffect(() => {
+    setViews(prev => {
+      const next = { ...prev, [selectedId]: (prev[selectedId] || 0) + 1 };
+      saveCounts('ai-views', next);
+      return next;
+    });
+  }, [selectedId]);
 
   const toggleComplete = () => {
     setCompletedIds(prev => {
       const next = new Set(prev);
       next.has(selectedId) ? next.delete(selectedId) : next.add(selectedId);
       localStorage.setItem('ai-completed', JSON.stringify([...next]));
+      return next;
+    });
+  };
+
+  const toggleLike = () => {
+    const alreadyLiked = likedByMe.has(selectedId);
+    setLikes(prev => {
+      const next = { ...prev, [selectedId]: Math.max(0, (prev[selectedId] || 0) + (alreadyLiked ? -1 : 1)) };
+      saveCounts('ai-likes', next);
+      return next;
+    });
+    setLikedByMe(prev => {
+      const next = new Set(prev);
+      alreadyLiked ? next.delete(selectedId) : next.add(selectedId);
+      localStorage.setItem('ai-liked-by-me', JSON.stringify([...next]));
       return next;
     });
   };
@@ -284,6 +321,11 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
                   <span style={{ fontSize: 10, color: pc, fontWeight: 700 }}>P{topic.phase}</span>
                   <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>·</span>
                   <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>{topic.readTime}m</span>
+                  {(likes[topic.id] || 0) > 0 && (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 2, fontSize: 10, color: '#f87171' }}>
+                      <Heart size={9} fill="#f87171" /> {likes[topic.id]}
+                    </span>
+                  )}
                   {done && <CheckCircle2 size={11} color="#34d399" fill="#34d399" />}
                 </div>
               </div>
@@ -325,24 +367,40 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
               <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-muted)' }}>
                 <Clock size={12} /> {selected.readTime} min read
               </span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 11, color: 'var(--text-muted)' }}>
+                <Eye size={12} /> {(views[selectedId] || 1).toLocaleString()} views
+              </span>
               {/* Tags */}
-              {selected.tags.slice(0, 4).map(tag => (
+              {selected.tags.slice(0, 3).map(tag => (
                 <span key={tag} style={{ fontSize: 11, padding: '3px 9px', borderRadius: 6, background: 'rgba(255,255,255,0.05)', color: 'var(--text-muted)', border: '1px solid rgba(255,255,255,0.08)' }}>
                   {tag}
                 </span>
               ))}
-              {/* Mark done */}
-              <button onClick={toggleComplete} style={{
-                marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 6,
-                padding: '5px 14px', borderRadius: 8,
-                background: isDone ? 'rgba(52,211,153,0.12)' : 'rgba(255,255,255,0.05)',
-                border: `1px solid ${isDone ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.12)'}`,
-                color: isDone ? '#34d399' : 'var(--text-secondary)',
-                fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
-              }}>
-                <CheckCircle2 size={13} fill={isDone ? '#34d399' : 'none'} />
-                {isDone ? 'Completed' : 'Mark complete'}
-              </button>
+              {/* Like + Mark done */}
+              <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
+                <button onClick={toggleLike} style={{
+                  display: 'flex', alignItems: 'center', gap: 5,
+                  padding: '5px 12px', borderRadius: 8,
+                  background: likedByMe.has(selectedId) ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.05)',
+                  border: `1px solid ${likedByMe.has(selectedId) ? 'rgba(239,68,68,0.3)' : 'rgba(255,255,255,0.12)'}`,
+                  color: likedByMe.has(selectedId) ? '#f87171' : 'var(--text-secondary)',
+                  fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
+                }}>
+                  <Heart size={13} fill={likedByMe.has(selectedId) ? '#f87171' : 'none'} />
+                  {(likes[selectedId] || 0) > 0 ? (likes[selectedId] || 0) : 'Like'}
+                </button>
+                <button onClick={toggleComplete} style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  padding: '5px 14px', borderRadius: 8,
+                  background: isDone ? 'rgba(52,211,153,0.12)' : 'rgba(255,255,255,0.05)',
+                  border: `1px solid ${isDone ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.12)'}`,
+                  color: isDone ? '#34d399' : 'var(--text-secondary)',
+                  fontSize: 12, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
+                }}>
+                  <CheckCircle2 size={13} fill={isDone ? '#34d399' : 'none'} />
+                  {isDone ? 'Completed' : 'Mark complete'}
+                </button>
+              </div>
             </div>
           </div>
         </div>

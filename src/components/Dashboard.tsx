@@ -1,7 +1,106 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { problems } from '../data/problems';
 import { Card3D } from './ui/Card3D';
-import { Search, CheckCircle, Circle, Play, Map, LayoutGrid } from 'lucide-react';
+import { Search, CheckCircle, Circle, Play, Map, LayoutGrid, ExternalLink, RefreshCw } from 'lucide-react';
+
+// ── Mini AI News strip ───────────────────────────────────────────────────────
+interface NewsArticle { title: string; url: string; source: { name: string }; publishedAt: string; }
+
+function timeAgo(iso: string) {
+  const diff = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (diff < 3600) return `${Math.round(diff / 60)}m ago`;
+  if (diff < 86400) return `${Math.round(diff / 3600)}h ago`;
+  return `${Math.round(diff / 86400)}d ago`;
+}
+
+const MiniAINews: React.FC<{ onViewAll?: () => void }> = ({ onViewAll }) => {
+  const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchNews = () => {
+    setLoading(true);
+    setError(false);
+    fetch('/api/news?category=all&pageSize=5')
+      .then(r => r.json())
+      .then(d => {
+        if (d.articles) setArticles(d.articles.slice(0, 5));
+        else setError(true);
+      })
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => { fetchNews(); }, []);
+
+  return (
+    <div style={{
+      background: 'var(--surface-card)',
+      border: '1px solid rgba(16,185,129,0.15)',
+      borderRadius: 16,
+      padding: '18px 20px',
+      marginBottom: 28,
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span style={{ fontSize: 16 }}>📡</span>
+          <span style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)' }}>AI News Today</span>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={fetchNews} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: 4, borderRadius: 6 }}>
+            <RefreshCw size={13} />
+          </button>
+          {onViewAll && (
+            <button onClick={onViewAll} style={{ fontSize: 11, padding: '3px 10px', borderRadius: 7, background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)', color: '#10b981', cursor: 'pointer', fontWeight: 600 }}>
+              View all →
+            </button>
+          )}
+        </div>
+      </div>
+
+      {loading && (
+        <div style={{ display: 'flex', gap: 10, overflow: 'hidden' }}>
+          {[0,1,2,3,4].map(i => (
+            <div key={i} style={{ flexShrink: 0, width: 200, height: 70, borderRadius: 10, background: 'rgba(255,255,255,0.03)', animation: 'shimmer 1.5s ease-in-out infinite' }} />
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <div style={{ fontSize: 12, color: 'var(--text-muted)', padding: '8px 0' }}>
+          News unavailable — add <code style={{ color: '#10b981' }}>NEWS_API_KEY</code> in Vercel environment variables.
+        </div>
+      )}
+
+      {!loading && !error && (
+        <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'thin' }}>
+          {articles.map((a, i) => (
+            <a key={i} href={a.url} target="_blank" rel="noreferrer" style={{
+              flexShrink: 0, width: 220, padding: '12px 14px', borderRadius: 10,
+              background: 'rgba(255,255,255,0.025)', border: '1px solid rgba(255,255,255,0.07)',
+              textDecoration: 'none', display: 'flex', flexDirection: 'column', gap: 6,
+              transition: 'all 0.15s',
+            }}
+              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(16,185,129,0.3)'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(255,255,255,0.07)'; }}
+            >
+              <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                {a.title}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto' }}>
+                <span style={{ fontSize: 10, color: '#10b981', fontWeight: 600 }}>{a.source.name}</span>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 10, color: 'var(--text-muted)' }}>
+                  {timeAgo(a.publishedAt)} <ExternalLink size={9} />
+                </span>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 // ─── Learning Roadmap ───────────────────────────────────────────────────────
 
@@ -157,6 +256,7 @@ interface DashboardProps {
   completedPrinciples: string[];
   completedQuestions: number[];
   onNavigateToTab?: (tab: string) => void;
+  onViewAINews?: () => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
@@ -167,6 +267,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   completedPrinciples,
   completedQuestions,
   onNavigateToTab,
+  onViewAINews,
 }) => {
   const [dashView, setDashView] = useState<'problems' | 'roadmap'>('problems');
   const [searchQuery, setSearchQuery] = useState('');
@@ -363,6 +464,9 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </div>
         </Card3D>
       </div>
+
+      {/* AI News mini strip */}
+      <MiniAINews onViewAll={onViewAINews} />
 
       {/* Filter and Search Panel */}
       <div className="glass-panel" style={{ padding: '24px', marginBottom: '32px' }}>
