@@ -663,7 +663,7 @@ export const DesignDoctor: React.FC<DesignDoctorProps> = ({ onViewPattern }) => 
                     {/* Rank badge */}
                     <div style={{
                       width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
-                      background: idx === 0 ? catColor.text : 'rgba(255,255,255,0.06)',
+                      background: idx === 0 ? catColor.text : 'var(--border-glass)',
                       border: `1px solid ${catColor.border}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: '14px', fontWeight: 900,

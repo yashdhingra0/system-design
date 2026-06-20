@@ -18,12 +18,12 @@ interface NewsApiResponse {
 }
 
 const CATEGORIES = [
-  { id: 'all',      label: 'All AI News', emoji: '🌐' },
-  { id: 'llm',      label: 'LLMs',        emoji: '🧠' },
-  { id: 'agents',   label: 'Agents',      emoji: '🤖' },
-  { id: 'openai',   label: 'OpenAI',      emoji: '🟢' },
-  { id: 'tools',    label: 'AI Tools',    emoji: '🛠️' },
-  { id: 'research', label: 'Research',    emoji: '🔬' },
+  { id: 'all',         label: 'Top News',    emoji: '🌐' },
+  { id: 'tech',        label: 'Tech',        emoji: '💻' },
+  { id: 'ai',          label: 'AI',          emoji: '🤖' },
+  { id: 'engineering', label: 'Engineering', emoji: '⚙️' },
+  { id: 'llm',         label: 'LLMs',        emoji: '🧠' },
+  { id: 'research',    label: 'Research',    emoji: '🔬' },
 ];
 
 function timeAgo(dateStr: string): string {
@@ -37,7 +37,7 @@ function timeAgo(dateStr: string): string {
 
 const SkeletonCard = () => (
   <div style={{
-    background: 'rgba(10,10,10,0.8)', border: '1px solid rgba(16,185,129,0.1)',
+    background: 'var(--surface-card)', border: '1px solid rgba(16,185,129,0.1)',
     borderRadius: 14, padding: '18px', overflow: 'hidden',
   }}>
     {['80%', '60%', '90%', '40%'].map((w, i) => (
@@ -100,7 +100,7 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
       <div style={{ padding: '12px 12px' }}>
         <style>{`@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}`}</style>
         {loading && Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} style={{ height: 56, borderRadius: 8, marginBottom: 8, background: 'linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite' }} />
+          <div key={i} style={{ height: 56, borderRadius: 8, marginBottom: 8, background: 'linear-gradient(90deg, rgba(255,255,255,0.03) 25%, var(--border-glass) 50%, rgba(255,255,255,0.03) 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite' }} />
         ))}
         {error && !loading && (
           <p style={{ fontSize: 11, color: 'var(--text-muted)', padding: '8px 4px', lineHeight: 1.6 }}>
@@ -255,7 +255,7 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
                 style={{ textDecoration: 'none' }}
               >
                 <div style={{
-                  background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(16,185,129,0.1)',
+                  background: 'var(--surface-card)', border: '1px solid rgba(16,185,129,0.1)',
                   borderRadius: 14, overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column',
                   transition: 'all 0.2s',
                 }}

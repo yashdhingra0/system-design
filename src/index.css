@@ -1746,3 +1746,13 @@ body.light-mode .glow-text {
   .left-sidebar-toggle { display: none; }
   .content-area { padding: 20px 16px; }
 }
+
+/* Code blocks always dark — regardless of theme */
+pre, code { color: #e2e8f0; }
+pre {
+  background: #0f1117 !important;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+body.light-mode pre { background: #0f1117 !important; }
+body.light-mode pre code { color: #e2e8f0 !important; }
+body.light-mode .font-mono { color: #e2e8f0; }

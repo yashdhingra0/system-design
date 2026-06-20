@@ -354,7 +354,7 @@ export const PrepSandbox: React.FC<PrepSandboxProps> = ({
                       style={{ width: '100%', accentColor: 'var(--color-primary)', cursor: 'pointer', marginBottom: '12px' }}
                     />
                     
-                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', background: 'rgba(5, 8, 16, 0.4)', padding: '8px 12px', borderRadius: '6px' }}>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', background: 'var(--surface-card)', padding: '8px 12px', borderRadius: '6px' }}>
                       <strong>Criteria matched:</strong> {score <= 3 ? rubric.score0 : score <= 7 ? rubric.score5 : rubric.score10}
                     </div>
                   </div>

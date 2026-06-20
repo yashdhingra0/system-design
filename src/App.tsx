@@ -28,7 +28,7 @@ type Status = 'not-started' | 'in-progress' | 'completed';
 const SIDEBAR_WIDTH = 220;
 
 function App() {
-  const [currentTab, setCurrentTab] = useState<Tab>('dashboard');
+  const [currentTab, setCurrentTab] = useState<Tab>('concepts');
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
   const [selectedPatternId, setSelectedPatternId] = useState<string | undefined>(undefined);
   const [selectedAITopicId, setSelectedAITopicId] = useState<string | undefined>(undefined);
@@ -168,8 +168,13 @@ function App() {
         onToggleTheme={() => setTheme(t => t === 'dark' ? 'light' : 'dark')}
         activeGroupLabel={activeGroupLabel}
         onSetActiveGroup={label => {
+          if (label) {
+            const group = NAV_GROUPS.find(g => g.label === label);
+            // Always navigate to first item of clicked group
+            if (group) handleSelectTab(group.items[0].tab);
+            setSidebarCollapsed(false);
+          }
           setActiveGroupLabel(label || null);
-          if (label && sidebarCollapsed) setSidebarCollapsed(false);
         }}
       />
 
@@ -215,7 +220,7 @@ function App() {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 14 }}>📡</span>
-                <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-primary)' }}>AI News</span>
+                <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-primary)' }}>News</span>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
                 <button
                   onClick={() => handleSelectTab('ai-news')}

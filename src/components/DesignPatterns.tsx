@@ -352,7 +352,7 @@ export const DesignPatterns: React.FC<DesignPatternsProps> = ({ initialPatternId
                 {selected.name}
               </span>
             </div>
-            <pre style={{ margin: 0, padding: '28px', overflowX: 'auto', fontSize: '13.5px', lineHeight: 1.75, color: '#e2e8f0', background: 'rgba(5,8,16,0.8)', fontFamily: 'var(--font-mono)' }}>
+            <pre style={{ margin: 0, padding: '28px', overflowX: 'auto', fontSize: '13.5px', lineHeight: 1.75, color: '#e2e8f0', background: 'var(--surface-card)', fontFamily: 'var(--font-mono)' }}>
               <code>{selected.codeExample}</code>
             </pre>
           </div>
@@ -417,7 +417,7 @@ export const DesignPatterns: React.FC<DesignPatternsProps> = ({ initialPatternId
                   {count !== null && (
                     <span style={{
                       marginLeft: '5px', fontSize: '10px',
-                      background: 'rgba(255,255,255,0.06)', padding: '1px 5px', borderRadius: '8px'
+                      background: 'var(--border-glass)', padding: '1px 5px', borderRadius: '8px'
                     }}>
                       {count}
                     </span>
@@ -622,7 +622,7 @@ export const DesignPatterns: React.FC<DesignPatternsProps> = ({ initialPatternId
                     </span>
                   </div>
                   <pre style={{
-                    background: 'rgba(5,8,16,0.8)',
+                    background: 'var(--surface-card)',
                     border: '1px solid var(--border-glass)',
                     borderRadius: '10px',
                     padding: '20px',

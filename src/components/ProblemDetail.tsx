@@ -256,7 +256,7 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '10px' }}>Database Entities</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {lowLevelDesign.entities.map((ent, idx) => (
-                  <div key={idx} style={{ background: 'rgba(5, 8, 16, 0.5)', border: '1px solid var(--border-glass)', borderRadius: '8px', padding: '12px' }}>
+                  <div key={idx} style={{ background: 'var(--surface-card)', border: '1px solid var(--border-glass)', borderRadius: '8px', padding: '12px' }}>
                     <div style={{ fontWeight: 600, fontSize: '13px', color: 'var(--color-teal)', marginBottom: '6px' }}>{ent.name}</div>
                     <div style={{ fontFamily: 'var(--font-mono)', fontSize: '11px', color: 'var(--text-secondary)' }}>
                       {ent.fields.map((f, fIdx) => <div key={fIdx}>{f}</div>)}
@@ -271,7 +271,7 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
               <div style={{ fontSize: '12px', color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '10px' }}>API Interface</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {lowLevelDesign.apis.map((api, idx) => (
-                  <div key={idx} style={{ background: 'rgba(5, 8, 16, 0.5)', border: '1px solid var(--border-glass)', borderRadius: '8px', padding: '12px' }}>
+                  <div key={idx} style={{ background: 'var(--surface-card)', border: '1px solid var(--border-glass)', borderRadius: '8px', padding: '12px' }}>
                     <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '6px' }}>
                       <span style={{
                         padding: '2px 6px',

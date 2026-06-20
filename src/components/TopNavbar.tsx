@@ -128,7 +128,7 @@ const ProfileButton: React.FC = () => {
       <button onClick={() => setOpen(o => !o)} style={{
         display: 'flex', alignItems: 'center', gap: 8,
         padding: '5px 10px 5px 5px', borderRadius: 8,
-        background: open ? 'rgba(255,255,255,0.06)' : 'transparent',
+        background: open ? 'var(--border-glass)' : 'transparent',
         border: '1px solid transparent', cursor: 'pointer', transition: 'all 0.2s',
       }} title="Profile">
         <div style={{
@@ -214,7 +214,7 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({
       <nav className="top-nav">
         {/* Logo — click goes home */}
         <button
-          onClick={() => handleSelect('dashboard')}
+          onClick={() => handleSelect('concepts')}
           style={{
             display: 'flex', alignItems: 'center', gap: 8,
             background: 'none', border: 'none', cursor: 'pointer',

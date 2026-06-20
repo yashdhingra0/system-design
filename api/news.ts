@@ -2,12 +2,15 @@
 // Uses web-standard Request/Response API
 
 const QUERIES: Record<string, string> = {
-  all:      'artificial intelligence OR "large language model" OR "AI agent" OR LLM OR "generative AI"',
+  all:      'technology OR startup OR "software engineering" OR AI OR "system design" OR "tech industry"',
+  tech:     'technology OR startup OR "venture capital" OR "tech layoffs" OR "product launch" OR "developer tools"',
+  ai:       'artificial intelligence OR "large language model" OR "AI agent" OR LLM OR "generative AI"',
   llm:      '"large language model" OR GPT OR Claude OR Gemini OR Llama OR "foundation model"',
   agents:   '"AI agent" OR "agentic AI" OR LangChain OR LangGraph OR AutoGPT OR "multi-agent"',
   openai:   'OpenAI OR "GPT-4" OR "ChatGPT" OR "DALL-E" OR Sora',
   tools:    'Cursor AI OR "GitHub Copilot" OR Perplexity OR "AI tools" OR "AI coding"',
   research: 'AI research OR "machine learning" OR "deep learning" OR "neural network" OR "AI safety"',
+  engineering: '"system design" OR "software architecture" OR "distributed systems" OR "cloud computing" OR DevOps OR Kubernetes',
 };
 
 export const config = { runtime: 'edge' };

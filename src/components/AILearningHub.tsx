@@ -46,7 +46,7 @@ const CodeBlock: React.FC<{ title: string; language: string; code: string }> = (
           <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{language}</span>
           <button onClick={copy} style={{
             fontSize: 11, padding: '3px 10px', borderRadius: 6,
-            background: copied ? 'rgba(52,211,153,0.15)' : 'rgba(255,255,255,0.06)',
+            background: copied ? 'rgba(52,211,153,0.15)' : 'var(--border-glass)',
             border: `1px solid ${copied ? 'rgba(52,211,153,0.3)' : 'rgba(255,255,255,0.1)'}`,
             color: copied ? '#34d399' : 'var(--text-secondary)',
             cursor: 'pointer', transition: 'all 0.2s',
@@ -57,7 +57,7 @@ const CodeBlock: React.FC<{ title: string; language: string; code: string }> = (
       </div>
       <pre style={{
         margin: 0, padding: '20px 22px', overflowX: 'auto',
-        background: 'rgba(10,10,10,0.85)',
+        background: '#0f1117',
         fontFamily: 'var(--font-mono)', fontSize: 13, lineHeight: 1.75,
         color: '#e2e8f0',
       }}>
@@ -112,7 +112,7 @@ const SectionRenderer: React.FC<{ section: AISection }> = ({ section }) => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
           {section.items.map((item, i) => (
             <div key={i} style={{
-              background: 'rgba(10,10,10,0.8)', border: '1px solid rgba(16,185,129,0.12)',
+              background: 'var(--surface-card)', border: '1px solid rgba(16,185,129,0.12)',
               borderRadius: 12, padding: '16px',
             }}>
               {item.emoji && <div style={{ fontSize: 24, marginBottom: 8 }}>{item.emoji}</div>}
@@ -424,7 +424,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
                   return (
                     <button key={rid} onClick={() => setSelectedId(rid)} style={{
                       display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px',
-                      background: 'rgba(10,10,10,0.7)', border: '1px solid rgba(16,185,129,0.12)',
+                      background: 'var(--surface-card)', border: '1px solid rgba(16,185,129,0.12)',
                       borderRadius: 11, cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left',
                     }}
                       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(16,185,129,0.28)'; }}
