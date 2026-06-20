@@ -113,7 +113,8 @@ function App() {
 
   const selectedProblem = problems.find(p => p.id === selectedProblemId);
   const sidebarOffset = sidebarCollapsed ? 0 : SIDEBAR_WIDTH;
-  const isHome = currentTab === 'dashboard' && !selectedProblemId;
+  // Show news panel on all pages except the full News page (which already IS the news)
+  const showNewsPanel = currentTab !== 'ai-news';
 
   // Content renderer
   const renderContent = () => {
@@ -196,41 +197,49 @@ function App() {
         display: 'flex',
       }}>
         {/* Main content */}
-        <div style={{ flex: 1, minWidth: 0, padding: isHome ? '28px 32px' : '28px 36px', overflowY: 'auto' }}>
+        <div style={{ flex: 1, minWidth: 0, padding: '28px 36px', overflowY: 'auto' }}>
           {renderContent()}
         </div>
 
-        {/* Right news panel — only on home/dashboard */}
-        {isHome && (
-          <div style={{
-            width: 300,
+        {/* Right news panel — every page except full news tab */}
+        {showNewsPanel && (
+          <div className="news-sidebar-panel" style={{
+            width: 280,
             flexShrink: 0,
             borderLeft: '1px solid var(--border-glass)',
-            overflowY: 'auto',
             display: 'flex',
             flexDirection: 'column',
+            height: 'calc(100vh - 56px)',
+            position: 'sticky',
+            top: 56,
           }}>
+            {/* Panel header */}
             <div style={{
-              padding: '16px 16px 0',
-              position: 'sticky', top: 0,
-              background: 'var(--bg-main)',
-              zIndex: 1,
+              padding: '12px 14px',
               borderBottom: '1px solid var(--border-glass)',
-              paddingBottom: 12,
+              display: 'flex', alignItems: 'center', gap: 8,
+              flexShrink: 0,
             }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ fontSize: 14 }}>📡</span>
-                <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-primary)' }}>News</span>
-                <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#10b981', display: 'inline-block' }} />
-                <button
-                  onClick={() => handleSelectTab('ai-news')}
-                  style={{ marginLeft: 'auto', fontSize: 10, color: '#10b981', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 700 }}
-                >
-                  See all →
-                </button>
-              </div>
+              <span style={{ fontSize: 13 }}>📡</span>
+              <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>Live News</span>
+              <span style={{
+                width: 6, height: 6, borderRadius: '50%', background: '#10b981',
+                display: 'inline-block', boxShadow: '0 0 6px #10b981',
+                animation: 'pulse 2s infinite',
+              }} />
+              <button
+                onClick={() => handleSelectTab('ai-news')}
+                style={{
+                  marginLeft: 'auto', fontSize: 10, color: '#10b981',
+                  background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.2)',
+                  borderRadius: 5, padding: '3px 8px', cursor: 'pointer', fontWeight: 700,
+                }}
+              >
+                Full view →
+              </button>
             </div>
-            <div style={{ flex: 1 }}>
+            {/* Feed */}
+            <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
               <AINewsFeed compact />
             </div>
           </div>

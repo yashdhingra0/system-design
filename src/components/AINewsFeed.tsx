@@ -60,6 +60,8 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState('');
   const [lastFetched, setLastFetched] = useState<Date | null>(null);
+  // Compact sidebar: which article is expanded for inline reading
+  const [activeId, setActiveId] = useState<number | null>(null);
 
   const fetchNews = useCallback(async (cat: string) => {
     setLoading(true);
@@ -94,37 +96,145 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
 
   const noApiKey = error?.includes('NEWS_API_KEY');
 
-  // ── Compact mode: right sidebar list ───────────────────────────────────────
+  // ── Compact mode: right sidebar inline reader ──────────────────────────────
   if (compact) {
+    const activeArticle = activeId !== null ? articles[activeId] : null;
+
     return (
-      <div style={{ padding: '12px 12px' }}>
-        <style>{`@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}`}</style>
-        {loading && Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} style={{ height: 56, borderRadius: 8, marginBottom: 8, background: 'linear-gradient(90deg, rgba(255,255,255,0.03) 25%, var(--border-glass) 50%, rgba(255,255,255,0.03) 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite' }} />
-        ))}
-        {error && !loading && (
-          <p style={{ fontSize: 11, color: 'var(--text-muted)', padding: '8px 4px', lineHeight: 1.6 }}>
-            {noApiKey ? 'Add NEWS_API_KEY in Vercel to enable live news.' : 'Could not load news.'}
-          </p>
+      <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <style>{`
+          @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+          .news-item:hover { background: rgba(16,185,129,0.05) !important; }
+          .news-item.selected { background: rgba(16,185,129,0.08) !important; border-left: 2px solid #10b981 !important; }
+          .news-cat-btn { transition: all 0.15s; }
+          .news-cat-btn:hover { color: var(--text-primary) !important; }
+          .news-cat-btn.active-cat { color: #10b981 !important; border-color: rgba(16,185,129,0.3) !important; background: rgba(16,185,129,0.08) !important; }
+        `}</style>
+
+        {/* Category strip */}
+        <div style={{
+          display: 'flex', gap: 4, padding: '10px 12px',
+          borderBottom: '1px solid var(--border-glass)', flexWrap: 'wrap',
+        }}>
+          {CATEGORIES.map(cat => (
+            <button
+              key={cat.id}
+              onClick={() => { setCategory(cat.id); setActiveId(null); /* reset reader */ }}
+              className={`news-cat-btn${category === cat.id ? ' active-cat' : ''}`}
+              style={{
+                fontSize: 10, padding: '3px 8px', borderRadius: 5,
+                border: '1px solid var(--border-glass)',
+                background: 'transparent', cursor: 'pointer',
+                color: 'var(--text-muted)', fontWeight: 600,
+              }}
+            >
+              {cat.emoji} {cat.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Article preview (expanded) */}
+        {activeArticle && (
+          <div style={{
+            borderBottom: '1px solid var(--border-glass)',
+            background: 'var(--surface-elevated)',
+            flexShrink: 0,
+          }}>
+            {activeArticle.urlToImage && (
+              <div style={{ height: 130, overflow: 'hidden' }}>
+                <img
+                  src={activeArticle.urlToImage}
+                  alt=""
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  onError={e => { (e.currentTarget as HTMLImageElement).parentElement!.style.display = 'none'; }}
+                />
+              </div>
+            )}
+            <div style={{ padding: '12px 14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                <span style={{ fontSize: 9, fontWeight: 800, color: '#10b981', background: 'rgba(16,185,129,0.1)', padding: '2px 6px', borderRadius: 4 }}>
+                  {activeArticle.source.name}
+                </span>
+                <span style={{ fontSize: 9, color: 'var(--text-muted)' }}>
+                  {timeAgo(activeArticle.publishedAt)}
+                </span>
+                <button
+                  onClick={() => setActiveId(null)}
+                  style={{ marginLeft: 'auto', fontSize: 11, background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}
+                >✕</button>
+              </div>
+              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.45, marginBottom: 6 }}>
+                {activeArticle.title}
+              </p>
+              {activeArticle.description && (
+                <p style={{ fontSize: 11, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 10 }}>
+                  {activeArticle.description}
+                </p>
+              )}
+              <a
+                href={activeArticle.url}
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 5,
+                  fontSize: 11, fontWeight: 700, color: '#10b981',
+                  textDecoration: 'none',
+                  background: 'rgba(16,185,129,0.08)',
+                  border: '1px solid rgba(16,185,129,0.2)',
+                  borderRadius: 6, padding: '5px 10px',
+                }}
+              >
+                <ExternalLink size={10} /> Read full article
+              </a>
+            </div>
+          </div>
         )}
-        {!loading && !error && articles.slice(0, 12).map((a, i) => (
-          <a key={i} href={a.url} target="_blank" rel="noreferrer" style={{
-            display: 'block', padding: '10px 6px', borderBottom: '1px solid var(--border-glass)',
-            textDecoration: 'none', transition: 'background 0.12s',
-          }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(16,185,129,0.05)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
-          >
-            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.45, marginBottom: 4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-              {a.title}
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <span style={{ fontSize: 10, color: '#10b981', fontWeight: 600 }}>{a.source.name}</span>
-              <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>· {timeAgo(a.publishedAt)}</span>
-              <ExternalLink size={9} color="var(--text-muted)" style={{ marginLeft: 'auto' }} />
-            </div>
-          </a>
-        ))}
+
+        {/* Article list */}
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          {loading && Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} style={{
+              height: 58, margin: '6px 12px', borderRadius: 7,
+              background: 'linear-gradient(90deg, rgba(255,255,255,0.03) 25%, var(--border-glass) 50%, rgba(255,255,255,0.03) 75%)',
+              backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite',
+            }} />
+          ))}
+
+          {error && !loading && (
+            <p style={{ fontSize: 11, color: 'var(--text-muted)', padding: '16px', lineHeight: 1.6 }}>
+              {noApiKey ? 'Add NEWS_API_KEY in Vercel env vars to enable live news.' : 'Could not load news.'}
+            </p>
+          )}
+
+          {!loading && !error && articles.map((a, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveId(activeId === i ? null : i)}
+              className={`news-item${activeId === i ? ' selected' : ''}`}
+              style={{
+                display: 'block', width: '100%', padding: '10px 12px',
+                borderBottom: '1px solid var(--border-glass)',
+                background: 'transparent', border: 'none',
+                borderLeft: activeId === i ? '2px solid #10b981' : '2px solid transparent',
+                cursor: 'pointer', textAlign: 'left', transition: 'all 0.12s',
+              }}
+            >
+              <div style={{
+                fontSize: 12, fontWeight: 600,
+                color: activeId === i ? 'var(--text-primary)' : 'var(--text-secondary)',
+                lineHeight: 1.45, marginBottom: 4,
+                display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden',
+              }}>
+                {a.title}
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                <span style={{ fontSize: 9, color: '#10b981', fontWeight: 700 }}>{a.source.name}</span>
+                <span style={{ fontSize: 9, color: 'var(--text-muted)' }}>· {timeAgo(a.publishedAt)}</span>
+                {a.urlToImage && <span style={{ marginLeft: 'auto', fontSize: 9, color: 'var(--text-muted)' }}>📷</span>}
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     );
   }
