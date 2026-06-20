@@ -456,7 +456,7 @@ export const PrepTools: React.FC = () => {
             </div>
 
             {/* Comparison explanation board */}
-            <div style={{ background: 'rgba(99,102,241,0.05)', border: '1px dashed var(--color-primary)', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
+            <div style={{ background: 'rgba(16,185,129,0.05)', border: '1px dashed var(--color-primary)', borderRadius: '12px', padding: '24px', textAlign: 'center' }}>
               <div style={{ fontSize: '18px', fontWeight: 700, marginBottom: '10px' }}>
                 {opB.name} is <span style={{ color: 'var(--color-gold)', fontSize: '22px', fontWeight: 800 }}>{multiplier.toLocaleString(undefined, { maximumFractionDigits: 1 })}x</span> slower than {opA.name}!
               </div>
@@ -489,7 +489,7 @@ export const PrepTools: React.FC = () => {
                     padding: '12px',
                     borderRadius: '8px',
                     fontSize: '13px',
-                    background: idx === opAIndex ? 'rgba(99,102,241,0.06)' : idx === opBIndex ? 'rgba(245,158,11,0.06)' : 'rgba(255,255,255,0.01)',
+                    background: idx === opAIndex ? 'rgba(16,185,129,0.06)' : idx === opBIndex ? 'rgba(245,158,11,0.06)' : 'rgba(255,255,255,0.01)',
                     border: '1px solid',
                     borderColor: idx === opAIndex ? 'var(--color-primary)' : idx === opBIndex ? 'var(--color-gold)' : 'transparent',
                     alignItems: 'center',

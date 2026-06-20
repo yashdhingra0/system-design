@@ -452,7 +452,7 @@ export const SystemEvolution: React.FC = () => {
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '6px',
           marginTop: '12px', padding: '6px 14px', borderRadius: '20px',
-          background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.2)',
+          background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)',
           fontSize: '11px', color: 'var(--color-primary)', fontWeight: 700,
         }}>
           ✦ Exclusive feature — no other platform shows you the evolution story

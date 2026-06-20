@@ -71,9 +71,9 @@ export const RevisionNotesView: React.FC = () => {
             key={cat}
             onClick={() => setSelectedCat(cat)}
             style={{
-              background: selectedCat === cat ? 'rgba(99, 102, 241, 0.08)' : 'transparent',
+              background: selectedCat === cat ? 'rgba(16,185,129,0.08)' : 'transparent',
               border: '1px solid',
-              borderColor: selectedCat === cat ? 'rgba(99, 102, 241, 0.2)' : 'var(--border-glass)',
+              borderColor: selectedCat === cat ? 'rgba(16,185,129,0.2)' : 'var(--border-glass)',
               color: selectedCat === cat ? 'var(--text-primary)' : 'var(--text-secondary)',
               padding: '8px 16px',
               borderRadius: '8px',

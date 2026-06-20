@@ -123,7 +123,7 @@ const ROADMAP_PHASES = [
     title: 'Core Patterns',
     subtitle: 'Learn the patterns you\'ll use in every design',
     color: 'var(--color-secondary)',
-    colorRaw: '#0ea5e9',
+    colorRaw: '#10b981',
     steps: [
       { label: 'Study all 15 Design Patterns (Architectural first)', tab: 'design-patterns', tip: 'Circuit Breaker, CQRS, Saga — must-know for distributed system rounds' },
       { label: 'Complete 10 Easy problems on the Dashboard', tab: 'dashboard', tip: 'URL Shortener, Pastebin, Rate Limiter — warm up your design muscle' },
@@ -136,7 +136,7 @@ const ROADMAP_PHASES = [
     title: 'Interview Practice',
     subtitle: 'Simulate real interview conditions',
     color: 'var(--color-primary)',
-    colorRaw: '#6366f1',
+    colorRaw: '#10b981',
     steps: [
       { label: 'Solve 15 Medium problems (timed, 45 min each)', tab: 'dashboard', tip: 'Use the timer in Prep Sandbox. Design out loud as you would in an interview.' },
       { label: 'Answer 100 Q&As in study mode', tab: 'questions', tip: 'Use flashcard mode — cover the answer, try yourself first' },
@@ -331,8 +331,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
               style={{
                 display: 'flex', alignItems: 'center', gap: '6px',
                 padding: '8px 16px', borderRadius: '7px', border: '1px solid',
-                borderColor: dashView === v ? 'rgba(99,102,241,0.3)' : 'transparent',
-                background: dashView === v ? 'rgba(99,102,241,0.08)' : 'transparent',
+                borderColor: dashView === v ? 'rgba(16,185,129,0.3)' : 'transparent',
+                background: dashView === v ? 'rgba(16,185,129,0.08)' : 'transparent',
                 color: dashView === v ? 'var(--color-primary)' : 'var(--text-muted)',
                 fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
               }}
@@ -568,7 +568,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                   fontWeight: 500,
                   cursor: 'pointer',
                   border: '1px solid',
-                  background: isSelected ? 'rgba(99,102,241,0.1)' : 'rgba(255,255,255,0.02)',
+                  background: isSelected ? 'rgba(16,185,129,0.1)' : 'rgba(255,255,255,0.02)',
                   borderColor: isSelected ? 'var(--color-primary)' : 'var(--border-glass)',
                   color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
                   transition: 'var(--transition-smooth)'
@@ -658,7 +658,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       </span>
 
                       {prob.isDetailed ? (
-                        <span style={{ fontSize: '9px', background: 'rgba(99, 102, 241, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(99, 102, 241, 0.2)', padding: '1px 6px', borderRadius: '3px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>✦ Deep Dive</span>
+                        <span style={{ fontSize: '9px', background: 'rgba(16,185,129,0.1)', color: 'var(--color-primary)', border: '1px solid rgba(16,185,129,0.2)', padding: '1px 6px', borderRadius: '3px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>✦ Deep Dive</span>
                       ) : (
                         <span style={{ fontSize: '9px', background: 'rgba(255, 255, 255, 0.02)', color: 'var(--text-muted)', border: '1px solid var(--border-glass)', padding: '1px 6px', borderRadius: '3px', textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.05em', whiteSpace: 'nowrap' }}>📝 Summary</span>
                       )}

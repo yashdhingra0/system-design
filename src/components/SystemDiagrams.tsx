@@ -178,7 +178,7 @@ const systems: SystemMeta[] = [
 
 const NODE_COLORS = {
   client:   { bg: 'rgba(255,255,255,0.05)', border: 'rgba(255,255,255,0.15)', text: '#f8fafc' },
-  gateway:  { bg: 'rgba(99,102,241,0.08)',  border: 'rgba(99,102,241,0.4)',   text: '#818cf8' },
+  gateway:  { bg: 'rgba(16,185,129,0.08)',  border: 'rgba(16,185,129,0.4)',   text: '#34d399' },
   service:  { bg: 'rgba(14,165,233,0.08)',  border: 'rgba(14,165,233,0.4)',   text: '#38bdf8' },
   cache:    { bg: 'rgba(245,158,11,0.08)',  border: 'rgba(245,158,11,0.4)',   text: '#fbbf24' },
   database: { bg: 'rgba(16,185,129,0.08)',  border: 'rgba(16,185,129,0.4)',   text: '#34d399' },
@@ -232,7 +232,7 @@ function makeDiagrams(): Record<string, Diagram> {
       edges: [
         { from: 'client',    to: 'api_gw',    label: 'HTTPS',    animated: true },
         { from: 'api_gw',    to: 'upload',    label: 'upload',   color: 'rgba(14,165,233,0.8)' },
-        { from: 'api_gw',    to: 'video_svc', label: 'play',     color: 'rgba(99,102,241,0.8)' },
+        { from: 'api_gw',    to: 'video_svc', label: 'play',     color: 'rgba(16,185,129,0.8)' },
         { from: 'upload',    to: 'transcode', label: 'enqueue',  color: 'rgba(245,158,11,0.8)', animated: true },
         { from: 'transcode', to: 'gcs',       label: 'store',    color: 'rgba(52,211,153,0.8)' },
         { from: 'transcode', to: 'cdn',       label: 'push',     color: 'rgba(251,113,133,0.8)' },
@@ -259,7 +259,7 @@ function makeDiagrams(): Record<string, Diagram> {
       edges: [
         { from: 'client',    to: 'api_gw',    animated: true },
         { from: 'api_gw',    to: 'tweet_svc', label: 'POST tweet', color: 'rgba(14,165,233,0.8)' },
-        { from: 'api_gw',    to: 'timeline',  label: 'GET timeline', color: 'rgba(99,102,241,0.8)' },
+        { from: 'api_gw',    to: 'timeline',  label: 'GET timeline', color: 'rgba(16,185,129,0.8)' },
         { from: 'tweet_svc', to: 'cassandra', label: 'persist',  color: 'rgba(16,185,129,0.8)' },
         { from: 'tweet_svc', to: 'kafka',     label: 'publish',  color: 'rgba(167,139,250,0.8)', animated: true },
         { from: 'kafka',     to: 'fanout',    label: 'consume',  color: 'rgba(245,158,11,0.8)', animated: true },
@@ -290,7 +290,7 @@ function makeDiagrams(): Record<string, Diagram> {
         { from: 'presence', to: 'redis',    label: 'pub/sub',    color: 'rgba(245,158,11,0.8)' },
         { from: 'redis',    to: 'gateway',  label: 'fan-out',    color: 'rgba(245,158,11,0.8)', animated: true },
         { from: 'gateway',  to: 'bob',      label: 'push msg',   color: 'rgba(88,101,242,0.8)', animated: true },
-        { from: 'alice',    to: 'sfu',      label: 'WebRTC',     color: 'rgba(99,102,241,0.6)', dashed: true },
+        { from: 'alice',    to: 'sfu',      label: 'WebRTC',     color: 'rgba(16,185,129,0.6)', dashed: true },
       ],
     },
 
@@ -314,7 +314,7 @@ function makeDiagrams(): Record<string, Diagram> {
         { from: 'api_gw',   to: 'location',  label: 'update loc',   color: 'rgba(16,185,129,0.8)' },
         { from: 'location', to: 'redis_geo', label: 'GEOADD',       color: 'rgba(245,158,11,0.8)', animated: true },
         { from: 'dispatch', to: 'redis_geo', label: 'GEORADIUS',    color: 'rgba(245,158,11,0.8)' },
-        { from: 'dispatch', to: 'maps',      label: 'ETA',          color: 'rgba(99,102,241,0.6)' },
+        { from: 'dispatch', to: 'maps',      label: 'ETA',          color: 'rgba(16,185,129,0.6)' },
         { from: 'dispatch', to: 'kafka',     label: 'trip created', color: 'rgba(167,139,250,0.8)', animated: true },
         { from: 'kafka',    to: 'pricing',   label: 'demand signals',color: 'rgba(245,158,11,0.6)', dashed: true },
         { from: 'pricing',  to: 'redis_geo', label: 'update surge', color: 'rgba(245,158,11,0.6)', dashed: true },
@@ -336,7 +336,7 @@ function makeDiagrams(): Record<string, Diagram> {
       ],
       edges: [
         { from: 'client',    to: 'zuul',      animated: true },
-        { from: 'zuul',      to: 'rec',       label: 'browse',    color: 'rgba(99,102,241,0.8)' },
+        { from: 'zuul',      to: 'rec',       label: 'browse',    color: 'rgba(16,185,129,0.8)' },
         { from: 'zuul',      to: 'streaming', label: 'play',      color: 'rgba(14,165,233,0.8)' },
         { from: 'transcode', to: 'cdn',       label: 'push segments', color: 'rgba(251,113,133,0.8)', animated: true },
         { from: 'streaming', to: 'cdn',       label: 'manifest URL',  color: 'rgba(251,113,133,0.8)' },
@@ -362,7 +362,7 @@ function makeDiagrams(): Record<string, Diagram> {
       edges: [
         { from: 'client',  to: 'api_gw',  animated: true },
         { from: 'api_gw',  to: 'upload',  label: 'upload photo', color: 'rgba(14,165,233,0.8)' },
-        { from: 'api_gw',  to: 'feed',    label: 'get feed',     color: 'rgba(99,102,241,0.8)' },
+        { from: 'api_gw',  to: 'feed',    label: 'get feed',     color: 'rgba(16,185,129,0.8)' },
         { from: 'upload',  to: 'storage', label: 'store',        color: 'rgba(52,211,153,0.8)' },
         { from: 'upload',  to: 'kafka',   label: 'UploadComplete', color: 'rgba(167,139,250,0.8)', animated: true },
         { from: 'kafka',   to: 'redis',   label: 'fan-out',      color: 'rgba(245,158,11,0.8)', animated: true },
@@ -411,7 +411,7 @@ function makeDiagrams(): Record<string, Diagram> {
       edges: [
         { from: 'client',  to: 'api_gw',  animated: true },
         { from: 'api_gw',  to: 'search',  label: 'search',     color: 'rgba(14,165,233,0.8)' },
-        { from: 'api_gw',  to: 'cart',    label: 'add to cart', color: 'rgba(99,102,241,0.8)' },
+        { from: 'api_gw',  to: 'cart',    label: 'add to cart', color: 'rgba(16,185,129,0.8)' },
         { from: 'api_gw',  to: 'order',   label: 'checkout',   color: 'rgba(245,158,11,0.8)' },
         { from: 'cart',    to: 'dynamo',  label: 'read/write',  color: 'rgba(16,185,129,0.8)' },
         { from: 'order',   to: 'dynamo',  label: 'reserve inv', color: 'rgba(16,185,129,0.8)' },
@@ -438,7 +438,7 @@ function makeDiagrams(): Record<string, Diagram> {
         { from: 'client',  to: 'api',     animated: true },
         { from: 'api',     to: 'git_svc', label: 'git protocol', color: 'rgba(35,134,54,0.8)' },
         { from: 'api',     to: 'actions', label: 'trigger workflow', color: 'rgba(14,165,233,0.8)' },
-        { from: 'api',     to: 'search',  label: 'code search', color: 'rgba(99,102,241,0.8)' },
+        { from: 'api',     to: 'search',  label: 'code search', color: 'rgba(16,185,129,0.8)' },
         { from: 'git_svc', to: 'gitaly',  label: 'read/write objects', color: 'rgba(35,134,54,0.8)' },
         { from: 'api',     to: 'mysql',   label: 'metadata',    color: 'rgba(16,185,129,0.8)' },
         { from: 'api',     to: 'kafka',   label: 'events',      color: 'rgba(167,139,250,0.8)', animated: true },
@@ -464,13 +464,13 @@ function makeDiagrams(): Record<string, Diagram> {
       edges: [
         { from: 'client',  to: 'api_gw',  animated: true },
         { from: 'api_gw',  to: 'search',  label: 'search',     color: 'rgba(14,165,233,0.8)' },
-        { from: 'api_gw',  to: 'listing', label: 'view listing', color: 'rgba(99,102,241,0.8)' },
+        { from: 'api_gw',  to: 'listing', label: 'view listing', color: 'rgba(16,185,129,0.8)' },
         { from: 'api_gw',  to: 'booking', label: 'book',        color: 'rgba(245,158,11,0.8)' },
         { from: 'search',  to: 'es',      label: 'query',       color: 'rgba(14,165,233,0.8)' },
         { from: 'listing', to: 'redis',   label: 'cache hot',   color: 'rgba(245,158,11,0.8)' },
         { from: 'booking', to: 'mysql',   label: 'lock + write', color: 'rgba(16,185,129,0.8)' },
         { from: 'booking', to: 'kafka',   label: 'BookingConfirmed', color: 'rgba(167,139,250,0.8)', animated: true },
-        { from: 'listing', to: 'pricing', label: 'price signals', color: 'rgba(99,102,241,0.5)', dashed: true },
+        { from: 'listing', to: 'pricing', label: 'price signals', color: 'rgba(16,185,129,0.5)', dashed: true },
         { from: 'search',  to: 'redis',   label: 'cache results', color: 'rgba(245,158,11,0.6)', dashed: true },
       ],
     },
@@ -590,9 +590,9 @@ function renderDiagram(
               width={NODE_W} height={NODE_H}
               rx="9"
               fill={colors.bg}
-              stroke={isSelected ? '#6366f1' : colors.border}
+              stroke={isSelected ? '#10b981' : colors.border}
               strokeWidth={isSelected ? '2.5' : '1.5'}
-              filter={isSelected ? 'drop-shadow(0 0 10px rgba(99,102,241,0.5))' : undefined}
+              filter={isSelected ? 'drop-shadow(0 0 10px rgba(16,185,129,0.5))' : undefined}
             />
             <text
               x={node.x + NODE_W / 2}
@@ -657,7 +657,7 @@ export const SystemDiagrams: React.FC = () => {
         <div style={{
           display: 'inline-flex', alignItems: 'center', gap: '6px',
           padding: '6px 14px', borderRadius: '20px', marginBottom: '20px',
-          background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.2)',
+          background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.2)',
           fontSize: '12px', color: 'var(--color-primary)', fontWeight: 600
         }}>
           <Layers size={12} />
@@ -680,7 +680,7 @@ export const SystemDiagrams: React.FC = () => {
           <div className="glass-panel" style={{
             padding: '16px 20px', marginBottom: '20px',
             borderLeft: '4px solid var(--color-primary)',
-            background: 'rgba(99,102,241,0.04)',
+            background: 'rgba(16,185,129,0.04)',
           }}>
             <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-primary)', marginBottom: '6px' }}>
               {nodeDetail.label} {nodeDetail.sublabel ? `(${nodeDetail.sublabel})` : ''}

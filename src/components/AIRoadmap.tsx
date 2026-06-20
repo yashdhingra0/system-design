@@ -8,7 +8,7 @@ interface AIRoadmapProps {
 
 const DIFFICULTY_COLORS: Record<string, { bg: string; text: string }> = {
   Beginner:     { bg: 'rgba(52,211,153,0.12)', text: '#34d399' },
-  Intermediate: { bg: 'rgba(129,140,248,0.12)', text: '#818cf8' },
+  Intermediate: { bg: 'rgba(52,211,153,0.12)', text: '#34d399' },
   Advanced:     { bg: 'rgba(251,191,36,0.12)', text: '#fbbf24' },
 };
 
@@ -35,8 +35,8 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
       {/* Hero */}
       <div style={{
-        background: 'linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(34,211,238,0.06) 100%)',
-        border: '1px solid rgba(99,102,241,0.18)',
+        background: 'linear-gradient(135deg, rgba(16,185,129,0.1) 0%, rgba(52,211,153,0.06) 100%)',
+        border: '1px solid rgba(16,185,129,0.18)',
         borderRadius: 20,
         padding: '36px 40px',
         marginBottom: 40,
@@ -46,7 +46,7 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
         <div style={{
           position: 'absolute', top: -40, right: -40,
           width: 200, height: 200,
-          background: 'radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(52,211,153,0.15) 0%, transparent 70%)',
           borderRadius: '50%',
         }} />
         <div style={{ position: 'relative' }}>
@@ -68,13 +68,13 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
               <span style={{ fontSize: 13, color: 'var(--text-secondary)' }}>
                 {completedCount} / {totalTopics} topics completed
               </span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#818cf8' }}>{progressPct}%</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: '#34d399' }}>{progressPct}%</span>
             </div>
             <div style={{ height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 6, overflow: 'hidden' }}>
               <div style={{
                 height: '100%',
                 width: `${progressPct}%`,
-                background: 'linear-gradient(90deg, #6366f1, #22d3ee)',
+                background: 'linear-gradient(90deg, #10b981, #34d399)',
                 borderRadius: 6,
                 transition: 'width 0.4s ease',
               }} />
@@ -100,7 +100,7 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
                   marginLeft: 20,
                   width: 2,
                   height: 20,
-                  background: 'rgba(99,102,241,0.2)',
+                  background: 'rgba(16,185,129,0.2)',
                 }} />
               )}
               <div style={{
@@ -134,8 +134,8 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
                 const diff = DIFFICULTY_COLORS[topic.difficulty];
                 return (
                   <div key={topic.id} style={{
-                    background: done ? 'rgba(52,211,153,0.05)' : 'rgba(13,13,32,0.9)',
-                    border: `1px solid ${done ? 'rgba(52,211,153,0.2)' : 'rgba(99,102,241,0.12)'}`,
+                    background: done ? 'rgba(52,211,153,0.05)' : 'rgba(10,10,10,0.9)',
+                    border: `1px solid ${done ? 'rgba(52,211,153,0.2)' : 'rgba(16,185,129,0.12)'}`,
                     borderRadius: 14,
                     padding: '18px 18px 14px',
                     cursor: 'pointer',
@@ -144,11 +144,11 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
                   }}
                     onClick={() => onSelectTopic(topic.id)}
                     onMouseEnter={e => {
-                      (e.currentTarget as HTMLDivElement).style.borderColor = done ? 'rgba(52,211,153,0.4)' : 'rgba(99,102,241,0.3)';
+                      (e.currentTarget as HTMLDivElement).style.borderColor = done ? 'rgba(52,211,153,0.4)' : 'rgba(16,185,129,0.3)';
                       (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-2px)';
                     }}
                     onMouseLeave={e => {
-                      (e.currentTarget as HTMLDivElement).style.borderColor = done ? 'rgba(52,211,153,0.2)' : 'rgba(99,102,241,0.12)';
+                      (e.currentTarget as HTMLDivElement).style.borderColor = done ? 'rgba(52,211,153,0.2)' : 'rgba(16,185,129,0.12)';
                       (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
                     }}
                   >
@@ -190,12 +190,12 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
                         marginTop: 12, width: '100%',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
                         padding: '8px 0', borderRadius: 8,
-                        background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.16)',
-                        color: '#818cf8', fontSize: 12, fontWeight: 600, cursor: 'pointer',
+                        background: 'rgba(16,185,129,0.08)', border: '1px solid rgba(16,185,129,0.16)',
+                        color: '#34d399', fontSize: 12, fontWeight: 600, cursor: 'pointer',
                         transition: 'all 0.2s',
                       }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(99,102,241,0.15)'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(99,102,241,0.08)'; }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(16,185,129,0.15)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(16,185,129,0.08)'; }}
                     >
                       <BookOpen size={13} /> Read topic <ChevronRight size={13} />
                     </button>
@@ -210,12 +210,12 @@ export const AIRoadmap: React.FC<AIRoadmapProps> = ({ onSelectTopic }) => {
       {/* Footer tip */}
       <div style={{
         display: 'flex', alignItems: 'flex-start', gap: 12,
-        background: 'rgba(34,211,238,0.06)', border: '1px solid rgba(34,211,238,0.15)',
+        background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.15)',
         borderRadius: 12, padding: '14px 18px', marginTop: 8,
       }}>
-        <Zap size={16} color="#22d3ee" style={{ flexShrink: 0, marginTop: 2 }} />
+        <Zap size={16} color="#34d399" style={{ flexShrink: 0, marginTop: 2 }} />
         <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
-          <strong style={{ color: '#22d3ee' }}>Pro tip:</strong> You don't need to complete every phase before building. After Phase 2 (LLM Ecosystem), start building something small using the AI APIs. Real projects accelerate learning faster than reading alone.
+          <strong style={{ color: '#34d399' }}>Pro tip:</strong> You don't need to complete every phase before building. After Phase 2 (LLM Ecosystem), start building something small using the AI APIs. Real projects accelerate learning faster than reading alone.
         </p>
       </div>
     </div>

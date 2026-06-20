@@ -232,7 +232,7 @@ export const Quiz: React.FC<QuizProps> = ({ onNavigateToContent }) => {
               fontSize: '14px',
               fontWeight: 600,
               cursor: 'pointer',
-              boxShadow: '0 4px 15px rgba(99, 102, 241, 0.3)'
+              boxShadow: '0 4px 15px rgba(16,185,129,0.3)'
             }}
           >
             <RotateCcw size={16} />
@@ -292,7 +292,7 @@ export const Quiz: React.FC<QuizProps> = ({ onNavigateToContent }) => {
               }
             } else if (isSelected) {
               borderColor = 'var(--color-primary)';
-              bgColor = 'rgba(99, 102, 241, 0.05)';
+              bgColor = 'rgba(16,185,129,0.05)';
             }
 
             return (
@@ -414,8 +414,8 @@ export const Quiz: React.FC<QuizProps> = ({ onNavigateToContent }) => {
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '6px',
-                background: 'rgba(99, 102, 241, 0.1)',
-                border: '1px solid rgba(99, 102, 241, 0.2)',
+                background: 'rgba(16,185,129,0.1)',
+                border: '1px solid rgba(16,185,129,0.2)',
                 borderRadius: '6px',
                 padding: '8px 14px',
                 color: 'var(--color-primary)',

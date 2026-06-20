@@ -93,7 +93,7 @@ export const ConceptDetail: React.FC<ConceptDetailProps> = ({
             <div key={idx}>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '24px', alignItems: 'center' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <div style={{ background: 'rgba(99,102,241,0.05)', border: '1px solid rgba(99,102,241,0.1)', padding: '12px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, textAlign: 'center', color: 'var(--color-primary)' }}>
+                  <div style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.1)', padding: '12px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, textAlign: 'center', color: 'var(--color-primary)' }}>
                     {t.optionA}
                   </div>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)', textAlign: 'center' }}>VS</div>

@@ -16,12 +16,12 @@ interface AILearningHubProps {
 }
 
 const PHASE_COLORS: Record<number, string> = {
-  1: '#34d399', 2: '#818cf8', 3: '#22d3ee', 4: '#fbbf24', 5: '#f87171',
+  1: '#34d399', 2: '#34d399', 3: '#34d399', 4: '#fbbf24', 5: '#f87171',
 };
 
 const DIFFICULTY_STYLE: Record<string, { bg: string; color: string }> = {
   Beginner:     { bg: 'rgba(52,211,153,0.12)', color: '#34d399' },
-  Intermediate: { bg: 'rgba(129,140,248,0.12)', color: '#818cf8' },
+  Intermediate: { bg: 'rgba(52,211,153,0.12)', color: '#34d399' },
   Advanced:     { bg: 'rgba(251,191,36,0.12)', color: '#fbbf24' },
 };
 
@@ -34,14 +34,14 @@ const CodeBlock: React.FC<{ title: string; language: string; code: string }> = (
     setTimeout(() => setCopied(false), 2000);
   };
   return (
-    <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(99,102,241,0.18)', marginTop: 20, marginBottom: 20 }}>
+    <div style={{ borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(16,185,129,0.18)', marginTop: 20, marginBottom: 20 }}>
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '10px 16px',
-        background: 'rgba(99,102,241,0.1)',
-        borderBottom: '1px solid rgba(99,102,241,0.14)',
+        background: 'rgba(16,185,129,0.1)',
+        borderBottom: '1px solid rgba(16,185,129,0.14)',
       }}>
-        <span style={{ fontSize: 12, fontWeight: 600, color: '#818cf8' }}>{title}</span>
+        <span style={{ fontSize: 12, fontWeight: 600, color: '#34d399' }}>{title}</span>
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>{language}</span>
           <button onClick={copy} style={{
@@ -57,7 +57,7 @@ const CodeBlock: React.FC<{ title: string; language: string; code: string }> = (
       </div>
       <pre style={{
         margin: 0, padding: '20px 22px', overflowX: 'auto',
-        background: 'rgba(5,5,20,0.85)',
+        background: 'rgba(10,10,10,0.85)',
         fontFamily: 'var(--font-mono)', fontSize: 13, lineHeight: 1.75,
         color: '#e2e8f0',
       }}>
@@ -77,10 +77,10 @@ const SectionRenderer: React.FC<{ section: AISection }> = ({ section }) => {
     return (
       <div style={{
         display: 'flex', gap: 12, alignItems: 'flex-start',
-        background: 'rgba(34,211,238,0.06)', border: '1px solid rgba(34,211,238,0.18)',
+        background: 'rgba(52,211,153,0.06)', border: '1px solid rgba(52,211,153,0.18)',
         borderRadius: 12, padding: '14px 18px', margin: '20px 0',
       }}>
-        <Lightbulb size={16} color="#22d3ee" style={{ flexShrink: 0, marginTop: 2 }} />
+        <Lightbulb size={16} color="#34d399" style={{ flexShrink: 0, marginTop: 2 }} />
         <p style={{ fontSize: 14, color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
           {section.content}
         </p>
@@ -112,13 +112,13 @@ const SectionRenderer: React.FC<{ section: AISection }> = ({ section }) => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 12 }}>
           {section.items.map((item, i) => (
             <div key={i} style={{
-              background: 'rgba(13,13,32,0.8)', border: '1px solid rgba(99,102,241,0.12)',
+              background: 'rgba(10,10,10,0.8)', border: '1px solid rgba(16,185,129,0.12)',
               borderRadius: 12, padding: '16px',
             }}>
               {item.emoji && <div style={{ fontSize: 24, marginBottom: 8 }}>{item.emoji}</div>}
               <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>{item.title}</div>
               {item.badge && (
-                <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 5, background: 'rgba(99,102,241,0.12)', color: '#818cf8', fontWeight: 600, display: 'inline-block', marginBottom: 6 }}>
+                <span style={{ fontSize: 10, padding: '2px 7px', borderRadius: 5, background: 'rgba(16,185,129,0.12)', color: '#34d399', fontWeight: 600, display: 'inline-block', marginBottom: 6 }}>
                   {item.badge}
                 </span>
               )}
@@ -141,7 +141,7 @@ const SectionRenderer: React.FC<{ section: AISection }> = ({ section }) => {
             <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
               <div style={{
                 width: 28, height: 28, borderRadius: 8, flexShrink: 0,
-                background: 'linear-gradient(135deg, #6366f1, #22d3ee)',
+                background: 'linear-gradient(135deg, #10b981, #34d399)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 12, fontWeight: 800, color: '#fff',
               }}>{i + 1}</div>
@@ -252,7 +252,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
       {/* Sidebar list */}
       <div style={{
         width: 280, flexShrink: 0, overflowY: 'auto',
-        borderRight: '1px solid rgba(99,102,241,0.1)',
+        borderRight: '1px solid rgba(16,185,129,0.1)',
         paddingRight: 0,
         display: 'flex', flexDirection: 'column', gap: 0,
       }}>
@@ -266,7 +266,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
               placeholder="Search topics…"
               style={{
                 width: '100%', padding: '8px 10px 8px 30px', borderRadius: 9,
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(99,102,241,0.14)',
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(16,185,129,0.14)',
                 color: 'var(--text-primary)', fontSize: 13, outline: 'none',
               }}
             />
@@ -277,9 +277,9 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
               onClick={() => setFilterPhase(null)}
               style={{
                 fontSize: 10, padding: '3px 8px', borderRadius: 6, cursor: 'pointer',
-                background: filterPhase === null ? 'rgba(99,102,241,0.2)' : 'transparent',
-                border: `1px solid ${filterPhase === null ? 'rgba(99,102,241,0.35)' : 'rgba(99,102,241,0.1)'}`,
-                color: filterPhase === null ? '#818cf8' : 'var(--text-muted)',
+                background: filterPhase === null ? 'rgba(16,185,129,0.2)' : 'transparent',
+                border: `1px solid ${filterPhase === null ? 'rgba(16,185,129,0.35)' : 'rgba(16,185,129,0.1)'}`,
+                color: filterPhase === null ? '#34d399' : 'var(--text-muted)',
                 fontWeight: 600,
               }}
             >All</button>
@@ -288,7 +288,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
                 style={{
                   fontSize: 10, padding: '3px 8px', borderRadius: 6, cursor: 'pointer',
                   background: filterPhase === p.id ? `${p.color}20` : 'transparent',
-                  border: `1px solid ${filterPhase === p.id ? `${p.color}40` : 'rgba(99,102,241,0.1)'}`,
+                  border: `1px solid ${filterPhase === p.id ? `${p.color}40` : 'rgba(16,185,129,0.1)'}`,
                   color: filterPhase === p.id ? p.color : 'var(--text-muted)',
                   fontWeight: 600,
                 }}
@@ -305,16 +305,16 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
           return (
             <button key={topic.id} onClick={() => setSelectedId(topic.id)} style={{
               display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 12px 12px 0',
-              borderBottom: '1px solid rgba(99,102,241,0.07)',
-              background: isActive ? 'rgba(99,102,241,0.08)' : 'transparent',
-              borderLeft: `3px solid ${isActive ? '#818cf8' : 'transparent'}`,
+              borderBottom: '1px solid rgba(16,185,129,0.07)',
+              background: isActive ? 'rgba(16,185,129,0.08)' : 'transparent',
+              borderLeft: `3px solid ${isActive ? '#34d399' : 'transparent'}`,
               paddingLeft: isActive ? 9 : 12,
               cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left', width: '100%',
               border: 'none',
             }}>
               <span style={{ fontSize: 20, flexShrink: 0, marginTop: 1 }}>{topic.emoji}</span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 12, fontWeight: done ? 600 : 500, color: isActive ? '#818cf8' : (done ? '#34d399' : 'var(--text-primary)'), lineHeight: 1.35, marginBottom: 3 }}>
+                <div style={{ fontSize: 12, fontWeight: done ? 600 : 500, color: isActive ? '#34d399' : (done ? '#34d399' : 'var(--text-primary)'), lineHeight: 1.35, marginBottom: 3 }}>
                   {topic.title}
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
@@ -338,7 +338,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
       <div style={{ flex: 1, overflowY: 'auto', paddingLeft: 40, paddingRight: 16 }}>
         {/* Article header */}
         <div style={{
-          background: `linear-gradient(135deg, ${phaseColor}0d 0%, rgba(34,211,238,0.04) 100%)`,
+          background: `linear-gradient(135deg, ${phaseColor}0d 0%, rgba(52,211,153,0.04) 100%)`,
           border: `1px solid ${phaseColor}25`,
           borderRadius: 18, padding: '32px 36px', marginBottom: 36, marginTop: 2,
           position: 'relative', overflow: 'hidden',
@@ -413,7 +413,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
 
           {/* Related topics */}
           {selected.relatedTopics.length > 0 && (
-            <div style={{ marginTop: 48, paddingTop: 28, borderTop: '1px solid rgba(99,102,241,0.12)' }}>
+            <div style={{ marginTop: 48, paddingTop: 28, borderTop: '1px solid rgba(16,185,129,0.12)' }}>
               <h3 style={{ fontSize: 14, fontWeight: 800, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 14 }}>
                 Up next
               </h3>
@@ -424,11 +424,11 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
                   return (
                     <button key={rid} onClick={() => setSelectedId(rid)} style={{
                       display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px',
-                      background: 'rgba(13,13,32,0.7)', border: '1px solid rgba(99,102,241,0.12)',
+                      background: 'rgba(10,10,10,0.7)', border: '1px solid rgba(16,185,129,0.12)',
                       borderRadius: 11, cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left',
                     }}
-                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(99,102,241,0.28)'; }}
-                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(99,102,241,0.12)'; }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(16,185,129,0.28)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(16,185,129,0.12)'; }}
                     >
                       <span style={{ fontSize: 22 }}>{rel.emoji}</span>
                       <div style={{ flex: 1 }}>

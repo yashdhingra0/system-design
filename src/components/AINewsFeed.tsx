@@ -37,7 +37,7 @@ function timeAgo(dateStr: string): string {
 
 const SkeletonCard = () => (
   <div style={{
-    background: 'rgba(13,13,32,0.8)', border: '1px solid rgba(99,102,241,0.1)',
+    background: 'rgba(10,10,10,0.8)', border: '1px solid rgba(16,185,129,0.1)',
     borderRadius: 14, padding: '18px', overflow: 'hidden',
   }}>
     {['80%', '60%', '90%', '40%'].map((w, i) => (
@@ -51,7 +51,9 @@ const SkeletonCard = () => (
   </div>
 );
 
-export const AINewsFeed: React.FC = () => {
+interface AINewsFeedProps { compact?: boolean; }
+
+export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
   const [category, setCategory] = useState('all');
   const [articles, setArticles] = useState<NewsArticle[]>([]);
   const [loading, setLoading] = useState(false);
@@ -92,6 +94,41 @@ export const AINewsFeed: React.FC = () => {
 
   const noApiKey = error?.includes('NEWS_API_KEY');
 
+  // ── Compact mode: right sidebar list ───────────────────────────────────────
+  if (compact) {
+    return (
+      <div style={{ padding: '12px 12px' }}>
+        <style>{`@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}`}</style>
+        {loading && Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} style={{ height: 56, borderRadius: 8, marginBottom: 8, background: 'linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%)', backgroundSize: '200% 100%', animation: 'shimmer 1.5s infinite' }} />
+        ))}
+        {error && !loading && (
+          <p style={{ fontSize: 11, color: 'var(--text-muted)', padding: '8px 4px', lineHeight: 1.6 }}>
+            {noApiKey ? 'Add NEWS_API_KEY in Vercel to enable live news.' : 'Could not load news.'}
+          </p>
+        )}
+        {!loading && !error && articles.slice(0, 12).map((a, i) => (
+          <a key={i} href={a.url} target="_blank" rel="noreferrer" style={{
+            display: 'block', padding: '10px 6px', borderBottom: '1px solid var(--border-glass)',
+            textDecoration: 'none', transition: 'background 0.12s',
+          }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(16,185,129,0.05)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
+          >
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.45, marginBottom: 4, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+              {a.title}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 10, color: '#10b981', fontWeight: 600 }}>{a.source.name}</span>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>· {timeAgo(a.publishedAt)}</span>
+              <ExternalLink size={9} color="var(--text-muted)" style={{ marginLeft: 'auto' }} />
+            </div>
+          </a>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div style={{ maxWidth: 1100, margin: '0 auto' }}>
       {/* Header */}
@@ -105,7 +142,7 @@ export const AINewsFeed: React.FC = () => {
             <h1 style={{ fontSize: 26, fontWeight: 900, color: 'var(--text-primary)' }}>AI News</h1>
             <span style={{
               fontSize: 10, padding: '3px 8px', borderRadius: 6, fontWeight: 800,
-              background: 'rgba(34,211,238,0.12)', color: '#22d3ee', border: '1px solid rgba(34,211,238,0.2)',
+              background: 'rgba(52,211,153,0.12)', color: '#34d399', border: '1px solid rgba(52,211,153,0.2)',
             }}>LIVE</span>
           </div>
           <p style={{ color: 'var(--text-secondary)', fontSize: 13 }}>
@@ -122,7 +159,7 @@ export const AINewsFeed: React.FC = () => {
               placeholder="Filter articles…"
               style={{
                 padding: '8px 10px 8px 28px', borderRadius: 9, fontSize: 13, width: 200,
-                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(99,102,241,0.14)',
+                background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(16,185,129,0.14)',
                 color: 'var(--text-primary)', outline: 'none',
               }}
             />
@@ -130,8 +167,8 @@ export const AINewsFeed: React.FC = () => {
           <button onClick={() => fetchNews(category)} disabled={loading} style={{
             display: 'flex', alignItems: 'center', gap: 6,
             padding: '8px 14px', borderRadius: 9, cursor: 'pointer',
-            background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)',
-            color: '#818cf8', fontSize: 13, fontWeight: 600,
+            background: 'rgba(16,185,129,0.1)', border: '1px solid rgba(16,185,129,0.2)',
+            color: '#34d399', fontSize: 13, fontWeight: 600,
           }}>
             <RefreshCw size={13} style={{ animation: loading ? 'spin 1s linear infinite' : 'none' }} />
             Refresh
@@ -145,9 +182,9 @@ export const AINewsFeed: React.FC = () => {
           <button key={cat.id} onClick={() => setCategory(cat.id)} style={{
             display: 'flex', alignItems: 'center', gap: 6,
             padding: '7px 14px', borderRadius: 10, cursor: 'pointer', fontSize: 13, fontWeight: 600,
-            background: category === cat.id ? 'rgba(99,102,241,0.14)' : 'transparent',
-            border: `1px solid ${category === cat.id ? 'rgba(99,102,241,0.32)' : 'rgba(99,102,241,0.1)'}`,
-            color: category === cat.id ? '#818cf8' : 'var(--text-secondary)',
+            background: category === cat.id ? 'rgba(16,185,129,0.14)' : 'transparent',
+            border: `1px solid ${category === cat.id ? 'rgba(16,185,129,0.32)' : 'rgba(16,185,129,0.1)'}`,
+            color: category === cat.id ? '#34d399' : 'var(--text-secondary)',
             transition: 'all 0.2s',
           }}>
             <span>{cat.emoji}</span> {cat.label}
@@ -169,7 +206,7 @@ export const AINewsFeed: React.FC = () => {
                 To enable live AI news, add your NewsAPI key to Vercel:
               </p>
               <ol style={{ margin: '8px 0 0 16px', fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-                <li>Get a free key at <a href="https://newsapi.org/register" target="_blank" rel="noreferrer" style={{ color: '#818cf8' }}>newsapi.org/register</a></li>
+                <li>Get a free key at <a href="https://newsapi.org/register" target="_blank" rel="noreferrer" style={{ color: '#34d399' }}>newsapi.org/register</a></li>
                 <li>Go to your Vercel project → Settings → Environment Variables</li>
                 <li>Add: <code style={{ background: 'rgba(255,255,255,0.08)', padding: '1px 6px', borderRadius: 4, fontFamily: 'var(--font-mono)', fontSize: 12 }}>NEWS_API_KEY</code> = your key</li>
                 <li>Redeploy your project</li>
@@ -218,19 +255,19 @@ export const AINewsFeed: React.FC = () => {
                 style={{ textDecoration: 'none' }}
               >
                 <div style={{
-                  background: 'rgba(13,13,32,0.85)', border: '1px solid rgba(99,102,241,0.1)',
+                  background: 'rgba(10,10,10,0.85)', border: '1px solid rgba(16,185,129,0.1)',
                   borderRadius: 14, overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column',
                   transition: 'all 0.2s',
                 }}
                   onMouseEnter={e => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = 'rgba(99,102,241,0.28)';
+                    el.style.borderColor = 'rgba(16,185,129,0.28)';
                     el.style.transform = 'translateY(-2px)';
-                    el.style.boxShadow = '0 8px 24px rgba(99,102,241,0.12)';
+                    el.style.boxShadow = '0 8px 24px rgba(16,185,129,0.12)';
                   }}
                   onMouseLeave={e => {
                     const el = e.currentTarget as HTMLDivElement;
-                    el.style.borderColor = 'rgba(99,102,241,0.1)';
+                    el.style.borderColor = 'rgba(16,185,129,0.1)';
                     el.style.transform = 'translateY(0)';
                     el.style.boxShadow = 'none';
                   }}
@@ -251,7 +288,7 @@ export const AINewsFeed: React.FC = () => {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
                       <span style={{
                         fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 5,
-                        background: 'rgba(99,102,241,0.12)', color: '#818cf8', letterSpacing: '0.04em',
+                        background: 'rgba(16,185,129,0.12)', color: '#34d399', letterSpacing: '0.04em',
                       }}>
                         {article.source.name}
                       </span>
@@ -270,7 +307,7 @@ export const AINewsFeed: React.FC = () => {
                       </p>
                     )}
                     {/* Read more */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#818cf8', fontWeight: 600, marginTop: 4 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#34d399', fontWeight: 600, marginTop: 4 }}>
                       Read article <ExternalLink size={11} />
                     </div>
                   </div>
@@ -279,7 +316,7 @@ export const AINewsFeed: React.FC = () => {
             ))}
           </div>
           <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--text-muted)', marginTop: 24 }}>
-            Showing {filtered.length} articles · Powered by <a href="https://newsapi.org" target="_blank" rel="noreferrer" style={{ color: '#818cf8' }}>NewsAPI</a>
+            Showing {filtered.length} articles · Powered by <a href="https://newsapi.org" target="_blank" rel="noreferrer" style={{ color: '#34d399' }}>NewsAPI</a>
           </p>
         </>
       )}

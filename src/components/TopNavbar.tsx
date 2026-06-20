@@ -4,21 +4,28 @@ import {
   Map, GraduationCap, Newspaper, LayoutDashboard,
   HelpCircle, Wrench, Network, TrendingUp,
   FolderGit2, BookOpenCheck, Sun, Moon, Menu, X,
-  ChevronDown, Link2, GitBranch as GithubIcon, ExternalLink, Zap, Award
+  Link2, GitBranch as GithubIcon, ExternalLink, Zap, Award, Brain
 } from 'lucide-react';
 
-type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' |
+export type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' |
   'revision-notes' | 'prep-sandbox' | 'design-patterns' | 'tech-comparisons' |
   'system-diagrams' | 'system-evolution' | 'design-doctor' |
   'ai-roadmap' | 'ai-learning' | 'ai-news';
 
-interface NavGroup {
+export interface NavItem {
   label: string;
-  emoji: string;
-  items: { label: string; tab: Tab; icon: React.ReactNode; badge?: string }[];
+  tab: Tab;
+  icon: React.ReactNode;
+  badge?: string;
 }
 
-const NAV_GROUPS: NavGroup[] = [
+export interface NavGroup {
+  label: string;
+  emoji: string;
+  items: NavItem[];
+}
+
+export const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Learn', emoji: '📚',
     items: [
@@ -39,7 +46,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Practice', emoji: '💪',
     items: [
-      { label: '50 Design Problems', tab: 'dashboard', icon: <LayoutDashboard size={14} /> },
+      { label: '50 Problems', tab: 'dashboard', icon: <LayoutDashboard size={14} /> },
       { label: 'Interview Q&A', tab: 'questions', icon: <HelpCircle size={14} /> },
       { label: 'Quiz', tab: 'quiz', icon: <Zap size={14} /> },
       { label: 'Prep Sandbox', tab: 'prep-sandbox', icon: <FolderGit2 size={14} /> },
@@ -80,10 +87,7 @@ const NewsTicker: React.FC<{ onClickNews: () => void }> = ({ onClickNews }) => {
     if (!headlines.length) return;
     const interval = setInterval(() => {
       setVisible(false);
-      setTimeout(() => {
-        setIdx(i => (i + 1) % headlines.length);
-        setVisible(true);
-      }, 300);
+      setTimeout(() => { setIdx(i => (i + 1) % headlines.length); setVisible(true); }, 300);
     }, 5000);
     return () => clearInterval(interval);
   }, [headlines.length]);
@@ -91,26 +95,17 @@ const NewsTicker: React.FC<{ onClickNews: () => void }> = ({ onClickNews }) => {
   if (!headlines.length) return null;
 
   return (
-    <button
-      onClick={onClickNews}
-      style={{
-        display: 'flex', alignItems: 'center', gap: 8,
-        maxWidth: 320, overflow: 'hidden',
-        background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)',
-        borderRadius: 8, padding: '4px 10px', cursor: 'pointer',
-        transition: 'all 0.2s',
-      }}
-      title="Click to open AI News"
-    >
+    <button onClick={onClickNews} style={{
+      display: 'flex', alignItems: 'center', gap: 8, maxWidth: 300, overflow: 'hidden',
+      background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.18)',
+      borderRadius: 7, padding: '4px 10px', cursor: 'pointer',
+    }} title="Click to open AI News">
       <span style={{ fontSize: 10, fontWeight: 800, color: '#10b981', flexShrink: 0, letterSpacing: '0.05em' }}>LIVE</span>
       <span style={{
         fontSize: 12, color: 'var(--text-secondary)', whiteSpace: 'nowrap',
         overflow: 'hidden', textOverflow: 'ellipsis',
-        opacity: visible ? 1 : 0,
-        transition: 'opacity 0.3s ease',
-      }}>
-        {headlines[idx]}
-      </span>
+        opacity: visible ? 1 : 0, transition: 'opacity 0.3s ease',
+      }}>{headlines[idx]}</span>
     </button>
   );
 };
@@ -130,17 +125,12 @@ const ProfileButton: React.FC = () => {
 
   return (
     <div ref={ref} style={{ position: 'relative', flexShrink: 0 }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{
-          display: 'flex', alignItems: 'center', gap: 8,
-          padding: '5px 10px 5px 5px', borderRadius: 8,
-          background: open ? 'rgba(255,255,255,0.08)' : 'transparent',
-          border: '1px solid transparent',
-          cursor: 'pointer', transition: 'all 0.2s',
-        }}
-        title="Profile"
-      >
+      <button onClick={() => setOpen(o => !o)} style={{
+        display: 'flex', alignItems: 'center', gap: 8,
+        padding: '5px 10px 5px 5px', borderRadius: 8,
+        background: open ? 'rgba(255,255,255,0.06)' : 'transparent',
+        border: '1px solid transparent', cursor: 'pointer', transition: 'all 0.2s',
+      }} title="Profile">
         <div style={{
           width: 28, height: 28, borderRadius: 8,
           background: 'linear-gradient(135deg, #059669, #10b981)',
@@ -148,7 +138,6 @@ const ProfileButton: React.FC = () => {
           fontSize: 12, fontWeight: 800, color: '#fff', flexShrink: 0,
         }}>YD</div>
         <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>Yash</span>
-        <ChevronDown size={12} color="var(--text-muted)" />
       </button>
 
       {open && (
@@ -158,7 +147,6 @@ const ProfileButton: React.FC = () => {
           border: '1px solid var(--border-glass)', borderRadius: 12,
           padding: 12, boxShadow: '0 8px 32px rgba(0,0,0,0.4)', zIndex: 400,
         }}>
-          {/* Avatar + name */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12, paddingBottom: 12, borderBottom: '1px solid var(--border-glass)' }}>
             <div style={{
               width: 40, height: 40, borderRadius: 10,
@@ -172,11 +160,10 @@ const ProfileButton: React.FC = () => {
             </div>
           </div>
 
-          {/* Links */}
           <a href="https://www.linkedin.com/in/dhingrayash001/" target="_blank" rel="noreferrer"
             style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 6px', borderRadius: 8, textDecoration: 'none', color: 'var(--text-secondary)', fontSize: 13, transition: 'all 0.15s' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-primary)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-secondary)'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.05)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
           >
             <Link2 size={15} color="#0a66c2" />
             <span>LinkedIn</span>
@@ -185,8 +172,8 @@ const ProfileButton: React.FC = () => {
 
           <a href="https://github.com/yashdhingra0" target="_blank" rel="noreferrer"
             style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 6px', borderRadius: 8, textDecoration: 'none', color: 'var(--text-secondary)', fontSize: 13, transition: 'all 0.15s' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.05)'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-primary)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; (e.currentTarget as HTMLAnchorElement).style.color = 'var(--text-secondary)'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'rgba(255,255,255,0.05)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = 'transparent'; }}
           >
             <GithubIcon size={15} />
             <span>GitHub</span>
@@ -202,71 +189,19 @@ const ProfileButton: React.FC = () => {
   );
 };
 
-// ── Nav Dropdown ─────────────────────────────────────────────────────────────
-interface NavDropdownProps {
-  group: NavGroup;
-  currentTab: Tab;
-  onSelect: (tab: Tab) => void;
-}
-
-const NavDropdown: React.FC<NavDropdownProps> = ({ group, currentTab, onSelect }) => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const isActive = group.items.some(i => i.tab === currentTab);
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  return (
-    <div ref={ref} style={{ position: 'relative' }}>
-      <button
-        className={`top-nav-btn ${isActive ? 'active' : ''}`}
-        onClick={() => setOpen(o => !o)}
-      >
-        <span>{group.emoji}</span>
-        <span>{group.label}</span>
-        <ChevronDown size={12} style={{ opacity: 0.6 }} />
-      </button>
-
-      {open && (
-        <div className="top-nav-dropdown">
-          {group.items.map(item => (
-            <button
-              key={item.tab}
-              className={`top-nav-dropdown-item ${currentTab === item.tab ? 'active' : ''}`}
-              onClick={() => { onSelect(item.tab); setOpen(false); }}
-            >
-              {item.icon}
-              <span style={{ flex: 1 }}>{item.label}</span>
-              {item.badge && (
-                <span style={{
-                  fontSize: 9, fontWeight: 800, padding: '1px 5px', borderRadius: 4,
-                  background: 'rgba(16,185,129,0.12)', color: '#10b981',
-                  border: '1px solid rgba(16,185,129,0.2)',
-                }}>{item.badge}</span>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
-
 // ── Main TopNavbar ────────────────────────────────────────────────────────────
 interface TopNavbarProps {
   currentTab: Tab;
   onSelectTab: (tab: Tab) => void;
   theme: 'dark' | 'light';
   onToggleTheme: () => void;
+  activeGroupLabel: string | null;
+  onSetActiveGroup: (label: string) => void;
 }
 
-export const TopNavbar: React.FC<TopNavbarProps> = ({ currentTab, onSelectTab, theme, onToggleTheme }) => {
+export const TopNavbar: React.FC<TopNavbarProps> = ({
+  currentTab, onSelectTab, theme, onToggleTheme, activeGroupLabel, onSetActiveGroup,
+}) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const handleSelect = (tab: Tab) => {
@@ -277,55 +212,62 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ currentTab, onSelectTab, t
   return (
     <>
       <nav className="top-nav">
-        {/* Logo */}
-        <div className="top-nav-logo">
-          <span style={{ fontSize: 20 }}>🧠</span>
-          <span>Systemic</span>
-        </div>
+        {/* Logo — click goes home */}
+        <button
+          onClick={() => handleSelect('dashboard')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 8,
+            background: 'none', border: 'none', cursor: 'pointer',
+            padding: '6px 10px 6px 4px', borderRadius: 8,
+            flexShrink: 0,
+          }}
+          className="top-nav-logo"
+        >
+          <Brain size={22} color="#10b981" />
+          <span style={{ fontSize: 17, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Systemic</span>
+        </button>
 
-        {/* Desktop nav groups */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }} className="desktop-nav">
-          {NAV_GROUPS.map(group => (
-            <NavDropdown key={group.label} group={group} currentTab={currentTab} onSelect={handleSelect} />
-          ))}
+        {/* Desktop group tabs */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 2 }} className="desktop-nav">
+          {NAV_GROUPS.map(group => {
+            const isActive = activeGroupLabel === group.label ||
+              (!activeGroupLabel && group.items.some(i => i.tab === currentTab));
+            return (
+              <button
+                key={group.label}
+                onClick={() => onSetActiveGroup(isActive && activeGroupLabel === group.label ? '' : group.label)}
+                className={`top-nav-btn ${isActive ? 'active' : ''}`}
+              >
+                <span>{group.emoji}</span>
+                <span>{group.label}</span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Right side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' }}>
-          {/* News ticker — only show when NOT on ai-news tab */}
           {currentTab !== 'ai-news' && (
             <div className="desktop-nav">
               <NewsTicker onClickNews={() => handleSelect('ai-news')} />
             </div>
           )}
 
-          {/* Theme toggle */}
-          <button
-            onClick={onToggleTheme}
-            style={{
-              padding: '6px', borderRadius: 8, background: 'transparent',
-              border: '1px solid var(--border-glass)', cursor: 'pointer',
-              color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
-              transition: 'all 0.2s',
-            }}
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
+          <button onClick={onToggleTheme} style={{
+            padding: '6px', borderRadius: 8, background: 'transparent',
+            border: '1px solid var(--border-glass)', cursor: 'pointer',
+            color: 'var(--text-secondary)', display: 'flex', alignItems: 'center',
+          }} title={theme === 'dark' ? 'Light mode' : 'Dark mode'}>
             {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
           </button>
 
-          {/* Profile */}
           <ProfileButton />
 
-          {/* Mobile hamburger */}
-          <button
-            onClick={() => setMobileOpen(o => !o)}
-            className="mobile-menu-btn"
-            style={{
-              padding: '6px', borderRadius: 8, background: 'transparent',
-              border: '1px solid var(--border-glass)', cursor: 'pointer',
-              color: 'var(--text-secondary)', display: 'none', alignItems: 'center',
-            }}
-          >
+          <button onClick={() => setMobileOpen(o => !o)} className="mobile-menu-btn" style={{
+            padding: '6px', borderRadius: 8, background: 'transparent',
+            border: '1px solid var(--border-glass)', cursor: 'pointer',
+            color: 'var(--text-secondary)', display: 'none', alignItems: 'center',
+          }}>
             {mobileOpen ? <X size={16} /> : <Menu size={16} />}
           </button>
         </div>
@@ -343,18 +285,14 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ currentTab, onSelectTab, t
                 {group.emoji} {group.label}
               </div>
               {group.items.map(item => (
-                <button
-                  key={item.tab}
-                  onClick={() => handleSelect(item.tab)}
-                  style={{
-                    display: 'flex', alignItems: 'center', gap: 10, width: '100%',
-                    padding: '12px 12px', borderRadius: 8, marginBottom: 2,
-                    background: currentTab === item.tab ? 'rgba(16,185,129,0.1)' : 'transparent',
-                    border: 'none', cursor: 'pointer', textAlign: 'left',
-                    color: currentTab === item.tab ? '#10b981' : 'var(--text-secondary)',
-                    fontSize: 14, fontWeight: 500,
-                  }}
-                >
+                <button key={item.tab} onClick={() => handleSelect(item.tab)} style={{
+                  display: 'flex', alignItems: 'center', gap: 10, width: '100%',
+                  padding: '12px 12px', borderRadius: 8, marginBottom: 2,
+                  background: currentTab === item.tab ? 'rgba(16,185,129,0.1)' : 'transparent',
+                  border: 'none', cursor: 'pointer', textAlign: 'left',
+                  color: currentTab === item.tab ? '#10b981' : 'var(--text-secondary)',
+                  fontSize: 14, fontWeight: 500,
+                }}>
                   {item.icon} {item.label}
                   {item.badge && (
                     <span style={{ marginLeft: 'auto', fontSize: 9, fontWeight: 800, padding: '1px 5px', borderRadius: 4, background: 'rgba(16,185,129,0.1)', color: '#10b981' }}>
@@ -366,7 +304,6 @@ export const TopNavbar: React.FC<TopNavbarProps> = ({ currentTab, onSelectTab, t
             </div>
           ))}
 
-          {/* Mobile links */}
           <div style={{ borderTop: '1px solid var(--border-glass)', paddingTop: 16, marginTop: 8 }}>
             <a href="https://www.linkedin.com/in/dhingrayash001/" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: 10, color: 'var(--text-secondary)', textDecoration: 'none', padding: '10px 0', fontSize: 14 }}>
               <Link2 size={16} color="#0a66c2" /> LinkedIn — Yash Dhingra

@@ -62,8 +62,8 @@ const FlashcardMode: React.FC<{
           width: '100%', maxWidth: '640px',
           minHeight: '280px',
           borderRadius: '16px',
-          border: `1px solid ${flipped ? 'rgba(99,102,241,0.35)' : 'var(--border-glass)'}`,
-          background: flipped ? 'rgba(99,102,241,0.05)' : 'var(--surface-obsidian)',
+          border: `1px solid ${flipped ? 'rgba(16,185,129,0.35)' : 'var(--border-glass)'}`,
+          background: flipped ? 'rgba(16,185,129,0.05)' : 'var(--surface-obsidian)',
           padding: '36px',
           cursor: 'pointer',
           display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center',
@@ -131,7 +131,7 @@ const FlashcardMode: React.FC<{
           </button>
           <button
             onClick={() => setFlipped(true)}
-            style={{ padding: '10px 24px', borderRadius: '8px', border: '1px solid rgba(99,102,241,0.3)', background: 'rgba(99,102,241,0.06)', color: 'var(--color-primary)', cursor: 'pointer', fontSize: '13px', fontWeight: 700 }}
+            style={{ padding: '10px 24px', borderRadius: '8px', border: '1px solid rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.06)', color: 'var(--color-primary)', cursor: 'pointer', fontSize: '13px', fontWeight: 700 }}
           >
             Reveal Answer
           </button>
@@ -327,8 +327,8 @@ export const QuestionsDeck: React.FC<QuestionsDeckProps> = ({
               style={{
                 display: 'flex', alignItems: 'center', gap: '6px',
                 padding: '8px 14px', borderRadius: '7px', border: '1px solid',
-                borderColor: deckMode === m ? 'rgba(99,102,241,0.3)' : 'transparent',
-                background: deckMode === m ? 'rgba(99,102,241,0.08)' : 'transparent',
+                borderColor: deckMode === m ? 'rgba(16,185,129,0.3)' : 'transparent',
+                background: deckMode === m ? 'rgba(16,185,129,0.08)' : 'transparent',
                 color: deckMode === m ? 'var(--color-primary)' : 'var(--text-muted)',
                 fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s',
               }}

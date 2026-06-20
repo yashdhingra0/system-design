@@ -366,7 +366,7 @@ export const PrepSandbox: React.FC<PrepSandboxProps> = ({
           {/* Results Board */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', position: 'sticky', top: '20px' }}>
             <div className="glass-panel" style={{ padding: '32px', textAlign: 'center' }}>
-              <div style={{ background: 'rgba(99, 102, 241, 0.1)', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto 24px auto' }}>
+              <div style={{ background: 'rgba(16,185,129,0.1)', width: '80px', height: '80px', borderRadius: '50%', display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto 24px auto' }}>
                 <Award size={40} style={{ color: 'var(--color-primary)' }} />
               </div>
               <h4 style={{ fontSize: '13px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: '6px' }}>Evaluated Weighted Average</h4>
@@ -465,9 +465,9 @@ export const PrepSandbox: React.FC<PrepSandboxProps> = ({
                     gap: '10px',
                     padding: '12px 16px',
                     borderRadius: '8px',
-                    background: isSelected ? 'rgba(99, 102, 241, 0.08)' : 'transparent',
+                    background: isSelected ? 'rgba(16,185,129,0.08)' : 'transparent',
                     border: '1px solid',
-                    borderColor: isSelected ? 'rgba(99, 102, 241, 0.2)' : 'transparent',
+                    borderColor: isSelected ? 'rgba(16,185,129,0.2)' : 'transparent',
                     color: isSelected ? 'var(--text-primary)' : 'var(--text-secondary)',
                     textAlign: 'left',
                     fontWeight: 600,

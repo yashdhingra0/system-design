@@ -16,7 +16,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const CATEGORY_BG: Record<string, string> = {
-  Databases:    'rgba(99,102,241,0.08)',
+  Databases:    'rgba(16,185,129,0.08)',
   Messaging:    'rgba(14,165,233,0.08)',
   API:          'rgba(16,185,129,0.08)',
   Architecture: 'rgba(245,158,11,0.08)',
@@ -31,7 +31,7 @@ interface ComparisonDetailProps {
 
 const ComparisonDetail: React.FC<ComparisonDetailProps> = ({ comparison }) => {
   const color = CATEGORY_COLORS[comparison.category] || 'var(--color-primary)';
-  const bg = CATEGORY_BG[comparison.category] || 'rgba(99,102,241,0.08)';
+  const bg = CATEGORY_BG[comparison.category] || 'rgba(16,185,129,0.08)';
 
   const options = [
     comparison.optionA,
@@ -158,7 +158,7 @@ const ComparisonDetail: React.FC<ComparisonDetailProps> = ({ comparison }) => {
               {comparison.verdict.useA}
             </p>
           </div>
-          <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)' }}>
+          <div style={{ padding: '12px', borderRadius: '8px', background: 'rgba(16,185,129,0.06)', border: '1px solid rgba(16,185,129,0.15)' }}>
             <div style={{ fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-primary)', marginBottom: '6px' }}>
               Use {comparison.optionB.name.split(' ')[0]}
             </div>
@@ -223,7 +223,7 @@ export const TechComparisons: React.FC = () => {
       <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap' }}>
         {categories.map(cat => {
           const color = cat !== 'All' ? CATEGORY_COLORS[cat] : 'var(--color-primary)';
-          const bg = cat !== 'All' ? CATEGORY_BG[cat] : 'rgba(99,102,241,0.08)';
+          const bg = cat !== 'All' ? CATEGORY_BG[cat] : 'rgba(16,185,129,0.08)';
           const isActive = filter === cat;
           return (
             <button
@@ -250,7 +250,7 @@ export const TechComparisons: React.FC = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {filtered.map(c => {
             const color = CATEGORY_COLORS[c.category] || 'var(--color-primary)';
-            const bg = CATEGORY_BG[c.category] || 'rgba(99,102,241,0.08)';
+            const bg = CATEGORY_BG[c.category] || 'rgba(16,185,129,0.08)';
             const isSelected = selectedId === c.id;
             return (
               <button

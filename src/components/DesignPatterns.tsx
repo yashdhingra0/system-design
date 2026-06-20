@@ -6,7 +6,7 @@ import { Code2, Layers, CheckCircle, AlertCircle, Zap, BookOpen, ChevronRight, T
 type Category = 'All' | DesignPattern['category'];
 
 const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string }> = {
-  Architectural:  { bg: 'rgba(99,102,241,0.08)',  border: 'rgba(99,102,241,0.25)',  text: 'var(--color-primary)' },
+  Architectural:  { bg: 'rgba(16,185,129,0.08)',  border: 'rgba(16,185,129,0.25)',  text: 'var(--color-primary)' },
   Creational:     { bg: 'rgba(14,165,233,0.08)',   border: 'rgba(14,165,233,0.25)',  text: 'var(--color-secondary)' },
   Structural:     { bg: 'rgba(16,185,129,0.08)',   border: 'rgba(16,185,129,0.25)',  text: 'var(--color-teal)' },
   Behavioral:     { bg: 'rgba(245,158,11,0.08)',   border: 'rgba(245,158,11,0.25)',  text: 'var(--color-gold)' },
@@ -17,7 +17,7 @@ const CATEGORY_COLORS: Record<string, { bg: string; border: string; text: string
   Microservices:  { bg: 'rgba(251,191,36,0.08)',   border: 'rgba(251,191,36,0.25)',  text: '#fbbf24' },
 };
 
-const DEFAULT_COLORS = { bg: 'rgba(99,102,241,0.08)', border: 'rgba(99,102,241,0.25)', text: 'var(--color-primary)' };
+const DEFAULT_COLORS = { bg: 'rgba(16,185,129,0.08)', border: 'rgba(16,185,129,0.25)', text: 'var(--color-primary)' };
 
 const ALL_CATEGORIES: DesignPattern['category'][] = [
   'Architectural', 'Creational', 'Structural', 'Behavioral',

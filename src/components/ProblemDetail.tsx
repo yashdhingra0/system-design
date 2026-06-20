@@ -334,7 +334,7 @@ export const ProblemDetail: React.FC<ProblemDetailProps> = ({
                   onClick={() => setSelectedLang(lang)}
                   style={{
                     flexGrow: 1,
-                    background: selectedLang === lang ? 'rgba(99,102,241,0.1)' : 'transparent',
+                    background: selectedLang === lang ? 'rgba(16,185,129,0.1)' : 'transparent',
                     border: '1px solid',
                     borderColor: selectedLang === lang ? 'var(--color-primary)' : 'transparent',
                     color: selectedLang === lang ? 'var(--text-primary)' : 'var(--text-secondary)',
