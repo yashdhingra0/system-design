@@ -68,7 +68,20 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
     setError(null);
     try {
       const res = await fetch(`/api/news?category=${cat}&pageSize=24`);
-      const data: NewsApiResponse = await res.json();
+      const text = await res.text();
+
+      // Detect raw source file being served instead of executing (local `npm run dev`)
+      if (text.trimStart().startsWith('//') || text.trimStart().startsWith('import') || text.trimStart().startsWith('export')) {
+        throw new Error('LOCAL_DEV');
+      }
+
+      let data: NewsApiResponse;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error('Invalid response from news API');
+      }
+
       if (!res.ok || data.error) {
         throw new Error(data.error || 'Failed to fetch news');
       }
@@ -95,6 +108,7 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
   });
 
   const noApiKey = error?.includes('NEWS_API_KEY');
+  const isLocalDev = error === 'LOCAL_DEV';
 
   // ── Compact mode: right sidebar inline reader ──────────────────────────────
   if (compact) {
@@ -201,9 +215,22 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
           ))}
 
           {error && !loading && (
-            <p style={{ fontSize: 11, color: 'var(--text-muted)', padding: '16px', lineHeight: 1.6 }}>
-              {noApiKey ? 'Add NEWS_API_KEY in Vercel env vars to enable live news.' : 'Could not load news.'}
-            </p>
+            <div style={{ padding: '16px 14px' }}>
+              {isLocalDev ? (
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.7 }}>
+                  <div style={{ fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 6 }}>
+                    📡 News works on the deployed site
+                  </div>
+                  For local dev, open a second terminal and run:
+                  <pre style={{ background: '#0f1117', color: '#10b981', padding: '6px 10px', borderRadius: 6, marginTop: 6, fontSize: 11, fontFamily: 'monospace' }}>vercel dev</pre>
+                  Then keep <code style={{ color: '#10b981' }}>npm run dev</code> running as normal.
+                </div>
+              ) : (
+                <p style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                  {noApiKey ? 'Add NEWS_API_KEY in Vercel → Settings → Environment Variables.' : `Could not load news: ${error}`}
+                </p>
+              )}
+            </div>
           )}
 
           {!loading && !error && articles.map((a, i) => (
@@ -326,8 +353,28 @@ export const AINewsFeed: React.FC<AINewsFeedProps> = ({ compact = false }) => {
         </div>
       )}
 
+      {/* Local dev notice */}
+      {isLocalDev && (
+        <div style={{
+          background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.2)',
+          borderRadius: 12, padding: '16px 20px', marginBottom: 24,
+        }}>
+          <div style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>
+            📡 News requires Vercel's runtime — it won't work with plain <code style={{ color: '#10b981' }}>npm run dev</code>
+          </div>
+          <p style={{ fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.7, margin: 0 }}>
+            Open a second terminal in your project folder and run:
+          </p>
+          <pre style={{ background: '#0f1117', color: '#10b981', padding: '10px 14px', borderRadius: 8, marginTop: 10, fontSize: 13, fontFamily: 'monospace' }}>vercel dev</pre>
+          <p style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 8, marginBottom: 0 }}>
+            This starts Vercel's local server on port 3000, which Vite will proxy <code>/api</code> requests to.
+            The deployed site at Vercel always works without this step.
+          </p>
+        </div>
+      )}
+
       {/* Generic error */}
-      {error && !noApiKey && (
+      {error && !noApiKey && !isLocalDev && (
         <div style={{
           display: 'flex', gap: 12, alignItems: 'center',
           background: 'rgba(248,113,113,0.06)', border: '1px solid rgba(248,113,113,0.2)',
