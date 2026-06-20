@@ -17,6 +17,9 @@ import { DesignDoctor } from './components/DesignDoctor';
 import { TechComparisons } from './components/TechComparisons';
 import { SystemDiagrams } from './components/SystemDiagrams';
 import { SystemEvolution } from './components/SystemEvolution';
+import { AIRoadmap } from './components/AIRoadmap';
+import { AILearningHub } from './components/AILearningHub';
+import { AINewsFeed } from './components/AINewsFeed';
 import {
   LayoutDashboard,
   BookOpen,
@@ -43,16 +46,20 @@ import {
   ArrowLeftRight,
   Network,
   TrendingUp,
-  Stethoscope
+  Stethoscope,
+  Map,
+  GraduationCap,
+  Newspaper
 } from 'lucide-react';
 
-type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox' | 'design-patterns' | 'tech-comparisons' | 'system-diagrams' | 'system-evolution' | 'design-doctor';
+type Tab = 'concepts' | 'solid' | 'dashboard' | 'questions' | 'quiz' | 'prep-tools' | 'revision-notes' | 'prep-sandbox' | 'design-patterns' | 'tech-comparisons' | 'system-diagrams' | 'system-evolution' | 'design-doctor' | 'ai-roadmap' | 'ai-learning' | 'ai-news';
 type Status = 'not-started' | 'in-progress' | 'completed';
 
 function App() {
   const [currentTab, setCurrentTab] = useState<Tab>('concepts');
   const [selectedProblemId, setSelectedProblemId] = useState<string | null>(null);
   const [selectedPatternId, setSelectedPatternId] = useState<string | undefined>(undefined);
+  const [selectedAITopicId, setSelectedAITopicId] = useState<string | undefined>(undefined);
   
   // Controlled states for sidebar selection
   const [selectedConceptId, setSelectedConceptId] = useState<string>(concepts[0].id);
@@ -462,6 +469,42 @@ function App() {
                 <span>Tech Comparisons</span>
               </button>
 
+              {/* ===== 🤖 AI HUB ===== */}
+              <div className="sidebar-section-ai">✦ AI Hub</div>
+
+              <button
+                onClick={() => handleSelectTab('ai-roadmap')}
+                className={`nav-link ${currentTab === 'ai-roadmap' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '0 0 4px 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <Map size={16} />
+                <span>AI Roadmap</span>
+              </button>
+
+              <button
+                onClick={() => handleSelectTab('ai-learning')}
+                className={`nav-link ${currentTab === 'ai-learning' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '0 0 4px 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <GraduationCap size={16} />
+                <span>AI Learning Hub</span>
+                <span style={{ marginLeft: 'auto', fontSize: '9px', fontWeight: 800, letterSpacing: '0.04em', color: '#22d3ee', background: 'rgba(34,211,238,0.1)', border: '1px solid rgba(34,211,238,0.25)', padding: '1px 6px', borderRadius: '4px' }}>
+                  NEW
+                </span>
+              </button>
+
+              <button
+                onClick={() => handleSelectTab('ai-news')}
+                className={`nav-link ${currentTab === 'ai-news' ? 'active' : ''}`}
+                style={{ width: '100%', background: 'transparent', border: 'none', textAlign: 'left', margin: '0 0 4px 0', padding: '10px 12px', fontSize: '14px', borderRadius: '8px' }}
+              >
+                <Newspaper size={16} />
+                <span>AI News</span>
+                <span style={{ marginLeft: 'auto', fontSize: '9px', fontWeight: 800, letterSpacing: '0.04em', color: '#22d3ee', background: 'rgba(34,211,238,0.1)', border: '1px solid rgba(34,211,238,0.25)', padding: '1px 6px', borderRadius: '4px' }}>
+                  LIVE
+                </span>
+              </button>
+
               {/* ===== 💻 PRACTICE ===== */}
               <div className="sidebar-section-label">
                 <LayoutDashboard size={12} />
@@ -476,7 +519,7 @@ function App() {
               >
                 <Stethoscope size={16} />
                 <span>Design Doctor</span>
-                <span style={{ marginLeft: 'auto', fontSize: '9px', fontWeight: 800, letterSpacing: '0.04em', color: '#8b7cf6', background: 'rgba(139,124,246,0.12)', border: '1px solid rgba(139,124,246,0.25)', padding: '1px 6px', borderRadius: '4px' }}>
+                <span style={{ marginLeft: 'auto', fontSize: '9px', fontWeight: 800, letterSpacing: '0.04em', color: '#818cf8', background: 'rgba(129,140,248,0.12)', border: '1px solid rgba(129,140,248,0.25)', padding: '1px 6px', borderRadius: '4px' }}>
                   NEW
                 </span>
               </button>
@@ -761,6 +804,15 @@ function App() {
               <button onClick={() => handleSelectTab('quiz')} className={`collapsed-icon-link ${currentTab === 'quiz' ? 'active' : ''}`} title="Quiz">
                 <HelpCircle size={20} />
               </button>
+              <button onClick={() => handleSelectTab('ai-roadmap')} className={`collapsed-icon-link ${currentTab === 'ai-roadmap' ? 'active' : ''}`} title="AI Roadmap">
+                <Map size={20} />
+              </button>
+              <button onClick={() => handleSelectTab('ai-learning')} className={`collapsed-icon-link ${currentTab === 'ai-learning' ? 'active' : ''}`} title="AI Learning Hub">
+                <GraduationCap size={20} />
+              </button>
+              <button onClick={() => handleSelectTab('ai-news')} className={`collapsed-icon-link ${currentTab === 'ai-news' ? 'active' : ''}`} title="AI News">
+                <Newspaper size={20} />
+              </button>
               <button onClick={() => handleSelectTab('design-doctor')} className={`collapsed-icon-link ${currentTab === 'design-doctor' ? 'active' : ''}`} title="Design Doctor">
                 <Stethoscope size={20} />
               </button>
@@ -943,6 +995,17 @@ function App() {
             <SystemDiagrams />
           ) : currentTab === 'system-evolution' ? (
             <SystemEvolution />
+          ) : currentTab === 'ai-roadmap' ? (
+            <AIRoadmap
+              onSelectTopic={(topicId) => {
+                setSelectedAITopicId(topicId);
+                handleSelectTab('ai-learning');
+              }}
+            />
+          ) : currentTab === 'ai-learning' ? (
+            <AILearningHub initialTopicId={selectedAITopicId} />
+          ) : currentTab === 'ai-news' ? (
+            <AINewsFeed />
           ) : (
             <Quiz onNavigateToContent={handleNavigateToContent} />
           )}
