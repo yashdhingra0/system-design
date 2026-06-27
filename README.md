@@ -14,7 +14,7 @@ A live demo recording showing the sidebar navigation, design fundamentals, LLD p
 
 ## ✨ Feature Overview
 
-### 1. 📚 Design Fundamentals
+### 1. 📚 Design Fundamentals (Core Concepts)
 In-depth structured notes covering the foundational concepts every engineer must know for system design interviews:
 
 - **Horizontal vs. Vertical Scaling**, Load Balancers (L4 vs. L7), Caching Strategies & Eviction Policies
@@ -37,7 +37,7 @@ An interactive, step-by-step walkthrough of all five SOLID Object-Oriented Desig
 
 ---
 
-### 3. 🌿 Design Patterns (NEW)
+### 3. 🌿 Design Patterns
 15 essential GoF and Architectural patterns, grouped by category, with real-world context and TypeScript implementations:
 
 - **Architectural (7)**: Repository, CQRS, Event Sourcing, Circuit Breaker, Saga, Strangler Fig, Sidecar
@@ -51,7 +51,7 @@ Each pattern shows: Problem, Solution, TypeScript code example, and real-world p
 
 ---
 
-### 4. ⚖️ Tech Comparisons (NEW)
+### 4. ⚖️ Tech Comparisons
 A comprehensive comparison library for key technical trade-off decisions, featuring side-by-side strength/weakness matrices:
 
 - **SQL vs. NoSQL**, REST vs. GraphQL vs. gRPC, WebSocket vs. SSE vs. Long Polling
@@ -63,7 +63,31 @@ A comprehensive comparison library for key technical trade-off decisions, featur
 
 ---
 
-### 5. 💻 50 System Design Problems — High-Density Catalog
+### 5. 🤖 Agentic AI Developer Roadmap (NEW)
+A comprehensive, interactive 5-phase developer curriculum designed to take you from foundational AI concepts to advanced, autonomous multi-agent systems:
+
+- **Interactive Phases**: Basic LLM API usage, prompt engineering, RAG pipelines, agent loops, and production multi-agent architectures
+- **Progress Tracking**: Phase-by-phase completion progress bars with localStorage persistence
+
+---
+
+### 6. 🎓 AI Learning Hub (NEW)
+A deep-dive, topic-by-topic training center with interactive guides:
+- Complete markdown notes explaining memory architectures, agent tools, and guardrails
+- **Copyable Code Blocks**: TypeScript-based code snippets representing core AI pipeline configurations
+- Structured checklists and highlights (Tips & Warnings) for building production-grade agentic workflows
+
+---
+
+### 7. 📡 Live AI & Tech News Feed (NEW)
+A real-time tech and AI news panel keeping you up to date on the industry's latest developments:
+- **News Ticker**: Integrated, auto-rotating compact headline ticker in the top navbar
+- **News Sidebar Panel**: Sticky right-side panel present across all core pages for live tracking
+- **Full News Reader**: Full-tab feed with inline article viewing, category filters, and built-in local development proxy detection
+
+---
+
+### 8. 💻 50 System Design Problems — High-Density Catalog
 The core practice catalog featuring 50 top system design problems, organized in a high-density, professional row-based layout:
 
 - **Unified Prep Progress Dashboard**: Circular progress ring + breakdown by difficulty (Easy/Medium/Hard) + cross-category stats
@@ -76,7 +100,7 @@ The core practice catalog featuring 50 top system design problems, organized in 
 
 ---
 
-### 6. 🔬 Low-Level Design (LLD) — Deep Dive Problems
+### 9. 🔬 Low-Level Design (LLD) — Deep Dive Problems
 Three fully implemented, production-quality LLD problems with complete OOP code in **5 languages** (TypeScript, Python, Java, Go, C++):
 
 #### Parking Lot System
@@ -96,20 +120,30 @@ Group controller implementing the SCAN scheduling algorithm with separate up/dow
 
 ---
 
-### 7. 🗂️ Categorized Sidebar Navigation Tree
-A collapsible, structured navigation sidebar with grouped sections:
-
-- **Expandable Categories**: Design Fundamentals, SOLID Principles, 50 Design Problems, 200+ Q&As — each with a collapsible accordion
-- **Inline Status & Difficulty Tags**: Color-coded `E/M/H` difficulty pills and completion icons (✓/▷/○) directly in the sidebar
-- **Problem Search**: Instant search bar inside the problems accordion
-- **Desktop Collapse Mode**: Sidebar folds to icon-only mode (76px) with a single toggle
-- **Mobile Drawer**: GPU-accelerated slide-in overlay on mobile with backdrop blur
-
-![Sidebar Problems List](docs/images/sidebar_problems_list.png)
+### 10. 🌐 Interactive System Diagrams (NEW)
+Highly detailed, interactive architectural diagrams of real-world global systems:
+- **Systems Included**: YouTube, Twitter/X, Discord, Uber, Netflix, Instagram
+- **Deep Insights**: Key scaling breakthroughs, bottlenecks, and detailed data storage hierarchies
+- **Interactive Tech Stacks**: Clickable components displaying custom descriptions of the technology choices used in production
 
 ---
 
-### 8. 📖 200+ System Design Q&As
+### 11. 📈 System Evolution Timelines (NEW)
+A visual timeline highlighting how architecture, tech stacks, and scale constraints evolved over time at hyper-growth tech giants:
+- Detailed stages describing initial MVP setup, mid-scale re-architecting, and global-scale microservice patterns
+- Visual progress path showcasing timeline milestones, key user stats, and architectural pivots
+
+---
+
+### 12. 🩺 Design Doctor (NEW)
+An interactive architectural diagnostic tool helping you match system requirements and bottlenecks to target design patterns:
+- **Symptom Checklist**: Check off issues like "slow database queries", "write congestion", "high global latency", or "fragile cascade failures"
+- **Pattern Prescription**: Get real-time recommendations scoring the most relevant GoF or architectural patterns
+- **Contextual Explanations**: Side-by-side analysis of *why* each pattern fits your diagnostic query
+
+---
+
+### 13. 📖 200+ System Design Q&As
 A categorized deck of over 200 interview-level questions across all distributed systems topics. Features:
 
 - Category-grouped accordion view with search
@@ -118,7 +152,12 @@ A categorized deck of over 200 interview-level questions across all distributed 
 
 ---
 
-### 9. 🛠️ Prep Tools
+### 14. ⚡ Self-Assessment Quiz (NEW)
+An interactive, multiple-choice quiz system containing custom questions designed to test your knowledge of scale estimation, CAP theorem, load balancers, caching, and LLD.
+
+---
+
+### 15. 🛠️ Prep Tools
 Interactive calculators and reference tools for interview day:
 
 - **Back-of-the-Envelope Calculator**: Input DAU, request freq, write ratio, payload, retention — get instant QPS, Storage, Bandwidth, and Cache estimates
@@ -126,7 +165,7 @@ Interactive calculators and reference tools for interview day:
 
 ---
 
-### 10. 📋 Prep Sandbox
+### 16. 📋 Prep Sandbox
 A set of interview preparation utilities:
 
 - **FAANG Grading Scorecard**: Slider-based self-assessment using real FAANG grading rubrics — get an instant hiring verdict
@@ -136,7 +175,7 @@ A set of interview preparation utilities:
 
 ---
 
-### 11. 📝 Revision Notes
+### 17. 📝 Revision Notes
 High-signal, last-minute cheatsheets:
 
 - **2-Hour Checklist**: Key mental models and decision frameworks for the interview loop
@@ -145,24 +184,8 @@ High-signal, last-minute cheatsheets:
 
 ---
 
-### 12. 🌗 Dark / Light Mode
+### 18. 🌗 Dark / Light Mode
 Full dark and light theme support with `localStorage` persistence. Toggle is available in both the expanded sidebar header and the collapsed icon bar.
-
----
-
-## 📸 Additional Screenshots
-
-| View | Preview |
-|---|---|
-| Design Fundamentals | ![](docs/images/design_fundamentals.png) |
-| SOLID Principles | ![](docs/images/solid_principles.png) |
-| Design Patterns | ![](docs/images/design_patterns.png) |
-| Tech Comparisons | ![](docs/images/tech_comparisons.png) |
-| Sidebar Tree | ![](docs/images/sidebar_problems_list.png) |
-| Dashboard | ![](docs/images/dashboard.png) |
-| Parking Lot LLD | ![](docs/images/parking_lot.png) |
-| Vending Machine LLD | ![](docs/images/vending_machine.png) |
-| Elevator LLD | ![](docs/images/elevator_system.png) |
 
 ---
 
@@ -171,10 +194,10 @@ Full dark and light theme support with `localStorage` persistence. Toggle is ava
 | Layer | Technology |
 |---|---|
 | Framework | React 18 + TypeScript + Vite |
-| Styling | Vanilla CSS — Glassmorphism design system, CSS variables, SVG animations |
+| Styling | Vanilla CSS — Emerald theme, Glassmorphism elements, CSS variables, SVG animations |
 | Icons | Lucide React |
 | Analytics | Vercel Analytics |
-| State | LocalStorage persistence (`sys_design_progress`, `sys_design_theme`) |
+| State | LocalStorage persistence (`sys_design_progress`, `sys_design_theme`, `ai-completed`) |
 
 ---
 
@@ -200,28 +223,50 @@ Open **http://localhost:5173/** in your browser.
 
 ```
 src/
-├── App.tsx                    # Root layout, sidebar, routing
-├── index.css                  # Full design system (glassmorphism, tokens, responsive)
+├── App.tsx                    # Root layout, router, progress state, global theme
+├── index.css                  # Core design system (emerald theme, glassmorphism, responsive)
+├── main.tsx                   # App mounting point
 ├── components/
-│   ├── Dashboard.tsx          # 50 problems catalog with filtering & progress
-│   ├── ConceptDetail.tsx      # Design Fundamentals viewer
-│   ├── SolidPrinciples.tsx    # SOLID principles interactive viewer
-│   ├── DesignPatterns.tsx     # Design Patterns catalog & detail
-│   ├── TechComparisons.tsx    # Technology comparison matrices
-│   ├── SystemDiagrams.tsx     # Interactive SVG architecture diagrams
-│   ├── SystemEvolution.tsx    # System evolution timeline viewer
-│   ├── ProblemDetail.tsx      # Individual LLD problem detail view
-│   ├── QuestionsDeck.tsx      # 200+ Q&A deck with categories
-│   ├── Quiz.tsx               # Self-assessment quiz
-│   ├── PrepTools.tsx          # Capacity calculators & latency tools
-│   ├── RevisionNotesView.tsx  # Last-minute revision cheatsheets
-│   └── PrepSandbox.tsx        # FAANG scorecard, timer, glossary
+│   ├── TopNavbar.tsx          # Fixed top header, search, live news ticker, and theme switcher
+│   ├── LeftSidebar.tsx        # Collapsible multi-group sidebar navigation (76px / 220px)
+│   ├── Dashboard.tsx          # 50 problems catalog with filtering, search, and progress dashboard
+│   ├── ConceptDetail.tsx      # Interactive Design Fundamentals study notes
+│   ├── SolidPrinciples.tsx    # SOLID principles interactive violation/refactor tabs
+│   ├── DesignPatterns.tsx     # 15 GoF & Architectural design patterns reference catalog
+│   ├── TechComparisons.tsx    # Technology comparison matrices (SQL vs NoSQL, REST/gRPC/GraphQL)
+│   ├── AIRoadmap.tsx          # Interactive Agentic AI Developer Roadmap timeline
+│   ├── AILearningHub.tsx      # Detailed AI curriculum guides, code blocks, tips, and checklists
+│   ├── AINewsFeed.tsx         # Live tech/AI news feed reader and compact side panel
+│   ├── SystemDiagrams.tsx     # Interactive SVG system design diagrams (YouTube, Twitter, Discord, etc.)
+│   ├── SystemEvolution.tsx    # Interactive architectural scaling timelines (Slack, Twitter, Netflix)
+│   ├── DesignDoctor.tsx       # System symptom diagnostics checklist & pattern recommendations
+│   ├── ProblemDetail.tsx      # LLD problem details with multi-language code tabs (TS/Py/Java/Go/C++)
+│   ├── QuestionsDeck.tsx      # 200+ flip-card Q&As with search and categories
+│   ├── Quiz.tsx               # Interactive self-assessment quiz system
+│   ├── PrepTools.tsx          # Latency comparator timeline and back-of-the-envelope estimator
+│   ├── PrepSandbox.tsx        # FAANG interview scorecard, whiteboard mock timer, systems glossary
+│   └── RevisionNotesView.tsx  # Last-minute scale formulas, trade-offs, and revision checklist
 └── data/
-    ├── problems.ts            # 50 system design problem definitions
-    ├── concepts.ts            # Design fundamentals content
-    ├── solidData.ts           # SOLID principles + code examples
-    ├── designPatterns.ts      # 15 GoF & architectural patterns
-    ├── techComparisons.ts     # Tech comparison matrices
-    ├── systemEvolutions.ts    # System evolution data
-    └── interviewQuestions.ts  # 200+ interview Q&As
+    ├── aiCurriculum.ts        # Agentic AI curriculum guidelines and content
+    ├── concepts.ts            # Design fundamentals structured notes
+    ├── solidData.ts           # SOLID principles analogies & TypeScript examples
+    ├── designPatterns.ts      # 15 GoF and architectural patterns content
+    ├── techComparisons.ts     # Trade-off comparison matrix data
+    ├── systemEvolutions.ts    # Company-specific architectural scaling stages
+    ├── interviewQuestions.ts  # 200+ interview Q&As definitions
+    ├── revisionNotes.ts       # Revision charts, scale limits, and rules of thumb
+    ├── sandboxData.ts         # Glossary definitions and company pathways
+    └── problems/              # Individual LLD problem metadata & code databases
+        ├── chatService.ts
+        ├── elevatorSystem.ts
+        ├── messageQueue.ts
+        ├── parkingLot.ts
+        ├── rateLimiter.ts
+        ├── rideSharing.ts
+        ├── ticketBooking.ts
+        ├── urlShortener.ts
+        ├── vendingMachine.ts
+        ├── videoStreaming.ts
+        ├── webCrawler.ts
+        └── index.ts           # Aggregated problems registry
 ```
