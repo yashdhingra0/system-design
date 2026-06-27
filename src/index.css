@@ -1767,3 +1767,167 @@ body.light-mode .font-mono { color: #e2e8f0; }
   0%, 100% { opacity: 1; box-shadow: 0 0 6px #10b981; }
   50% { opacity: 0.5; box-shadow: 0 0 2px #10b981; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE RESPONSIVE — comprehensive fixes
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── 1. Fix inline marginLeft pushed by sidebar on mobile ───── */
+@media (max-width: 768px) {
+  .main-layout-wrapper {
+    margin-left: 0 !important;
+  }
+  .main-content-area {
+    padding: 16px !important;
+  }
+}
+
+/* ── 2. Top navbar mobile ────────────────────────────────────── */
+@media (max-width: 768px) {
+  .top-nav {
+    padding: 0 12px;
+    gap: 2px;
+  }
+  .top-nav-logo span:last-child {
+    font-size: 15px !important;
+  }
+}
+
+/* ── 3. Force all inline grids to 1-col on mobile ───────────── */
+@media (max-width: 640px) {
+  /* Catch inline gridTemplateColumns */
+  [style*="gridTemplateColumns"],
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Catch inline repeat(auto-fill...) */
+  [style*="minmax("] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 4. Inline padding/margin fixes for mobile content ─────── */
+@media (max-width: 640px) {
+  /* Any div that has large inline padding */
+  .main-content-area > div {
+    min-width: 0;
+  }
+  /* Hero sections and large padded boxes */
+  [style*="padding: '36px 40px'"],
+  [style*="padding: '32px 40px'"] {
+    padding: 20px 16px !important;
+  }
+}
+
+/* ── 5. Typography scale on mobile ─────────────────────────── */
+@media (max-width: 640px) {
+  h1 { font-size: clamp(20px, 6vw, 28px) !important; }
+  h2 { font-size: clamp(17px, 5vw, 22px) !important; }
+  h3 { font-size: clamp(15px, 4vw, 18px) !important; }
+  .section-h1 { font-size: clamp(20px, 6vw, 28px) !important; }
+}
+
+/* ── 6. SVG diagrams — horizontal scroll wrapper ───────────── */
+@media (max-width: 768px) {
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+  .svg-scroll-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── 7. Button / tap target minimum size ───────────────────── */
+@media (max-width: 768px) {
+  button, .left-sidebar-item, .nav-link {
+    min-height: 40px;
+  }
+}
+
+/* ── 8. Pre / code blocks — horizontal scroll ──────────────── */
+@media (max-width: 640px) {
+  pre {
+    font-size: 12px !important;
+    padding: 12px !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── 9. News ticker — hide on small screens ─────────────────── */
+@media (max-width: 640px) {
+  .news-ticker-wrapper { display: none !important; }
+}
+
+/* ── 10. AI Roadmap flow diagram on mobile ──────────────────── */
+@media (max-width: 640px) {
+  .ai-roadmap-topic-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ── 11. Profile dropdown — cap width on mobile ─────────────── */
+@media (max-width: 400px) {
+  .profile-dropdown {
+    width: calc(100vw - 32px) !important;
+    right: -8px !important;
+  }
+}
+
+/* ── 12. Flex rows that need to wrap on narrow screens ──────── */
+@media (max-width: 640px) {
+  [style*="display: 'flex'"][style*="gap"],
+  .stage-header-row {
+    flex-wrap: wrap;
+  }
+}
+
+/* ── 13. Table overflow — horizontal scroll ─────────────────── */
+@media (max-width: 768px) {
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ── 14. maxWidth containers — full width on mobile ─────────── */
+@media (max-width: 640px) {
+  [style*="maxWidth: 900"],
+  [style*="maxWidth: 1100"],
+  [style*="maxWidth: 720"],
+  [style*="max-width: 900px"] {
+    max-width: 100% !important;
+  }
+}
+
+/* ── AI Learning Hub mobile layout ─────────────────────────── */
+@media (max-width: 768px) {
+  .ai-learning-layout {
+    flex-direction: column !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .ai-learning-sidebar {
+    width: 100% !important;
+    max-height: 180px !important;
+    overflow-y: auto !important;
+    border-right: none !important;
+    border-bottom: 1px solid var(--border-glass) !important;
+  }
+  .ai-learning-content {
+    padding-left: 16px !important;
+    padding-right: 12px !important;
+    padding-top: 16px !important;
+  }
+}
+
+/* ── Dashboard article header — tighter on mobile ───────────── */
+@media (max-width: 640px) {
+  .ai-learning-layout [style*="padding: '32px 36px'"] {
+    padding: 18px !important;
+  }
+}

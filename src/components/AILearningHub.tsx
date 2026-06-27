@@ -248,9 +248,9 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
   const isDone = completedIds.has(selectedId);
 
   return (
-    <div style={{ display: 'flex', gap: 0, height: 'calc(100vh - 80px)', overflow: 'hidden' }}>
+    <div className="ai-learning-layout" style={{ display: 'flex', gap: 0, height: 'calc(100vh - 80px)', overflow: 'hidden' }}>
       {/* Sidebar list */}
-      <div style={{
+      <div className="ai-learning-sidebar" style={{
         width: 280, flexShrink: 0, overflowY: 'auto',
         borderRight: '1px solid rgba(16,185,129,0.1)',
         paddingRight: 0,
@@ -335,7 +335,7 @@ export const AILearningHub: React.FC<AILearningHubProps> = ({ initialTopicId }) 
       </div>
 
       {/* Reading area */}
-      <div style={{ flex: 1, overflowY: 'auto', paddingLeft: 40, paddingRight: 16 }}>
+      <div className="ai-learning-content" style={{ flex: 1, overflowY: 'auto', paddingLeft: 40, paddingRight: 16 }}>
         {/* Article header */}
         <div style={{
           background: `linear-gradient(135deg, ${phaseColor}0d 0%, rgba(52,211,153,0.04) 100%)`,

@@ -189,15 +189,18 @@ function App() {
       />
 
       {/* Main content area — offset by sidebar */}
-      <div style={{
-        marginLeft: sidebarOffset,
-        paddingTop: 56,
-        minHeight: '100vh',
-        transition: 'margin-left 0.22s ease',
-        display: 'flex',
-      }}>
+      <div
+        className="main-layout-wrapper"
+        style={{
+          marginLeft: sidebarOffset,
+          paddingTop: 56,
+          minHeight: '100vh',
+          transition: 'margin-left 0.22s ease',
+          display: 'flex',
+        }}
+      >
         {/* Main content */}
-        <div style={{ flex: 1, minWidth: 0, padding: '28px 36px', overflowY: 'auto' }}>
+        <div className="main-content-area" style={{ flex: 1, minWidth: 0, padding: '28px 36px', overflowY: 'auto' }}>
           {renderContent()}
         </div>
 
